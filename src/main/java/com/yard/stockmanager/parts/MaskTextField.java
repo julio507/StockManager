@@ -1,4 +1,4 @@
-package parts;
+package com.yard.stockmanager.parts;
 
 import java.util.ArrayList;
 import javafx.scene.control.TextField;

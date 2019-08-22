@@ -5,6 +5,8 @@
  */
 package com.yard.stockmanager.main;
 
+import com.yard.stockmanager.panes.LoginPane;
+import com.yard.stockmanager.panes.MainPane;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -15,8 +17,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import com.yard.stockmanager.panes.LoginPane;
-import com.yard.stockmanager.panes.MainPane;
 
 /**
  *
@@ -37,7 +37,7 @@ public class StockManager extends Application
 
         Scene scene = new Scene(root, 720, 460);
 
-        primaryStage.setTitle("PizzaManager");
+        primaryStage.setTitle("StockManager");
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
