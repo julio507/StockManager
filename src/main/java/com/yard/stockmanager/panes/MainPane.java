@@ -5,6 +5,8 @@
  */
 package com.yard.stockmanager.panes;
 
+import com.yard.stockmanager.parts.TabMenuItem;
+import com.yard.stockmanager.tabs.StockManagerTab;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TabPane;
@@ -24,12 +26,13 @@ public class MainPane
     
     public MainPane()
     {
-//        managementMenu.getItems().addAll(
+        managementMenu.getItems().addAll(
 //                flavorItem,
 //                sizeItem,
 //                districtItem,
 //                otherItem
-//        );
+                stockManagerTab
+        );
 //
 //        operationsMenu.getItems().addAll(
 //                sellItem
@@ -53,14 +56,18 @@ public class MainPane
     public void setStage(Stage stage)
     {
         this.stage = stage;
+        //stockManagerTab.setStage(stage);
 //        st.setStage(stage);
     }
 
     private TabPane tabPane = new TabPane();
+    //private StockManagerTab stockManagerTab = new StockManagerTab();
 
     private Menu managementMenu = new Menu("Gerenciamento");
     private Menu operationsMenu = new Menu("Operações");
     private Menu queryMenu = new Menu("Consultas");
+
+    private TabMenuItem stockManagerTab = new TabMenuItem("Gerenciamento Estoque", tabPane, new StockManagerTab());
 
 //    private SellTab st = new SellTab();
 //    
