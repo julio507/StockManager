@@ -11,6 +11,9 @@ import javafx.event.EventType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 /**
  *
@@ -18,20 +21,16 @@ import javafx.scene.control.TabPane;
  */
 public class TabMenuItem
         extends
-        MenuItem
-{
+        MenuItem {
+    private Stage stage;
 
-    public TabMenuItem(String text, final TabPane parent, final Tab tab)
-    {
+    public TabMenuItem(String text, final TabPane parent, final Tab tab) {
         super(text);
 
-        addEventHandler(EventType.ROOT, new EventHandler()
-        {
+        addEventHandler(EventType.ROOT, new EventHandler() {
             @Override
-            public void handle(Event event)
-            {
-                if (!parent.getTabs().contains(tab))
-                {
+            public void handle(Event event) {
+                if (!parent.getTabs().contains(tab)) {
                     parent.getTabs().add(tab);
                 }
 
@@ -41,3 +40,7 @@ public class TabMenuItem
         });
     }
 }
+
+
+
+
