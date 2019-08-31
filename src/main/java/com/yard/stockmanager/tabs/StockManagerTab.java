@@ -104,6 +104,8 @@ public class StockManagerTab extends Tab
         //Botões
         btnSalva.setVisible(true);
         btnSalva.setPrefSize(100,30);
+        btnEditar.setVisible(true);
+        btnEditar.setPrefSize(100,30);
 
 
         //Colunas da tabela
@@ -128,17 +130,19 @@ public class StockManagerTab extends Tab
 
         //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
         telaEsquerda.setAlignment(Pos.TOP_RIGHT);
-        telaEsquerda.addRow(0, labRua, tfdRua);
-        telaEsquerda.addRow(1, labBairro, tfdBairro);
+        telaEsquerda.addRow(0, labNome, tfdNome);
+        telaEsquerda.addRow(1, labRua, tfdRua);
         telaEsquerda.addRow(2, labNumero, tfdNumero);
-        telaEsquerda.addRow(3, labComplemento, tfdComplemento);
-        telaEsquerda.addRow(4, labCep, tfdCep);
-        telaEsquerda.addRow(5, labNome, tfdNome);
-        telaEsquerda.addRow(6, labDescricao, tfdDescricao);
-        telaEsquerda.addRow(7, labTelefone, tfdTelefone);
+        telaEsquerda.addRow(3, labBairro, tfdBairro);
+        telaEsquerda.addRow(4, labComplemento, tfdComplemento);
+        telaEsquerda.addRow(5, labCep, tfdCep);
+        telaEsquerda.addRow(6, labTelefone, tfdTelefone);
+        telaEsquerda.addRow(7, labDescricao, tfdDescricao);
         telaEsquerda.addRow(8, btnSalva);
 
+        telaDireita.setAlignment(Pos.TOP_RIGHT);
         telaDireita.addRow(0, tabela);
+        telaDireita.addRow(1, btnEditar);
 
         telaPrincipal.addRow(0,telaEsquerda, telaDireita);
 
@@ -148,10 +152,10 @@ public class StockManagerTab extends Tab
     }
 
     //Iniciação das variaveis
-    private double labWidth = 180;
-    private double labHeight = 90;
-    private double tfdWidth = 250;
-    private double tfdHeight = 30;
+    private double labWidth = 240;
+    private double labHeight = 50;
+    private double tfdWidth = 300;
+    private double tfdHeight = 20;
 
     //Criação dos componentes da tela
     private Label labRua = new Label("Rua:");
@@ -173,6 +177,7 @@ public class StockManagerTab extends Tab
     private TextField tfdTelefone = new TextField();
 
     private Button btnSalva = new Button("Salvar");
+    private Button btnEditar = new Button("Editar");
 
     private TableView tabela = new TableView<>();
     private TableColumn colunaCodigo = new TableColumn<>("Código");
