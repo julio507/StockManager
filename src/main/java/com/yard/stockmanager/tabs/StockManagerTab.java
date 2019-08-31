@@ -1,12 +1,20 @@
 package com.yard.stockmanager.tabs;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+
+import java.util.Arrays;
+import java.util.List;
 
 import java.awt.*;
 
@@ -14,7 +22,7 @@ public class StockManagerTab extends Tab
 {
 
     private Stage stage;
-    private Font font = new Font(24);
+    private Font font = new Font(14);
 
     public StockManagerTab()
     {
@@ -93,17 +101,48 @@ public class StockManagerTab extends Tab
         tfdTelefone.setPrefSize(tfdWidth,tfdHeight);
 
 
-        //Cria tabela e inclui as Labels e TextFields nas linhas e colunas
-        tela.setPadding(new Insets(100));
-        tela.addRow(0, labRua, tfdRua);
-        tela.addRow(1, labBairro, tfdBairro);
-        tela.addRow(2, labNumero, tfdNumero);
-        tela.addRow(3, labComplemento, tfdComplemento);
-        tela.addRow(4, labCep, tfdCep);
-        tela.addRow(5, labNome, tfdNome);
-        tela.addRow(6, labDescricao, tfdDescricao);
-        tela.addRow(7, labTelefone, tfdTelefone);
-        setContent(tela);
+        //Botões
+        btnSalva.setVisible(true);
+        btnSalva.setPrefSize(100,30);
+
+
+        //Colunas da tabela
+        colunaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colunaRua.setCellValueFactory(new PropertyValueFactory<>("rua"));
+        colunaNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        colunaBairro.setCellValueFactory(new PropertyValueFactory<>("bairro"));
+        colunaComplemento.setCellValueFactory(new PropertyValueFactory<>("complemento"));
+        colunaCep.setCellValueFactory(new PropertyValueFactory<>("cep"));
+        colunaTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
+        colunaDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+
+        //Tabela
+        tabela.setPrefSize(1000, 1000);
+        tabela.getColumns().addAll(colunaCodigo, colunaNome, colunaRua, colunaNumero, colunaBairro, colunaComplemento, colunaCep, colunaTelefone, colunaDescricao);
+
+        //Inicializa os paineis da tela
+        telaPrincipal.setPadding(new Insets(0));
+        telaEsquerda.setPadding(new Insets(100));
+        telaDireita.setPadding(new Insets(100));
+
+        //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
+        telaEsquerda.setAlignment(Pos.TOP_RIGHT);
+        telaEsquerda.addRow(0, labRua, tfdRua);
+        telaEsquerda.addRow(1, labBairro, tfdBairro);
+        telaEsquerda.addRow(2, labNumero, tfdNumero);
+        telaEsquerda.addRow(3, labComplemento, tfdComplemento);
+        telaEsquerda.addRow(4, labCep, tfdCep);
+        telaEsquerda.addRow(5, labNome, tfdNome);
+        telaEsquerda.addRow(6, labDescricao, tfdDescricao);
+        telaEsquerda.addRow(7, labTelefone, tfdTelefone);
+        telaEsquerda.addRow(8, btnSalva);
+
+        telaDireita.addRow(0, tabela);
+
+        telaPrincipal.addRow(0,telaEsquerda, telaDireita);
+
+        setContent(telaPrincipal);
 
 
     }
@@ -133,5 +172,20 @@ public class StockManagerTab extends Tab
     private TextField tfdDescricao = new TextField();
     private TextField tfdTelefone = new TextField();
 
-    private GridPane tela = new GridPane();
+    private Button btnSalva = new Button("Salvar");
+
+    private TableView tabela = new TableView<>();
+    private TableColumn colunaCodigo = new TableColumn<>("Código");
+    private TableColumn colunaNome = new TableColumn<>("Nome");
+    private TableColumn colunaRua = new TableColumn<>("Rua");
+    private TableColumn colunaNumero = new TableColumn<>("Número");
+    private TableColumn colunaBairro = new TableColumn<>("Bairro");
+    private TableColumn colunaComplemento = new TableColumn<>("Complemento");
+    private TableColumn colunaCep = new TableColumn<>("CEP");
+    private TableColumn colunaTelefone = new TableColumn<>("Telefone");
+    private TableColumn colunaDescricao = new TableColumn<>("Descrição");
+
+    private GridPane telaPrincipal = new GridPane();
+    private GridPane telaEsquerda = new GridPane();
+    private GridPane telaDireita = new GridPane();
 }
