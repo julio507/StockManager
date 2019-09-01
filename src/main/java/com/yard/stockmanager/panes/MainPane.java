@@ -7,12 +7,17 @@ package com.yard.stockmanager.panes;
 
 import com.yard.stockmanager.parts.TabMenuItem;
 import com.yard.stockmanager.tabs.StockManagerTab;
+import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import parts.ManagementTab;
 
 /**
  *
@@ -51,7 +56,16 @@ public class MainPane
         );
 
         setTop(menu);
+        setRight(vBaseBox);
+        vBaseBox.setAlignment(Pos.BOTTOM_RIGHT);
+        logo.setFitHeight(100);
+        logo.setFitWidth(100);
+        hLogoBox.setAlignment(Pos.CENTER);
+        name.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+        hNameBox.setAlignment(Pos.CENTER);
+        setBackground(background);
         setCenter(tabPane);
+
     }
 
     public void setStage(Stage stage)
@@ -85,4 +99,16 @@ public class MainPane
 //    private TabMenuItem userQueryItem = new TabMenuItem("Vendas por usuário", tabPane, new UserQueryTab() );
     
     private MenuBar menu = new MenuBar();
+
+    //Bloco do titulo central da tela de login
+    private ImageView logo = new ImageView(new Image("img/logo.png")); //logotipo
+    private Text name = new Text("StockManager"); //nome do software
+    private HBox hLogoBox = new HBox(logo); //container do logo
+    private HBox hNameBox = new HBox(name); //container do nome
+    private VBox vBaseBox = new VBox(5, hLogoBox, hNameBox); //container do conjunto central dos titulos
+
+    //Propriedades do backgroud da tela Principal
+    private BackgroundSize backSize = new BackgroundSize(1.0, 1.0, true, true, false, false);
+    private Background background = new Background(new BackgroundImage(new Image("img/background.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backSize));
+
 }
