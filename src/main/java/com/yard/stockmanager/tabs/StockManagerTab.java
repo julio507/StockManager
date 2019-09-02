@@ -12,13 +12,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
-
+import parts.ManagementTab;
 import java.util.Arrays;
 import java.util.List;
 
 import java.awt.*;
 
-public class StockManagerTab extends Tab
+public class StockManagerTab extends parts.ManagementTab<Object>
 {
 
     private Stage stage;
@@ -37,6 +37,41 @@ public class StockManagerTab extends Tab
     public Stage getStage()
     {
         return stage;
+    }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void edit() {
+
+    }
+
+    @Override
+    public void changeStatus() {
+
+    }
+
+    @Override
+    public void select() {
+
+    }
+
+    @Override
+    public void clear() {
+
     }
 
     private void initComponents()
