@@ -7,6 +7,7 @@ package com.yard.stockmanager.panes;
 
 import com.yard.stockmanager.parts.TabMenuItem;
 import com.yard.stockmanager.tabs.StockManagerTab;
+import com.yard.stockmanager.tabs.UserRegisterTab;
 import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -37,7 +38,8 @@ public class MainPane
 //                sizeItem,
 //                districtItem,
 //                otherItem
-                stockManagerTab
+                stockManagerTab,
+                userRegisterTab
         );
 //
 //        operationsMenu.getItems().addAll(
@@ -83,7 +85,7 @@ public class MainPane
     private Menu queryMenu = new Menu("Consultas");
 
     private TabMenuItem stockManagerTab = new TabMenuItem("Gerenciamento Estoque", tabPane, new StockManagerTab());
-
+    private TabMenuItem userRegisterTab = new TabMenuItem ("Cadastro Usuário", tabPane, new UserRegisterTab());
 //    private SellTab st = new SellTab();
 //    
 //    private TabMenuItem flavorItem = new TabMenuItem("Sabores", tabPane, new FlavorTab());
