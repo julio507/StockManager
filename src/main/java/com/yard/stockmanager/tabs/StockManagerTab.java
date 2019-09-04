@@ -77,27 +77,6 @@ public class StockManagerTab extends ManagementTab<Object>
 
     private void initComponents()
     {
-        //Labels
-        labRua.setFont(font);
-        labRua.setPrefSize(labWidth,labHeight);
-
-        labBairro.setFont(font);
-        labBairro.setPrefSize(labWidth,labHeight);
-
-        labNumero.setFont(font);
-        labNumero.setPrefSize(labWidth,labHeight);
-
-        labCep.setFont(font);
-        labCep.setPrefSize(labWidth,labHeight);
-
-        labComplemento.setFont(font);
-        labComplemento.setPrefSize(labWidth,labHeight);
-
-        labNome.setFont(font);
-        labNome.setPrefSize(labWidth,labHeight);
-
-        labDescricao.setFont(font);
-        labDescricao.setPrefSize(labWidth,labHeight);
 
         innerGrid.addRow(0,labNome, tfdNome);
         innerGrid.addRow(1,labRua, tfdRua);
@@ -111,23 +90,23 @@ public class StockManagerTab extends ManagementTab<Object>
 
 
         TableColumn<Object, Integer> id = new TableColumn<>("ID");
-        TableColumn<Object, Integer> nome = new TableColumn<>("Nome");
-        TableColumn<Object, Integer> rua = new TableColumn<>("Rua");
-        TableColumn<Object, Integer> bairro = new TableColumn<>("Bairro");
+        TableColumn<Object, String> nome = new TableColumn<>("Nome");
+        TableColumn<Object, String> rua = new TableColumn<>("Rua");
+        TableColumn<Object, String> bairro = new TableColumn<>("Bairro");
         TableColumn<Object, Integer> numero = new TableColumn<>("Número");
         TableColumn<Object, Integer> cep = new TableColumn<>("CEP");
-        TableColumn<Object, Integer> complemento = new TableColumn<>("Complemento");
-        TableColumn<Object, Integer> descricao = new TableColumn<>("Descrição");
+        TableColumn<Object, String> complemento = new TableColumn<>("Complemento");
+        TableColumn<Object, String> descricao = new TableColumn<>("Descrição");
         TableColumn<Object, Integer> telefone = new TableColumn<>("Telefone");
 
         id.setCellValueFactory(new PropertyValueFactory<Object, Integer>("id"));
-        nome.setCellValueFactory(new PropertyValueFactory<Object, Integer>("nome"));
-        rua.setCellValueFactory(new PropertyValueFactory<Object, Integer>("rua"));
-        bairro.setCellValueFactory(new PropertyValueFactory<Object, Integer>("bairro"));
+        nome.setCellValueFactory(new PropertyValueFactory<Object, String>("nome"));
+        rua.setCellValueFactory(new PropertyValueFactory<Object, String>("rua"));
+        bairro.setCellValueFactory(new PropertyValueFactory<Object, String>("bairro"));
         numero.setCellValueFactory(new PropertyValueFactory<Object, Integer>("numero"));
         cep.setCellValueFactory(new PropertyValueFactory<Object, Integer>("cep"));
-        complemento.setCellValueFactory(new PropertyValueFactory<Object, Integer>("complemento"));
-        descricao.setCellValueFactory(new PropertyValueFactory<Object, Integer>("descricao"));
+        complemento.setCellValueFactory(new PropertyValueFactory<Object, String>("complemento"));
+        descricao.setCellValueFactory(new PropertyValueFactory<Object, String>("descricao"));
         telefone.setCellValueFactory(new PropertyValueFactory<Object, Integer>("telefone"));
 
         tableView.getColumns().addAll(
@@ -144,78 +123,7 @@ public class StockManagerTab extends ManagementTab<Object>
 
         refresh();
 
-        tfdComplemento.setEditable(true);
-        tfdComplemento.setFont(font);
-        tfdComplemento.setPrefSize(tfdWidth,tfdHeight);
-
-        tfdNome.setEditable(true);
-        tfdNome.setFont(font);
-        tfdNome.setPrefSize(tfdWidth,tfdHeight);
-
-        tfdDescricao.setEditable(true);
-        tfdDescricao.setFont(font);
-        tfdDescricao.setPrefSize(tfdWidth,tfdHeight);
-
-        tfdTelefone.setEditable(true);
-        tfdTelefone.setFont(font);
-        tfdTelefone.setPrefSize(tfdWidth,tfdHeight);
-
-
-        //Botões
-        btnSalva.setVisible(true);
-        btnSalva.setPrefSize(100,30);
-        btnEditar.setVisible(true);
-        btnEditar.setPrefSize(100,30);
-
-
-        //Colunas da tabela
-        /*colunaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
-        colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colunaRua.setCellValueFactory(new PropertyValueFactory<>("rua"));
-        colunaNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
-        colunaBairro.setCellValueFactory(new PropertyValueFactory<>("bairro"));
-        colunaComplemento.setCellValueFactory(new PropertyValueFactory<>("complemento"));
-        colunaCep.setCellValueFactory(new PropertyValueFactory<>("cep"));
-        colunaTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
-        colunaDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
-
-        //Tabela
-        tabela.setPrefSize(1000, 1000);
-        tabela.getColumns().addAll(colunaCodigo, colunaNome, colunaRua, colunaNumero, colunaBairro, colunaComplemento, colunaCep, colunaTelefone, colunaDescricao);*/
-
-        //Inicializa os paineis da tela
-        /*telaPrincipal.setPadding(new Insets(0));
-        telaEsquerda.setPadding(new Insets(100));
-        telaDireita.setPadding(new Insets(100));*/
-
-        //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
-        /*telaEsquerda.setAlignment(Pos.TOP_RIGHT);
-        telaEsquerda.addRow(0, labNome, tfdNome);
-        telaEsquerda.addRow(1, labRua, tfdRua);
-        telaEsquerda.addRow(2, labNumero, tfdNumero);
-        telaEsquerda.addRow(3, labBairro, tfdBairro);
-        telaEsquerda.addRow(4, labComplemento, tfdComplemento);
-        telaEsquerda.addRow(5, labCep, tfdCep);
-        telaEsquerda.addRow(6, labTelefone, tfdTelefone);
-        telaEsquerda.addRow(7, labDescricao, tfdDescricao);
-        telaEsquerda.addRow(8, btnSalva);*/
-
-        /*telaDireita.setAlignment(Pos.TOP_RIGHT);
-        telaDireita.addRow(0, tabela);
-        telaDireita.addRow(1, btnEditar);
-
-        telaPrincipal.addRow(0,telaEsquerda, telaDireita);
-
-        setContent(telaPrincipal);*/
-
-
     }
-
-    //Iniciação das variaveis
-    private double labWidth = 240;
-    private double labHeight = 50;
-    private double tfdWidth = 300;
-    private double tfdHeight = 20;
 
     //Criação dos componentes da tela
     private Label labRua = new Label("Rua:");
