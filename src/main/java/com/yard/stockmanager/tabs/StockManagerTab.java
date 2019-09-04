@@ -18,7 +18,7 @@ import java.util.List;
 
 import java.awt.*;
 
-public class StockManagerTab extends parts.ManagementTab<Object>
+public class StockManagerTab extends ManagementTab<Object>
 {
 
     private Stage stage;
@@ -74,6 +74,7 @@ public class StockManagerTab extends parts.ManagementTab<Object>
 
     }
 
+
     private void initComponents()
     {
         //Labels
@@ -98,26 +99,50 @@ public class StockManagerTab extends parts.ManagementTab<Object>
         labDescricao.setFont(font);
         labDescricao.setPrefSize(labWidth,labHeight);
 
-        labTelefone.setFont(font);
-        labTelefone.setPrefSize(labWidth,labHeight);
+        innerGrid.addRow(0,labNome, tfdNome);
+        innerGrid.addRow(1,labRua, tfdRua);
+        innerGrid.addRow(2,labBairro, tfdBairro);
+        innerGrid.addRow(3,labNumero, tfdNumero);
+        innerGrid.addRow(4,labCep, tfdCep);
+        innerGrid.addRow(5,labComplemento, tfdComplemento);
+        innerGrid.addRow(6,labDescricao, tfdDescricao);
+        innerGrid.addRow(7,labTelefone, tfdTelefone);
+        innerGrid.addRow(8,btnSalva);
 
 
-        //TaxtFields
-        tfdRua.setEditable(true);
-        tfdRua.setFont(font);
-        tfdRua.setPrefSize(tfdWidth,tfdHeight);
+        TableColumn<Object, Integer> id = new TableColumn<>("ID");
+        TableColumn<Object, Integer> nome = new TableColumn<>("Nome");
+        TableColumn<Object, Integer> rua = new TableColumn<>("Rua");
+        TableColumn<Object, Integer> bairro = new TableColumn<>("Bairro");
+        TableColumn<Object, Integer> numero = new TableColumn<>("Número");
+        TableColumn<Object, Integer> cep = new TableColumn<>("CEP");
+        TableColumn<Object, Integer> complemento = new TableColumn<>("Complemento");
+        TableColumn<Object, Integer> descricao = new TableColumn<>("Descrição");
+        TableColumn<Object, Integer> telefone = new TableColumn<>("Telefone");
 
-        tfdBairro.setEditable(true);
-        tfdBairro.setFont(font);
-        tfdBairro.setPrefSize(tfdWidth,tfdHeight);
+        id.setCellValueFactory(new PropertyValueFactory<Object, Integer>("id"));
+        nome.setCellValueFactory(new PropertyValueFactory<Object, Integer>("nome"));
+        rua.setCellValueFactory(new PropertyValueFactory<Object, Integer>("rua"));
+        bairro.setCellValueFactory(new PropertyValueFactory<Object, Integer>("bairro"));
+        numero.setCellValueFactory(new PropertyValueFactory<Object, Integer>("numero"));
+        cep.setCellValueFactory(new PropertyValueFactory<Object, Integer>("cep"));
+        complemento.setCellValueFactory(new PropertyValueFactory<Object, Integer>("complemento"));
+        descricao.setCellValueFactory(new PropertyValueFactory<Object, Integer>("descricao"));
+        telefone.setCellValueFactory(new PropertyValueFactory<Object, Integer>("telefone"));
 
-        tfdNumero.setEditable(true);
-        tfdNumero.setFont(font);
-        tfdNumero.setPrefSize(tfdWidth,tfdHeight);
+        tableView.getColumns().addAll(
+            id,
+            nome,
+            rua,
+            bairro,
+            numero,
+            cep,
+            complemento,
+            descricao,
+            telefone
+        );
 
-        tfdCep.setEditable(true);
-        tfdCep.setFont(font);
-        tfdCep.setPrefSize(tfdWidth,tfdHeight);
+        refresh();
 
         tfdComplemento.setEditable(true);
         tfdComplemento.setFont(font);
@@ -144,7 +169,7 @@ public class StockManagerTab extends parts.ManagementTab<Object>
 
 
         //Colunas da tabela
-        colunaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        /*colunaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colunaRua.setCellValueFactory(new PropertyValueFactory<>("rua"));
         colunaNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
@@ -156,15 +181,15 @@ public class StockManagerTab extends parts.ManagementTab<Object>
 
         //Tabela
         tabela.setPrefSize(1000, 1000);
-        tabela.getColumns().addAll(colunaCodigo, colunaNome, colunaRua, colunaNumero, colunaBairro, colunaComplemento, colunaCep, colunaTelefone, colunaDescricao);
+        tabela.getColumns().addAll(colunaCodigo, colunaNome, colunaRua, colunaNumero, colunaBairro, colunaComplemento, colunaCep, colunaTelefone, colunaDescricao);*/
 
         //Inicializa os paineis da tela
-        telaPrincipal.setPadding(new Insets(0));
+        /*telaPrincipal.setPadding(new Insets(0));
         telaEsquerda.setPadding(new Insets(100));
-        telaDireita.setPadding(new Insets(100));
+        telaDireita.setPadding(new Insets(100));*/
 
         //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
-        telaEsquerda.setAlignment(Pos.TOP_RIGHT);
+        /*telaEsquerda.setAlignment(Pos.TOP_RIGHT);
         telaEsquerda.addRow(0, labNome, tfdNome);
         telaEsquerda.addRow(1, labRua, tfdRua);
         telaEsquerda.addRow(2, labNumero, tfdNumero);
@@ -173,15 +198,15 @@ public class StockManagerTab extends parts.ManagementTab<Object>
         telaEsquerda.addRow(5, labCep, tfdCep);
         telaEsquerda.addRow(6, labTelefone, tfdTelefone);
         telaEsquerda.addRow(7, labDescricao, tfdDescricao);
-        telaEsquerda.addRow(8, btnSalva);
+        telaEsquerda.addRow(8, btnSalva);*/
 
-        telaDireita.setAlignment(Pos.TOP_RIGHT);
+        /*telaDireita.setAlignment(Pos.TOP_RIGHT);
         telaDireita.addRow(0, tabela);
         telaDireita.addRow(1, btnEditar);
 
         telaPrincipal.addRow(0,telaEsquerda, telaDireita);
 
-        setContent(telaPrincipal);
+        setContent(telaPrincipal);*/
 
 
     }

@@ -116,8 +116,8 @@ public abstract class ManagementTab<T>
         tablePane.setPadding(new Insets(10));
         innerGrid.setPadding(new Insets(10));
 
-        outerGrid.addColumn(0, tablePane);
-        outerGrid.addColumn(1, innerPane);
+        outerGrid.addColumn(0, innerPane);
+        outerGrid.addColumn(1, tablePane);
 
         innerPane.setCenter(innerGrid);
         innerPane.setBottom(bottomGrid);

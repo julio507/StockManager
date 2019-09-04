@@ -84,7 +84,7 @@ public class MainPane
     private Menu operationsMenu = new Menu("Operações");
     private Menu queryMenu = new Menu("Consultas");
 
-    private TabMenuItem stockManagerTab = new TabMenuItem("Gerenciamento Estoque", tabPane, new StockManagerTab());
+    private TabMenuItem stockManagerTab = new TabMenuItem("Gerenciamento de Estoque", tabPane, new StockManagerTab());
     private TabMenuItem userRegisterTab = new TabMenuItem ("Cadastro Usuário", tabPane, new UserRegisterTab());
 //    private SellTab st = new SellTab();
 //    
