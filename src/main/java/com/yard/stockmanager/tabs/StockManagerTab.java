@@ -1,22 +1,12 @@
 package com.yard.stockmanager.tabs;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import parts.ManagementTab;
-import java.util.Arrays;
-import java.util.List;
-
-import java.awt.*;
 
 public class StockManagerTab extends ManagementTab<Object>
 {
@@ -28,15 +18,6 @@ public class StockManagerTab extends ManagementTab<Object>
     {
         super("Gerenciamento de Estoque");
         initComponents();
-    }
-
-    public void setStage(Stage s)
-    {
-        this.stage = s;
-    }
-    public Stage getStage()
-    {
-        return stage;
     }
 
     @Override
@@ -86,7 +67,6 @@ public class StockManagerTab extends ManagementTab<Object>
         innerGrid.addRow(5,labComplemento, tfdComplemento);
         innerGrid.addRow(6,labDescricao, tfdDescricao);
         innerGrid.addRow(7,labTelefone, tfdTelefone);
-        innerGrid.addRow(8,btnSalva);
 
 
         TableColumn<Object, Integer> id = new TableColumn<>("ID");
@@ -144,21 +124,4 @@ public class StockManagerTab extends ManagementTab<Object>
     private TextField tfdDescricao = new TextField();
     private TextField tfdTelefone = new TextField();
 
-    private Button btnSalva = new Button("Salvar");
-    private Button btnEditar = new Button("Editar");
-
-    private TableView tabela = new TableView<>();
-    private TableColumn colunaCodigo = new TableColumn<>("Código");
-    private TableColumn colunaNome = new TableColumn<>("Nome");
-    private TableColumn colunaRua = new TableColumn<>("Rua");
-    private TableColumn colunaNumero = new TableColumn<>("Número");
-    private TableColumn colunaBairro = new TableColumn<>("Bairro");
-    private TableColumn colunaComplemento = new TableColumn<>("Complemento");
-    private TableColumn colunaCep = new TableColumn<>("CEP");
-    private TableColumn colunaTelefone = new TableColumn<>("Telefone");
-    private TableColumn colunaDescricao = new TableColumn<>("Descrição");
-
-    private GridPane telaPrincipal = new GridPane();
-    private GridPane telaEsquerda = new GridPane();
-    private GridPane telaDireita = new GridPane();
 }
