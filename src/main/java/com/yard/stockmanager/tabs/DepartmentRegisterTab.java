@@ -1,7 +1,5 @@
 package com.yard.stockmanager.tabs;
 
-import com.yard.stockmanager.parts.TabMenuItem;
-import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -10,11 +8,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class DepartmantRegisterTab extends Tab{
+public class DepartmentRegisterTab extends Tab{
     private Stage stage;
     private Font font = new Font(14);
 
-    public DepartmantRegisterTab()
+    public DepartmentRegisterTab()
     {
         super("Cadastro de Usuario");
         initComponents();
@@ -35,8 +33,8 @@ public class DepartmantRegisterTab extends Tab{
         labDepartamento.setFont(font);
         labDepartamento.setPrefSize(labWidth,labHeight);
 
-        labdescricao.setFont(font);
-        labdescricao.setPrefSize(labWidth,labHeight);
+        labDescricao.setFont(font);
+        labDescricao.setPrefSize(labWidth,labHeight);
 
 
 
@@ -77,7 +75,7 @@ public class DepartmantRegisterTab extends Tab{
         //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
         telaEsquerda.setAlignment(Pos.TOP_RIGHT);
         telaEsquerda.addRow(0, labDepartamento, tfdDepartamento);
-        telaEsquerda.addRow(1, labdescricao, tarDescricao);
+        telaEsquerda.addRow(1, labDescricao, tarDescricao);
         telaEsquerda.add(btnSalva, 1, 2);
 
         telaDireita.setAlignment(Pos.TOP_RIGHT);
@@ -90,10 +88,6 @@ public class DepartmantRegisterTab extends Tab{
 
     }
 
-    public void salvar(
-
-    )
-
     //Iniciação das variaveis
     private double labWidth = 240;
     private double labHeight = 50;
@@ -104,7 +98,7 @@ public class DepartmantRegisterTab extends Tab{
 
     //Criação dos componentes da tela
     private Label labDepartamento = new Label("Departamento:");
-    private Label labdescricao = new Label("Descrição:");
+    private Label labDescricao = new Label("Descrição:");
 
 
     private TextField tfdDepartamento = new TextField();
