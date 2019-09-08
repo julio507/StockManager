@@ -6,11 +6,7 @@
 package com.yard.stockmanager.panes;
 
 import com.yard.stockmanager.parts.TabMenuItem;
-import com.yard.stockmanager.tabs.AbaNova;
-import com.yard.stockmanager.tabs.PeopleRegisterTab;
-import com.yard.stockmanager.tabs.StockManagerTab;
-import com.yard.stockmanager.tabs.UserRegisterTab;
-import com.yard.stockmanager.tabs.CategorManagerTab;
+import com.yard.stockmanager.tabs.*;
 import com.yard.stockmanager.tabs.AbaNova;
 import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
@@ -44,9 +40,10 @@ public class MainPane
 //                otherItem
                 stockManagerTab,
                 userRegisterTab,
-                categorManagerTab,
+                categoryManagerTab,
                 abaNova,
-                peopleRegisterTab
+                peopleRegisterTab,
+                departmentRegisterTab
         );
 //
 //        operationsMenu.getItems().addAll(
@@ -93,9 +90,10 @@ public class MainPane
 
     private TabMenuItem stockManagerTab = new TabMenuItem("Gerenciamento Estoque", tabPane, new StockManagerTab());
     private TabMenuItem userRegisterTab = new TabMenuItem ("Cadastro Usuário", tabPane, new UserRegisterTab());
-    private TabMenuItem categorManagerTab = new TabMenuItem("Cadastro de Categoria", tabPane, new CategorManagerTab());
+    private TabMenuItem categoryManagerTab = new TabMenuItem("Cadastro de Categoria", tabPane, new CategorManagerTab());
     private TabMenuItem abaNova = new TabMenuItem("aba Nova", tabPane, new AbaNova());
     private TabMenuItem peopleRegisterTab = new TabMenuItem("Cadastro de Pessoa",tabPane, new PeopleRegisterTab());
+    private TabMenuItem departmentRegisterTab = new TabMenuItem("Cadastro de Departamentos",tabPane, new DepartmentRegisterTab());
 //    private SellTab st = new SellTab();
 //    
 //    private TabMenuItem flavorItem = new TabMenuItem("Sabores", tabPane, new FlavorTab());
