@@ -1,9 +1,12 @@
 package com.yard.stockmanager.tabs;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -14,7 +17,7 @@ public class DepartmentRegisterTab extends Tab{
 
     public DepartmentRegisterTab()
     {
-        super("Cadastro de Usuario");
+        super("Cadastro de Departamentos");
         initComponents();
     }
 
@@ -36,26 +39,39 @@ public class DepartmentRegisterTab extends Tab{
         labDescricao.setFont(font);
         labDescricao.setPrefSize(labWidth,labHeight);
 
-
-
         //TextFields
         tfdDepartamento.setEditable(true);
         tfdDepartamento.setFont(font);
         tfdDepartamento.setPrefSize(tfdWidth,tfdHeight);
 
+        //textArea
         tarDescricao.setEditable(true);
         tarDescricao.setFont(font);
         tarDescricao.setPrefSize(tarWidth,tarHeigt);
 
 
         //Botões
+        //salvar
         btnSalva.setVisible(true);
         btnSalva.setPrefSize(100,30);
-        //acoes dos botoes
-        //salvar
-        //btnSalva.setOnAction();
+        //acao salvar
+        btnSalva.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                salvar();
+            }
+        });
+
+        //editar
         btnEditar.setVisible(true);
         btnEditar.setPrefSize(100,30);
+        //acao editar
+        btnEditar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                editar();
+            }
+        });
 
         //Colunas da tabela
         colunaCodigo.setCellValueFactory(new PropertyValueFactory<>("Código"));
@@ -88,6 +104,18 @@ public class DepartmentRegisterTab extends Tab{
 
     }
 
+    public void salvar(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Registro Salvo");
+        alert.setHeaderText("Departamento salvo com sucesso.");
+        alert.show();
+
+    }
+
+    public void editar(){
+        System.out.println("editing");
+    }
+
     //Iniciação das variaveis
     private double labWidth = 240;
     private double labHeight = 50;
@@ -100,22 +128,24 @@ public class DepartmentRegisterTab extends Tab{
     private Label labDepartamento = new Label("Departamento:");
     private Label labDescricao = new Label("Descrição:");
 
-
     private TextField tfdDepartamento = new TextField();
     private TextArea tarDescricao = new TextArea();
 
-
+    //botão salvar
     private Button btnSalva = new Button("Salvar");
     private Button btnEditar = new Button("Editar");
 
+    //tabela
     private TableView tabela = new TableView<>();
     private TableColumn colunaCodigo = new TableColumn<>("Código");
     private TableColumn colunaDepartamento = new TableColumn<>("Departamento");
     private TableColumn colunaDescricao = new TableColumn<>("Descrição");
 
+    //grid
     private GridPane telaPrincipal = new GridPane();
     private GridPane telaEsquerda = new GridPane();
     private GridPane telaDireita = new GridPane();
+
 
 }
 
