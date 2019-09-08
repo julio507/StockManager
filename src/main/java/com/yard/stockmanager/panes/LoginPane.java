@@ -13,6 +13,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -58,23 +60,51 @@ public class LoginPane extends GridPane
         setBackground(background);
 
         //parametros do titulo central da tela
+        //logo
         hLogoBox.setAlignment(Pos.CENTER);
-        hNameBox.setAlignment(Pos.CENTER);
-        hBottomBox.setAlignment(Pos.CENTER);
-        bottomText.setFont(Font.font("Verdana", FontWeight.LIGHT, FontPosture.ITALIC,10));
-        name.setFont(Font.font("Verdana", FontWeight.BOLD,50));
         logo.setFitWidth(200);
         logo.setFitHeight(200);
+        //nome da empresa
+        hNameBox.setAlignment(Pos.CENTER);
+        name.setFont(Font.font("Verdana", FontWeight.BOLD,50));
+        //desenvolvedora
+        hBottomBox.setAlignment(Pos.CENTER);
+        bottomText.setFont(Font.font("Verdana", FontWeight.LIGHT, FontPosture.ITALIC,10));
 
-
+        //componentes na tela
         add(vBaseBox,0, 0, 2, 1);
         addRow(1, lbLogin, tfLogin);
         addRow(2, lbPassword, tfPassword);
         add(btnOk, 1, 3, 2, 2);
         add(hBottomBox, 0,5,2,3);
 
+        //acao login
         btnOk.setOnAction(event);
+
+
+        //acao para setar foco em outro campo com enter
+        tfLogin.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    tfPassword.requestFocus();
+                }
+            }
+        });
+
+
+        tfPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    btnOk.requestFocus();
+                }
+            }
+        });
+
+        btnOk.setOnKeyPressed(event);
     }
+
 
     private EventHandler event;
 
@@ -98,4 +128,5 @@ public class LoginPane extends GridPane
     //Rodape da Tela
     private Text bottomText = new Text("2019 - SoftwareYard. Inc "); //Mensagem de rodape
     private HBox hBottomBox = new HBox(bottomText); //container da mensagem de rodape
+
 }
