@@ -62,15 +62,23 @@ public class MainPane
         );
 
         setTop(menu);
-        setRight(vBaseBox);
+
+        //container logo e nome
         vBaseBox.setAlignment(Pos.BOTTOM_RIGHT);
+        //preferencias da logo
         logo.setFitHeight(100);
         logo.setFitWidth(100);
         hLogoBox.setAlignment(Pos.CENTER);
+        //preferencias da marca
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         hNameBox.setAlignment(Pos.CENTER);
+        //background
         setBackground(background);
-        setCenter(tabPane);
+        //stackpane central
+        back.getChildren().add(vBaseBox);
+        back.getChildren().add(tabPane);
+        //parte central borderPane
+        setCenter(back);
 
     }
 
@@ -82,6 +90,7 @@ public class MainPane
     }
 
     private TabPane tabPane = new TabPane();
+    private StackPane back = new StackPane();
     //private StockManagerTab stockManagerTab = new StockManagerTab();
 
     private Menu managementMenu = new Menu("Gerenciamento");
