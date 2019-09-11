@@ -1,18 +1,20 @@
 package com.yard.stockmanager.tabs;
 
+import com.yard.stockmanager.persistence.dao.EstoqueDAO;
+import com.yard.stockmanager.persistence.entity.Endereco;
+import com.yard.stockmanager.persistence.entity.Estoque;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn;
 import parts.ManagementTab;
 
-public class StockManagerTab extends ManagementTab<Object>
-{
+import java.util.List;
 
-    private Stage stage;
-    private Font font = new Font(14);
+public class StockManagerTab extends ManagementTab<Estoque>
+{
 
     public StockManagerTab()
     {
@@ -22,7 +24,12 @@ public class StockManagerTab extends ManagementTab<Object>
 
     @Override
     public void refresh() {
+        EstoqueDAO dao = new EstoqueDAO();
 
+        List<Estoque> list = dao.getAll();
+
+        tableView.setItems(FXCollections.observableArrayList( list ));
+        tableView.refresh();
     }
 
     @Override
@@ -32,6 +39,15 @@ public class StockManagerTab extends ManagementTab<Object>
 
     @Override
     public void save() {
+        Estoque est = new Estoque();
+
+        est.setNome(labNome.getText());
+        est.setDescricao(labDescricao.getText());
+        est.setTelefone(labTelefone.getText());
+
+        EstoqueDAO estDao = new EstoqueDAO();
+
+        estDao.add(est);
 
     }
 
@@ -60,43 +76,28 @@ public class StockManagerTab extends ManagementTab<Object>
     {
 
         innerGrid.addRow(0,labNome, tfdNome);
-        innerGrid.addRow(1,labRua, tfdRua);
-        innerGrid.addRow(2,labBairro, tfdBairro);
-        innerGrid.addRow(3,labNumero, tfdNumero);
-        innerGrid.addRow(4,labCep, tfdCep);
-        innerGrid.addRow(5,labComplemento, tfdComplemento);
-        innerGrid.addRow(6,labDescricao, tfdDescricao);
-        innerGrid.addRow(7,labTelefone, tfdTelefone);
+        innerGrid.addRow(1,labEndeeco, tfdEndereco);
+        innerGrid.addRow(2,labDescricao, tfdDescricao);
+        innerGrid.addRow(3,labTelefone, tfdTelefone);
+        innerGrid.addRow(4,labStatus, cbStatus);
 
 
-        TableColumn<Object, Integer> id = new TableColumn<>("ID");
-        TableColumn<Object, String> nome = new TableColumn<>("Nome");
-        TableColumn<Object, String> rua = new TableColumn<>("Rua");
-        TableColumn<Object, String> bairro = new TableColumn<>("Bairro");
-        TableColumn<Object, Integer> numero = new TableColumn<>("Número");
-        TableColumn<Object, Integer> cep = new TableColumn<>("CEP");
-        TableColumn<Object, String> complemento = new TableColumn<>("Complemento");
-        TableColumn<Object, String> descricao = new TableColumn<>("Descrição");
-        TableColumn<Object, Integer> telefone = new TableColumn<>("Telefone");
+        TableColumn<Estoque, Integer> id = new TableColumn<>("ID");
+        TableColumn<Estoque, String> nome = new TableColumn<>("Nome");
+        TableColumn<Estoque, String> endereco = new TableColumn<>("Endereço");
+        TableColumn<Estoque, String> descricao = new TableColumn<>("Descrição");
+        TableColumn<Estoque, Integer> telefone = new TableColumn<>("Telefone");
 
-        id.setCellValueFactory(new PropertyValueFactory<Object, Integer>("id"));
-        nome.setCellValueFactory(new PropertyValueFactory<Object, String>("nome"));
-        rua.setCellValueFactory(new PropertyValueFactory<Object, String>("rua"));
-        bairro.setCellValueFactory(new PropertyValueFactory<Object, String>("bairro"));
-        numero.setCellValueFactory(new PropertyValueFactory<Object, Integer>("numero"));
-        cep.setCellValueFactory(new PropertyValueFactory<Object, Integer>("cep"));
-        complemento.setCellValueFactory(new PropertyValueFactory<Object, String>("complemento"));
-        descricao.setCellValueFactory(new PropertyValueFactory<Object, String>("descricao"));
-        telefone.setCellValueFactory(new PropertyValueFactory<Object, Integer>("telefone"));
+        id.setCellValueFactory(new PropertyValueFactory<Estoque, Integer>("id"));
+        nome.setCellValueFactory(new PropertyValueFactory<Estoque, String>("nome"));
+        endereco.setCellValueFactory(new PropertyValueFactory<Estoque, String>("endereco"));
+        descricao.setCellValueFactory(new PropertyValueFactory<Estoque, String>("descricao"));
+        telefone.setCellValueFactory(new PropertyValueFactory<Estoque, Integer>("telefone"));
 
         tableView.getColumns().addAll(
             id,
             nome,
-            rua,
-            bairro,
-            numero,
-            cep,
-            complemento,
+            endereco,
             descricao,
             telefone
         );
@@ -106,22 +107,16 @@ public class StockManagerTab extends ManagementTab<Object>
     }
 
     //Criação dos componentes da tela
-    private Label labRua = new Label("Rua:");
-    private Label labBairro = new Label("Bairro:");
-    private Label labNumero = new Label("Número:");
-    private Label labCep = new Label("CEP:");
-    private Label labComplemento = new Label("Complemento:");
+    private Label labEndeeco = new Label("Rua:");
     private Label labNome = new Label("Nome:");
     private Label labDescricao = new Label("Descrição:");
     private Label labTelefone = new Label("Telefone:");
+    private Label labStatus = new Label("Status");
 
-    private TextField tfdRua = new TextField();
-    private TextField tfdBairro = new TextField();
-    private TextField tfdNumero = new TextField();
-    private TextField tfdCep = new TextField();
-    private TextField tfdComplemento = new TextField();
+    private TextField tfdEndereco = new TextField();
     private TextField tfdNome = new TextField();
     private TextField tfdDescricao = new TextField();
     private TextField tfdTelefone = new TextField();
+    private ComboBox cbStatus = new ComboBox();
 
 }
