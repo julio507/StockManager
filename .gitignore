@@ -106,3 +106,4 @@ nbdist/
 .nb-gradle/
 
 # End of https://www.gitignore.io/api/maven,netbeans,intellij
+!/src/main/resources/META-INF/persistence.xml

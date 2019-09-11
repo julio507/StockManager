@@ -5,6 +5,7 @@
  */
 package com.yard.stockmanager.panes;
 
+import com.yard.stockmanager.persistence.dao.FuncionarioDao;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -38,15 +39,9 @@ public class LoginPane extends GridPane
     {
         try
         {
-//            User u = new User();
-//            u.setLogin(tfLogin.getText());
-//            u.setPassword(tfPassword.getText());
-//
-//            UserDAO dao = new UserDAO();
-//
-//            return dao.doLogin(u);
-            
-            return true;
+            FuncionarioDao dao = new FuncionarioDao();
+
+            return dao.doLogin( tfLogin.getText(), tfPassword.getText() );
         }
         catch (Exception e)
         {
