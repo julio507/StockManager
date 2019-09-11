@@ -65,9 +65,9 @@ public class FuncionarioDao
 
             Statement st = DBConnection.getInstance().getConnection().createStatement();
 
-            String sql = "select * from user "
+            String sql = "select id from funcionario "
                     + " where login = '" + login + "' "
-                    + " and password = md5('" + password + "');";
+                    + " and senha = md5('" + password + "');";
 
             ResultSet rs = st.executeQuery(sql);
 
