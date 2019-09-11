@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -52,10 +51,10 @@ public class NfeHasProduto implements Serializable
         @JoinColumn(name = "NFE_id", referencedColumnName = "id", insertable = false, updatable = false),
         @JoinColumn(name = "NFE_Pessoa_id", referencedColumnName = "Pessoa_id", insertable = false, updatable = false)
     })
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Nfe nfe;
     @JoinColumn(name = "Produto_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Produto produto;
 
     public NfeHasProduto()

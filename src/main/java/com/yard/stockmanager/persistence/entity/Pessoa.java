@@ -6,12 +6,11 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -81,17 +80,17 @@ public class Pessoa implements Serializable
     {
         @JoinColumn(name = "Tipo_id", referencedColumnName = "id")
     })
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Tipo> tipoList;
+    @ManyToMany
+    private Collection<Tipo> tipoCollection;
     @JoinColumn(name = "Endereco_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Endereco enderecoid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa", fetch = FetchType.LAZY)
-    private List<Nfe> nfeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa", fetch = FetchType.LAZY)
-    private List<PessoaHasTelefones> pessoaHasTelefonesList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaid", fetch = FetchType.LAZY)
-    private List<Funcionario> funcionarioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
+    private Collection<Nfe> nfeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
+    private Collection<PessoaHasTelefones> pessoaHasTelefonesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaid")
+    private Collection<Funcionario> funcionarioCollection;
 
     public Pessoa()
     {
@@ -193,14 +192,14 @@ public class Pessoa implements Serializable
     }
 
     @XmlTransient
-    public List<Tipo> getTipoList()
+    public Collection<Tipo> getTipoCollection()
     {
-        return tipoList;
+        return tipoCollection;
     }
 
-    public void setTipoList(List<Tipo> tipoList)
+    public void setTipoCollection(Collection<Tipo> tipoCollection)
     {
-        this.tipoList = tipoList;
+        this.tipoCollection = tipoCollection;
     }
 
     public Endereco getEnderecoid()
@@ -214,36 +213,36 @@ public class Pessoa implements Serializable
     }
 
     @XmlTransient
-    public List<Nfe> getNfeList()
+    public Collection<Nfe> getNfeCollection()
     {
-        return nfeList;
+        return nfeCollection;
     }
 
-    public void setNfeList(List<Nfe> nfeList)
+    public void setNfeCollection(Collection<Nfe> nfeCollection)
     {
-        this.nfeList = nfeList;
-    }
-
-    @XmlTransient
-    public List<PessoaHasTelefones> getPessoaHasTelefonesList()
-    {
-        return pessoaHasTelefonesList;
-    }
-
-    public void setPessoaHasTelefonesList(List<PessoaHasTelefones> pessoaHasTelefonesList)
-    {
-        this.pessoaHasTelefonesList = pessoaHasTelefonesList;
+        this.nfeCollection = nfeCollection;
     }
 
     @XmlTransient
-    public List<Funcionario> getFuncionarioList()
+    public Collection<PessoaHasTelefones> getPessoaHasTelefonesCollection()
     {
-        return funcionarioList;
+        return pessoaHasTelefonesCollection;
     }
 
-    public void setFuncionarioList(List<Funcionario> funcionarioList)
+    public void setPessoaHasTelefonesCollection(Collection<PessoaHasTelefones> pessoaHasTelefonesCollection)
     {
-        this.funcionarioList = funcionarioList;
+        this.pessoaHasTelefonesCollection = pessoaHasTelefonesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Funcionario> getFuncionarioCollection()
+    {
+        return funcionarioCollection;
+    }
+
+    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection)
+    {
+        this.funcionarioCollection = funcionarioCollection;
     }
 
     @Override

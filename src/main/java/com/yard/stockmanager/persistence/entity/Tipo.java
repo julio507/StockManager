@@ -6,11 +6,10 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,8 +45,8 @@ public class Tipo implements Serializable
     @Basic(optional = false)
     @Column(name = "nome")
     private String nome;
-    @ManyToMany(mappedBy = "tipoList", fetch = FetchType.LAZY)
-    private List<Pessoa> pessoaList;
+    @ManyToMany(mappedBy = "tipoCollection")
+    private Collection<Pessoa> pessoaCollection;
 
     public Tipo()
     {
@@ -85,14 +84,14 @@ public class Tipo implements Serializable
     }
 
     @XmlTransient
-    public List<Pessoa> getPessoaList()
+    public Collection<Pessoa> getPessoaCollection()
     {
-        return pessoaList;
+        return pessoaCollection;
     }
 
-    public void setPessoaList(List<Pessoa> pessoaList)
+    public void setPessoaCollection(Collection<Pessoa> pessoaCollection)
     {
-        this.pessoaList = pessoaList;
+        this.pessoaCollection = pessoaCollection;
     }
 
     @Override

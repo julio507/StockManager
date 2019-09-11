@@ -6,12 +6,11 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -67,13 +66,13 @@ public class Endereco implements Serializable
     private String cep;
     @Column(name = "Complementos")
     private String complementos;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoid", fetch = FetchType.LAZY)
-    private List<Pessoa> pessoaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoid")
+    private Collection<Pessoa> pessoaCollection;
     @JoinColumn(name = "Cidade_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Cidade cidadeid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoid", fetch = FetchType.LAZY)
-    private List<Estoque> estoqueList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoid")
+    private Collection<Estoque> estoqueCollection;
 
     public Endereco()
     {
@@ -164,14 +163,14 @@ public class Endereco implements Serializable
     }
 
     @XmlTransient
-    public List<Pessoa> getPessoaList()
+    public Collection<Pessoa> getPessoaCollection()
     {
-        return pessoaList;
+        return pessoaCollection;
     }
 
-    public void setPessoaList(List<Pessoa> pessoaList)
+    public void setPessoaCollection(Collection<Pessoa> pessoaCollection)
     {
-        this.pessoaList = pessoaList;
+        this.pessoaCollection = pessoaCollection;
     }
 
     public Cidade getCidadeid()
@@ -185,14 +184,14 @@ public class Endereco implements Serializable
     }
 
     @XmlTransient
-    public List<Estoque> getEstoqueList()
+    public Collection<Estoque> getEstoqueCollection()
     {
-        return estoqueList;
+        return estoqueCollection;
     }
 
-    public void setEstoqueList(List<Estoque> estoqueList)
+    public void setEstoqueCollection(Collection<Estoque> estoqueCollection)
     {
-        this.estoqueList = estoqueList;
+        this.estoqueCollection = estoqueCollection;
     }
 
     @Override

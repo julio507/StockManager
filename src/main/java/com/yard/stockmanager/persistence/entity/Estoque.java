@@ -6,12 +6,11 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,10 +55,10 @@ public class Estoque implements Serializable
     private String descricao;
     @Column(name = "Telefone")
     private String telefone;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque", fetch = FetchType.LAZY)
-    private List<EstoqueHasProduto> estoqueHasProdutoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque")
+    private Collection<EstoqueHasProduto> estoqueHasProdutoCollection;
     @JoinColumn(name = "Endereco_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Endereco enderecoid;
 
     public Estoque()
@@ -118,14 +117,14 @@ public class Estoque implements Serializable
     }
 
     @XmlTransient
-    public List<EstoqueHasProduto> getEstoqueHasProdutoList()
+    public Collection<EstoqueHasProduto> getEstoqueHasProdutoCollection()
     {
-        return estoqueHasProdutoList;
+        return estoqueHasProdutoCollection;
     }
 
-    public void setEstoqueHasProdutoList(List<EstoqueHasProduto> estoqueHasProdutoList)
+    public void setEstoqueHasProdutoCollection(Collection<EstoqueHasProduto> estoqueHasProdutoCollection)
     {
-        this.estoqueHasProdutoList = estoqueHasProdutoList;
+        this.estoqueHasProdutoCollection = estoqueHasProdutoCollection;
     }
 
     public Endereco getEnderecoid()
