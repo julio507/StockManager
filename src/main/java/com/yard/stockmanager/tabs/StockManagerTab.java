@@ -34,21 +34,22 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 
     @Override
     public void save() {
         Estoque est = new Estoque();
 
-        est.setNome(labNome.getText());
-        est.setDescricao(labDescricao.getText());
-        est.setTelefone(labTelefone.getText());
+        est.setNome(tfdNome.getText());
+        est.setDescricao(tfdDescricao.getText());
+        est.setTelefone(tfdTelefone.getText());
 
         EstoqueDAO estDao = new EstoqueDAO();
 
         estDao.add(est);
-
+        
+        refresh();
     }
 
     @Override
@@ -79,7 +80,7 @@ public class StockManagerTab extends ManagementTab<Estoque>
         innerGrid.addRow(1,labEndeeco, tfdEndereco);
         innerGrid.addRow(2,labDescricao, tfdDescricao);
         innerGrid.addRow(3,labTelefone, tfdTelefone);
-        innerGrid.addRow(4,labStatus, cbStatus);
+        //innerGrid.addRow(4,labStatus, cbStatus);
 
 
         TableColumn<Estoque, Integer> id = new TableColumn<>("ID");
@@ -103,7 +104,7 @@ public class StockManagerTab extends ManagementTab<Estoque>
         );
 
         refresh();
-
+        
     }
 
     //Criação dos componentes da tela

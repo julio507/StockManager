@@ -20,8 +20,10 @@ public class EstoqueDAO
         {
             Statement st = DBConnection.getInstance().getConnection().createStatement();
 
-            String sql = "insert into estoque values ( default, 1, " + estoque.getNome() + "," + estoque.getDescricao() + "," + estoque.getTelefone() + ")";
-            ResultSet rs = st.executeQuery(sql);
+            String sql = "insert into estoque value ( default, 1, " + estoque.getNome() + "," + estoque.getDescricao() + "," + estoque.getTelefone() + ")";
+            System.out.println(sql);
+            
+            st.execute(sql);
         }
 
         catch (Exception e)
@@ -57,13 +59,13 @@ public class EstoqueDAO
 
                 Endereco en = new Endereco();
 
-                e.setId( rs.getInt("1") );
+                e.setId( rs.getInt(1) );
 
-                en.setId( rs.getInt("2") );
+                en.setId( rs.getInt(2) );
                 e.setEnderecoid( en );
-                e.setNome( rs.getString("3") );
-                e.setDescricao( rs.getString("4") );
-                e.setTelefone( rs.getString( "5" ) );
+                e.setNome( rs.getString(3) );
+                e.setDescricao( rs.getString(4) );
+                e.setTelefone( rs.getString( 5 ) );
 
                 list.add(e);
             }
