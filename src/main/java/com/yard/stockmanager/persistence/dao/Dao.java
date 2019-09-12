@@ -9,4 +9,6 @@ public interface Dao<T>
     public List<T> get(int id );
 
     public void delete( int id );
+
+    public void update( T t );
 }
