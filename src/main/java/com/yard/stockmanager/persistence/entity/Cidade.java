@@ -6,12 +6,11 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,8 +50,8 @@ public class Cidade implements Serializable
     @Basic(optional = false)
     @Column(name = "UF")
     private String uf;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cidadeid", fetch = FetchType.LAZY)
-    private List<Endereco> enderecoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cidadeid")
+    private Collection<Endereco> enderecoCollection;
 
     public Cidade()
     {
@@ -101,14 +100,14 @@ public class Cidade implements Serializable
     }
 
     @XmlTransient
-    public List<Endereco> getEnderecoList()
+    public Collection<Endereco> getEnderecoCollection()
     {
-        return enderecoList;
+        return enderecoCollection;
     }
 
-    public void setEnderecoList(List<Endereco> enderecoList)
+    public void setEnderecoCollection(Collection<Endereco> enderecoCollection)
     {
-        this.enderecoList = enderecoList;
+        this.enderecoCollection = enderecoCollection;
     }
 
     @Override

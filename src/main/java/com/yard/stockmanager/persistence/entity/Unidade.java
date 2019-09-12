@@ -6,12 +6,11 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,8 +54,8 @@ public class Unidade implements Serializable
     @Lob
     @Column(name = "Descricao")
     private String descricao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidadeid", fetch = FetchType.LAZY)
-    private List<Produto> produtoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidadeid")
+    private Collection<Produto> produtoCollection;
 
     public Unidade()
     {
@@ -115,14 +114,14 @@ public class Unidade implements Serializable
     }
 
     @XmlTransient
-    public List<Produto> getProdutoList()
+    public Collection<Produto> getProdutoCollection()
     {
-        return produtoList;
+        return produtoCollection;
     }
 
-    public void setProdutoList(List<Produto> produtoList)
+    public void setProdutoCollection(Collection<Produto> produtoCollection)
     {
-        this.produtoList = produtoList;
+        this.produtoCollection = produtoCollection;
     }
 
     @Override

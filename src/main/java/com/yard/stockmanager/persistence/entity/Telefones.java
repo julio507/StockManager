@@ -6,12 +6,11 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,8 +46,8 @@ public class Telefones implements Serializable
     @Basic(optional = false)
     @Column(name = "Numero")
     private String numero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "telefones", fetch = FetchType.LAZY)
-    private List<PessoaHasTelefones> pessoaHasTelefonesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "telefones")
+    private Collection<PessoaHasTelefones> pessoaHasTelefonesCollection;
 
     public Telefones()
     {
@@ -86,14 +85,14 @@ public class Telefones implements Serializable
     }
 
     @XmlTransient
-    public List<PessoaHasTelefones> getPessoaHasTelefonesList()
+    public Collection<PessoaHasTelefones> getPessoaHasTelefonesCollection()
     {
-        return pessoaHasTelefonesList;
+        return pessoaHasTelefonesCollection;
     }
 
-    public void setPessoaHasTelefonesList(List<PessoaHasTelefones> pessoaHasTelefonesList)
+    public void setPessoaHasTelefonesCollection(Collection<PessoaHasTelefones> pessoaHasTelefonesCollection)
     {
-        this.pessoaHasTelefonesList = pessoaHasTelefonesList;
+        this.pessoaHasTelefonesCollection = pessoaHasTelefonesCollection;
     }
 
     @Override

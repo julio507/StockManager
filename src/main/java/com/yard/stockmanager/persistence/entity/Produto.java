@@ -7,12 +7,11 @@ package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,22 +62,22 @@ public class Produto implements Serializable
     @Basic(optional = false)
     @Column(name = "CustoUnitario")
     private BigDecimal custoUnitario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto", fetch = FetchType.LAZY)
-    private List<EstoqueHasProduto> estoqueHasProdutoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
+    private Collection<EstoqueHasProduto> estoqueHasProdutoCollection;
     @JoinColumn(name = "Categoria_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Categoria categoriaid;
     @JoinColumn(name = "Departamento_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Departamento departamentoid;
     @JoinColumn(name = "Marca_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Marca marcaid;
     @JoinColumn(name = "Unidade_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Unidade unidadeid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto", fetch = FetchType.LAZY)
-    private List<NfeHasProduto> nfeHasProdutoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
+    private Collection<NfeHasProduto> nfeHasProdutoCollection;
 
     public Produto()
     {
@@ -149,14 +148,14 @@ public class Produto implements Serializable
     }
 
     @XmlTransient
-    public List<EstoqueHasProduto> getEstoqueHasProdutoList()
+    public Collection<EstoqueHasProduto> getEstoqueHasProdutoCollection()
     {
-        return estoqueHasProdutoList;
+        return estoqueHasProdutoCollection;
     }
 
-    public void setEstoqueHasProdutoList(List<EstoqueHasProduto> estoqueHasProdutoList)
+    public void setEstoqueHasProdutoCollection(Collection<EstoqueHasProduto> estoqueHasProdutoCollection)
     {
-        this.estoqueHasProdutoList = estoqueHasProdutoList;
+        this.estoqueHasProdutoCollection = estoqueHasProdutoCollection;
     }
 
     public Categoria getCategoriaid()
@@ -200,14 +199,14 @@ public class Produto implements Serializable
     }
 
     @XmlTransient
-    public List<NfeHasProduto> getNfeHasProdutoList()
+    public Collection<NfeHasProduto> getNfeHasProdutoCollection()
     {
-        return nfeHasProdutoList;
+        return nfeHasProdutoCollection;
     }
 
-    public void setNfeHasProdutoList(List<NfeHasProduto> nfeHasProdutoList)
+    public void setNfeHasProdutoCollection(Collection<NfeHasProduto> nfeHasProdutoCollection)
     {
-        this.nfeHasProdutoList = nfeHasProdutoList;
+        this.nfeHasProdutoCollection = nfeHasProdutoCollection;
     }
 
     @Override

@@ -6,12 +6,11 @@
 package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,10 +61,10 @@ public class Funcionario implements Serializable
     @Column(name = "NivelAcesso")
     private int nivelAcesso;
     @JoinColumn(name = "Pessoa_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Pessoa pessoaid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario", fetch = FetchType.LAZY)
-    private List<Agendamento> agendamentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
+    private Collection<Agendamento> agendamentoCollection;
 
     public Funcionario()
     {
@@ -146,14 +145,14 @@ public class Funcionario implements Serializable
     }
 
     @XmlTransient
-    public List<Agendamento> getAgendamentoList()
+    public Collection<Agendamento> getAgendamentoCollection()
     {
-        return agendamentoList;
+        return agendamentoCollection;
     }
 
-    public void setAgendamentoList(List<Agendamento> agendamentoList)
+    public void setAgendamentoCollection(Collection<Agendamento> agendamentoCollection)
     {
-        this.agendamentoList = agendamentoList;
+        this.agendamentoCollection = agendamentoCollection;
     }
 
     @Override

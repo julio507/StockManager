@@ -7,14 +7,13 @@ package com.yard.stockmanager.persistence.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -67,12 +66,12 @@ public class Nfe implements Serializable
     @Column(name = "observa\u00e7\u00f5es")
     private String observações;
     @JoinColumn(name = "Pessoa_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Pessoa pessoa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nfe", fetch = FetchType.LAZY)
-    private List<NfeHasProduto> nfeHasProdutoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nfe", fetch = FetchType.LAZY)
-    private List<Agendamento> agendamentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nfe")
+    private Collection<NfeHasProduto> nfeHasProdutoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nfe")
+    private Collection<Agendamento> agendamentoCollection;
 
     public Nfe()
     {
@@ -167,25 +166,25 @@ public class Nfe implements Serializable
     }
 
     @XmlTransient
-    public List<NfeHasProduto> getNfeHasProdutoList()
+    public Collection<NfeHasProduto> getNfeHasProdutoCollection()
     {
-        return nfeHasProdutoList;
+        return nfeHasProdutoCollection;
     }
 
-    public void setNfeHasProdutoList(List<NfeHasProduto> nfeHasProdutoList)
+    public void setNfeHasProdutoCollection(Collection<NfeHasProduto> nfeHasProdutoCollection)
     {
-        this.nfeHasProdutoList = nfeHasProdutoList;
+        this.nfeHasProdutoCollection = nfeHasProdutoCollection;
     }
 
     @XmlTransient
-    public List<Agendamento> getAgendamentoList()
+    public Collection<Agendamento> getAgendamentoCollection()
     {
-        return agendamentoList;
+        return agendamentoCollection;
     }
 
-    public void setAgendamentoList(List<Agendamento> agendamentoList)
+    public void setAgendamentoCollection(Collection<Agendamento> agendamentoCollection)
     {
-        this.agendamentoList = agendamentoList;
+        this.agendamentoCollection = agendamentoCollection;
     }
 
     @Override
