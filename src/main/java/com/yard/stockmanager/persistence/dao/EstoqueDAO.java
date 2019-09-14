@@ -42,6 +42,11 @@ public class EstoqueDAO
 
     }
 
+    @Override
+    public void update(Estoque estoque) {
+
+    }
+
     public List<Estoque> getAll()
     {
         List<Estoque> list = new ArrayList<>();
