@@ -43,7 +43,8 @@ public class MainPane
                 categoryManagerTab,
                 abaNova,
                 peopleRegisterTab,
-                departmentRegisterTab
+                departmentRegisterTab,
+                itensStockTab
         );
 //
 //        operationsMenu.getItems().addAll(
@@ -73,7 +74,7 @@ public class MainPane
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         hNameBox.setAlignment(Pos.CENTER);
         //background
-        setBackground(background);
+//        setBackground(background);
         //stackpane central
         back.getChildren().add(vBaseBox);
         back.getChildren().add(tabPane);
@@ -103,6 +104,7 @@ public class MainPane
     private TabMenuItem abaNova = new TabMenuItem("aba Nova", tabPane, new AbaNova());
     private TabMenuItem peopleRegisterTab = new TabMenuItem("Cadastro de Pessoa",tabPane, new PeopleRegisterTab());
     private TabMenuItem departmentRegisterTab = new TabMenuItem("Cadastro de Departamentos",tabPane, new DepartmentRegisterTab());
+    private TabMenuItem itensStockTab = new TabMenuItem("Cadastrar Itens em Estoque",tabPane, new ItensStockTab());
 //    private SellTab st = new SellTab();
 //    
 //    private TabMenuItem flavorItem = new TabMenuItem("Sabores", tabPane, new FlavorTab());
@@ -126,8 +128,8 @@ public class MainPane
     private HBox hNameBox = new HBox(name); //container do nome
     private VBox vBaseBox = new VBox(5, hLogoBox, hNameBox); //container do conjunto central dos titulos
 
-    //Propriedades do backgroud da tela Principal
-    private BackgroundSize backSize = new BackgroundSize(1.0, 1.0, true, true, false, false);
-    private Background background = new Background(new BackgroundImage(new Image("img/background.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backSize));
+//    //Propriedades do backgroud da tela Principal
+//    private BackgroundSize backSize = new BackgroundSize(1.0, 1.0, true, true, false, false);
+//    private Background background = new Background(new BackgroundImage(new Image("img/background.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backSize));
 
 }
