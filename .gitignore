@@ -107,3 +107,4 @@ nbdist/
 
 # End of https://www.gitignore.io/api/maven,netbeans,intellij
 !/src/main/resources/META-INF/persistence.xml
+/src/main/resources/META-INF/HIbernate.cfg.xml
