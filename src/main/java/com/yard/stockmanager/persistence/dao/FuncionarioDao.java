@@ -20,7 +20,7 @@ import java.util.List;
  * @author Julio
  */
 
-//link do video com o codigo fonte e utilização: https://youtu.be/ZOIjNF4Yr20?list=PLR7lDCnFejO_vlNeE6Ghl6gps38MvJiTm
+//link do video com o codigo fonte utilização: https://youtu.be/ZOIjNF4Yr20?list=PLR7lDCnFejO_vlNeE6Ghl6gps38MvJiTm
 public class FuncionarioDao
         implements
             Dao<Funcionario>
@@ -42,7 +42,7 @@ public class FuncionarioDao
         List<Funcionario> list = new ArrayList<Funcionario>();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        list = s.createQuery("From Funcionario where id = "+ id).list();
+        list = s.createQuery("From funcionario where id = "+ id).list();
         s.getTransaction().commit();
         s.close();
         return  list;
@@ -54,7 +54,7 @@ public class FuncionarioDao
         List<Funcionario> list = new ArrayList<Funcionario>();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        list = s.createQuery("From Funcionario").list();
+        list = s.createQuery("From funcionario").list();
         s.getTransaction().commit();
         s.close();
         return  list;
@@ -122,7 +122,6 @@ public class FuncionarioDao
             }
 
             return i == 1;
-
             
         }
 
