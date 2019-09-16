@@ -12,6 +12,7 @@ import org.hibernate.Session;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,19 +39,45 @@ public class FuncionarioDao
     @Override
     public List<Funcionario> get(int id)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//        Session s =
+        List<Funcionario> list = new ArrayList<Funcionario>();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        list = s.createQuery("From Funcionario where id = "+ id).list();
+        s.getTransaction().commit();
+        s.close();
+        return  list;
+    }
+
+
+    public List<Funcionario> getAll(int id)
+    {
+        List<Funcionario> list = new ArrayList<Funcionario>();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        list = s.createQuery("From Funcionario").list();
+        s.getTransaction().commit();
+        s.close();
+        return  list;
     }
 
     @Override
     public void delete(int id)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        Funcionario func = (Funcionario) s.load(Funcionario.class, id);
+        s.delete(func);
+        s.getTransaction().commit();
+        s.close();
     }
 
     @Override
     public void update(Funcionario funcionario) {
-
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        s.update(funcionario);
+        s.getTransaction().commit();
+        s.close();
     }
 
     public boolean doLogin( String login, String password )
