@@ -1,10 +1,8 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.persistence.dao.EstoqueDAO;
-import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.entity.Estoque;
 import javafx.collections.FXCollections;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -80,7 +78,6 @@ public class StockManagerTab extends ManagementTab<Estoque>
         innerGrid.addRow(1,labEndeeco, tfdEndereco);
         innerGrid.addRow(2,labDescricao, tfdDescricao);
         innerGrid.addRow(3,labTelefone, tfdTelefone);
-        //innerGrid.addRow(4,labStatus, cbStatus);
 
 
         TableColumn<Estoque, Integer> id = new TableColumn<>("ID");
@@ -112,12 +109,10 @@ public class StockManagerTab extends ManagementTab<Estoque>
     private Label labNome = new Label("Nome:");
     private Label labDescricao = new Label("Descrição:");
     private Label labTelefone = new Label("Telefone:");
-    private Label labStatus = new Label("Status");
 
     private TextField tfdEndereco = new TextField();
     private TextField tfdNome = new TextField();
     private TextField tfdDescricao = new TextField();
     private TextField tfdTelefone = new TextField();
-    private ComboBox cbStatus = new ComboBox();
 
 }
