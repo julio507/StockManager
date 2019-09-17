@@ -37,28 +37,10 @@ public class FuncionarioDao
     }
 
     @Override
-    public List<Funcionario> get(int id)
-    {
-        List<Funcionario> list = new ArrayList<Funcionario>();
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        list = s.createQuery("From funcionario where id = "+ id).list();
-        s.getTransaction().commit();
-        s.close();
-        return  list;
+    public Funcionario get(int id) {
+        return null;
     }
 
-
-    public List<Funcionario> getAll(int id)
-    {
-        List<Funcionario> list = new ArrayList<Funcionario>();
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        list = s.createQuery("From funcionario").list();
-        s.getTransaction().commit();
-        s.close();
-        return  list;
-    }
 
     @Override
     public void delete(int id)
@@ -104,24 +86,41 @@ public class FuncionarioDao
             manager.getTransaction().commit();
             
             return query.getResultList().size() == 1;*/
-            
-            int i = 0;
+//------------------------------------------------------------
+//            int i = 0;
+//
+//            Statement st = DBConnection.getInstance().getConnection().createStatement();
+//
+//            String sql = "select id from funcionario "
+//                    + " where login = '" + login + "' "
+//                    + " and senha = md5('" + password + "');";
+//
+//            ResultSet rs = st.executeQuery(sql);
+//
+//            while (rs.next())
+//            {
+//
+//                i++;
+//            }
+//
+//            return i == 1;
+//-----------------------------------------------------------------
+            Funcionario func = new Funcionario();
+            Session s = HibernateUtil.getSessionFactory().openSession();
+            s.beginTransaction();
+            func = (Funcionario) s.load(Funcionario.class, login);
+            s.getTransaction().commit();
+            s.close();
 
-            Statement st = DBConnection.getInstance().getConnection().createStatement();
-
-            String sql = "select id from funcionario "
-                    + " where login = '" + login + "' "
-                    + " and senha = md5('" + password + "');";
-
-            ResultSet rs = st.executeQuery(sql);
-
-            while (rs.next())
+            if (func.getLogin() == login && func.getSenha() == password)
             {
-
-                i++;
+                return true;
+            }
+            else
+                {
+                return false;
             }
 
-            return i == 1;
             
         }
 

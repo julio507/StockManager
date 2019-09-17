@@ -33,9 +33,10 @@ public class EstoqueDAO
     }
 
     @Override
-    public List<Estoque> get(int id) {
+    public Estoque get(int id) {
         return null;
     }
+
 
     @Override
     public void delete(int id) {
