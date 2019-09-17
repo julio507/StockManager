@@ -20,7 +20,7 @@ public class EstoqueDAO
         {
             Statement st = DBConnection.getInstance().getConnection().createStatement();
 
-            String sql = "insert into estoque value ( default, 1, " + estoque.getNome() + "," + estoque.getDescricao() + "," + estoque.getTelefone() + ")";
+            String sql = "insert into estoque value ( default, 1, '" + estoque.getNome() + "', '" + estoque.getDescricao() + "', '" + estoque.getTelefone() + "')";
             System.out.println(sql);
             
             st.execute(sql);
