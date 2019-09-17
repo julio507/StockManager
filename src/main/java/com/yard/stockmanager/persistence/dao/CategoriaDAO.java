@@ -30,9 +30,10 @@ public class CategoriaDAO
     }
 
     @Override
-    public List<Categoria> get(int id) {
+    public Categoria get(int id) {
         return null;
     }
+
 
     @Override
     public void delete(int id) {
