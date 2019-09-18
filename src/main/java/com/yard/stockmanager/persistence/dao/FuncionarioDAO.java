@@ -9,6 +9,7 @@ import com.yard.stockmanager.persistence.entity.Funcionario;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -21,14 +22,13 @@ import java.util.List;
  */
 
 //link do video com o codigo fonte utilização: https://youtu.be/ZOIjNF4Yr20?list=PLR7lDCnFejO_vlNeE6Ghl6gps38MvJiTm
-public class FuncionarioDao
+public class FuncionarioDAO
         implements
             Dao<Funcionario>
 {
     @Override
     public void add(Funcionario t)
     {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
         s.save(t);
@@ -66,53 +66,17 @@ public class FuncionarioDao
     {
         try 
         {
-/*            MessageDigest m = MessageDigest.getInstance("MD5");
-            m.update(password.getBytes(), 0, password.length());
-
-            EntityManager manager = Factory.getManager();
-
-            manager.getTransaction().begin();
-            
-            Query query = manager.createQuery
-            (
-                "select id " +
-                "from Funcionario " +
-                "where " +
-                "Funcionario.Login = " + login +
-                " and " +
-                "Funcionario.Senha = md5( " + password + " )"
-            );
-
-            manager.getTransaction().commit();
-            
-            return query.getResultList().size() == 1;*/
-//------------------------------------------------------------
-//            int i = 0;
-//
-//            Statement st = DBConnection.getInstance().getConnection().createStatement();
-//
-//            String sql = "select id from funcionario "
-//                    + " where login = '" + login + "' "
-//                    + " and senha = md5('" + password + "');";
-//
-//            ResultSet rs = st.executeQuery(sql);
-//
-//            while (rs.next())
-//            {
-//
-//                i++;
-//            }
-//
-//            return i == 1;
-//-----------------------------------------------------------------
-            Funcionario func = new Funcionario();
             Session s = HibernateUtil.getSessionFactory().openSession();
+            List<Funcionario> func = new ArrayList<>();
+            String hql = "FROM Funcionario f WHERE f.login = :login and f.senha = :senha";
+            Query query = s.createQuery(hql);
+            query.setParameter("login", login);
+            query.setParameter("senha", password);
             s.beginTransaction();
-            func = (Funcionario) s.load(Funcionario.class, login);
-            s.getTransaction().commit();
+            func = query.list();
             s.close();
 
-            if (func.getLogin() == login && func.getSenha() == password)
+            if (func.get(0).getLogin().equals(login) && func.get(0).getSenha().equals(password))
             {
                 return true;
             }
@@ -120,10 +84,7 @@ public class FuncionarioDao
                 {
                 return false;
             }
-
-            
         }
-
         catch (Exception e)
         {
             System.out.println(e);
