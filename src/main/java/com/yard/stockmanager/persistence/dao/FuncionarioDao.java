@@ -117,11 +117,9 @@ public class FuncionarioDao
                 return true;
             }
             else
-                {
+            {
                 return false;
             }
-
-            
         }
 
         catch (Exception e)

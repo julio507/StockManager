@@ -15,12 +15,9 @@ public class CategoriaDAO
     public void add(Categoria categoria) {
         try
         {
-            Statement st = DBConnection.getInstance().getConnection().createStatement();
 
             String sql = "insert into categoria value ( default, '" + categoria.getNome() + "', '" + categoria.getDescricao() + "')";
             System.out.println(sql);
-
-            st.execute(sql);
         }
 
         catch (Exception e)
@@ -50,22 +47,9 @@ public class CategoriaDAO
 
         try
         {
-            Statement st = DBConnection.getInstance().getConnection().createStatement();
 
             String sql = "select * from categoria";
-            ResultSet rs = st.executeQuery(sql);
 
-            while ( rs.next() )
-            {
-                Categoria c = new Categoria();
-
-                c.setId( rs.getInt(1) );
-
-                c.setNome( rs.getString(2) );
-                c.setDescricao( rs.getString(3) );
-
-                list.add(c);
-            }
         }
 
         catch (Exception e)
