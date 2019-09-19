@@ -1,5 +1,7 @@
 package com.yard.stockmanager.tabs;
 
+import com.yard.stockmanager.persistence.dao.DepartmentDAO;
+import com.yard.stockmanager.persistence.entity.Departamento;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -105,10 +107,32 @@ public class DepartmentRegisterTab extends Tab{
     }
 
     public void salvar(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Registro Salvo");
-        alert.setHeaderText("Departamento salvo com sucesso.");
-        alert.show();
+
+
+        try {
+            dep.setNome(tfdDepartamento.getText());
+            dep.setDescricao(tarDescricao.getText());
+
+            depDAO.add(dep);
+
+            //mensagem de confirmação
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Registro Salvo");
+            alert.setHeaderText("Departamento salvo com sucesso.");
+            alert.show();
+
+            //limpeza dos campos
+            tfdDepartamento.setText("");
+            tfdDepartamento.requestFocus();
+            tarDescricao.setText("");
+
+        }catch (Exception ex){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ocorreu um erro ao salvar o registro");
+            alert.setHeaderText("Houve um problema durante o salvamento do registro.");
+            alert.show();
+            throw new IllegalStateException(ex);//verificar tipo de exception
+        }
 
     }
 
@@ -145,6 +169,12 @@ public class DepartmentRegisterTab extends Tab{
     private GridPane telaPrincipal = new GridPane();
     private GridPane telaEsquerda = new GridPane();
     private GridPane telaDireita = new GridPane();
+
+    //entidade
+    private Departamento dep = new Departamento();
+
+    //dao
+    private DepartmentDAO depDAO = new DepartmentDAO();
 
 
 }

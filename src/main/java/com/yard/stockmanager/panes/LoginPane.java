@@ -40,7 +40,6 @@ public class LoginPane extends GridPane
         try
         {
             FuncionarioDAO dao = new FuncionarioDAO();
-
             return dao.doLogin( tfLogin.getText(), tfPassword.getText() );
         }
         catch (Exception e)

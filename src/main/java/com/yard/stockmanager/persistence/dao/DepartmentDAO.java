@@ -1,29 +1,42 @@
 package com.yard.stockmanager.persistence.dao;
 
 import com.yard.stockmanager.persistence.entity.Departamento;
-import com.yard.stockmanager.persistence.entity.Funcionario;
+import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
+import org.hibernate.Session;
 
-import java.util.List;
-
-public class DepartmentDAO implements Dao<Funcionario> {
+public class DepartmentDAO implements Dao<Departamento> {
 
     @Override
-    public void add(Funcionario funcionario) {
-
+    public void add(Departamento t) {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        s.save(t);
+        s.getTransaction().commit();
+        s.close();
     }
 
     @Override
-    public Funcionario get(int id) {
+    public Departamento get(int id) {
         return null;
     }
 
+
     @Override
     public void delete(int id) {
-
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        Departamento func = (Departamento) s.load(Departamento.class, id);
+        s.delete(func);
+        s.getTransaction().commit();
+        s.close();
     }
 
     @Override
-    public void update(Funcionario funcionario) {
-
+    public void update(Departamento departamento) {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        s.update(departamento);
+        s.getTransaction().commit();
+        s.close();
     }
 }
