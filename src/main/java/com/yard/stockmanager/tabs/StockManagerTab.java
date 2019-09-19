@@ -3,16 +3,21 @@ package com.yard.stockmanager.tabs;
 import com.yard.stockmanager.persistence.dao.EstoqueDAO;
 import com.yard.stockmanager.persistence.entity.Estoque;
 import javafx.collections.FXCollections;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn;
+import javafx.scene.text.Font;
+import javafx.util.Callback;
 import parts.ManagementTab;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
 public class StockManagerTab extends ManagementTab<Estoque>
 {
+    private Font font = new Font(20);
 
     public StockManagerTab()
     {
@@ -73,6 +78,16 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     private void initComponents()
     {
+
+        labNome.setFont(font);
+        labEndeeco.setFont(font);
+        labDescricao.setFont(font);
+        labTelefone.setFont(font);
+
+        tfdNome.setFont(font);
+        tfdEndereco.setFont(font);
+        tfdDescricao.setFont(font);
+        tfdTelefone.setFont(font);
 
         innerGrid.addRow(0,labNome, tfdNome);
         innerGrid.addRow(1,labEndeeco, tfdEndereco);

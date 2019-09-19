@@ -22,6 +22,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  *
@@ -35,7 +36,7 @@ public abstract class ManagementTab<T>
     private Object selected;
 
     private boolean printable = false;
-    
+    private Font font = new Font(20);
     public ManagementTab(String label)
     {
         super(label);
@@ -90,10 +91,10 @@ public abstract class ManagementTab<T>
         mark.setTextFill(new Color(1, 0, 0, 0));
 
         ColumnConstraints cons1 = new ColumnConstraints();
-        cons1.setPercentWidth(75);
+        cons1.setPercentWidth(30);
 
         ColumnConstraints cons2 = new ColumnConstraints();
-        cons2.setPercentWidth(25);
+        cons2.setPercentWidth(70);
 
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight(100);
@@ -102,6 +103,8 @@ public abstract class ManagementTab<T>
         searchGrid.addColumn(1, searchButton);
 
         searchField.setPrefWidth(925);
+        searchField.setFont(font);
+        searchButton.setFont(font);
 
         searchGrid.setPrefWidth(Double.MAX_VALUE);
 
