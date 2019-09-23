@@ -143,7 +143,7 @@ public abstract class ManagementTab<T>
             {
                 if (validate())
                 {
-/*                    if (getSelected() == null)
+                    if (getSelected() == null)
                     {
                         save();
                         clear();
@@ -151,10 +151,8 @@ public abstract class ManagementTab<T>
                     else
                     {
                         edit();
-                    }*/
+                    }
 
-                    save();
-                    clear();
                     
                     refresh();
                 }

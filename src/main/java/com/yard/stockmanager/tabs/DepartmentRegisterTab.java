@@ -1,42 +1,26 @@
 package com.yard.stockmanager.tabs;
 
-import com.yard.stockmanager.parts.Utilities;
 import com.yard.stockmanager.persistence.dao.DepartmentDAO;
 import com.yard.stockmanager.persistence.entity.Departamento;
+import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DepartmentRegisterTab extends parts.ManagementTab<Departamento> {
     private Stage stage;
     private Font font = new Font(14);
+    private Departamento selected;
 
     public DepartmentRegisterTab()
     {
         super("Cadastro de Departamentos");
         initComponents();
     }
-
-    public void setStage(Stage s)
-    {
-        this.stage = s;
-    }
-    public Stage getStage()
-    {
-        return stage;
-    }
-
 
     @Override
     public void refresh() {
@@ -50,32 +34,86 @@ public class DepartmentRegisterTab extends parts.ManagementTab<Departamento> {
 
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 
     @Override
     public void save() {
+        try
+        {
+            Departamento f = new Departamento();
 
+            f.setNome(tfdDepartamento.getText());
+
+            f.setDescricao(tarDescricao.getText());
+
+            depDAO.add(f);
+        }
+
+        catch (Exception e)
+        {
+            Error.message(e.getMessage());
+        }
     }
 
     @Override
     public void edit() {
+        try{
+            Departamento d = (Departamento) getSelected();
 
+            d.setNome(tfdDepartamento.getText());
+            d.setDescricao(tarDescricao.getText());
+
+            depDAO.update(d);
+        }
+        catch (Exception e){
+            Error.message(e.getMessage());
+        }
+
+        refresh();
     }
 
     @Override
     public void changeStatus() {
+        try
+        {
+            Departamento f = (Departamento) getSelected();
+            depDAO.delete(f.getId());
+
+            refresh();
+        }
+
+        catch (Exception e)
+        {
+            Error.message(e.getMessage());
+        }
 
     }
 
     @Override
     public void select() {
+         selected= (Departamento) getSelected();
 
+        if (selected != null)
+        {
+            idField.setText(selected.getId().toString());
+            tfdDepartamento.setText(selected.getNome());
+            tarDescricao.setText(selected.getDescricao());
+        }
+
+        else
+        {
+            clear();
+        }
     }
 
     @Override
     public void clear() {
+        setSelected(null);
 
+        idField.setText("Novo");
+        tfdDepartamento.setText("");
+        tarDescricao.setText("");
     }
 
     private void initComponents() {
@@ -91,34 +129,12 @@ public class DepartmentRegisterTab extends parts.ManagementTab<Departamento> {
         tfdDepartamento.setFont(font);
         tfdDepartamento.setPrefSize(tfdWidth,tfdHeight);
 
+        idField.setDisable(true);
+
         //textArea
         tarDescricao.setEditable(true);
         tarDescricao.setFont(font);
         tarDescricao.setPrefSize(tarWidth,tarHeigt);
-
-
-        //Botões
-        //salvar
-        btnSalva.setVisible(true);
-        btnSalva.setPrefSize(100,30);
-        //acao salvar
-        btnSalva.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                salvar();
-            }
-        });
-
-        //editar
-        btnEditar.setVisible(true);
-        btnEditar.setPrefSize(100,30);
-        //acao editar
-        btnEditar.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                editar();
-            }
-        });
 
         //Colunas da tabela
         TableColumn<Departamento, Integer> id = new TableColumn<>("ID");
@@ -126,68 +142,18 @@ public class DepartmentRegisterTab extends parts.ManagementTab<Departamento> {
         TableColumn<Departamento, String> desc = new TableColumn<>("Descrição");
 
         id.setCellValueFactory(new PropertyValueFactory<Departamento, Integer>("id"));
-        dep.setCellValueFactory(new PropertyValueFactory<Departamento, String>("Departamento"));
-        desc.setCellValueFactory(new PropertyValueFactory<Departamento, String>("Descrição"));
-
+        dep.setCellValueFactory(new PropertyValueFactory<Departamento, String>("Nome"));
+        desc.setCellValueFactory(new PropertyValueFactory<Departamento, String>("Descricao"));
 
         //Tabela
         tableView.setPrefSize(1000, 1000);
         tableView.getColumns().addAll(id, dep, desc);
 
-        //Inicializa os paineis da tela
-        telaPrincipal.setPadding(new Insets(0));
-        telaEsquerda.setPadding(new Insets(100));
-        telaDireita.setPadding(new Insets(100));
+        innerGrid.addRow(0, labid, idField);
+        innerGrid.addRow(1,labDepartamento, tfdDepartamento);
+        innerGrid.addRow(2,labDescricao, tarDescricao);
 
-        //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
-        telaEsquerda.setAlignment(Pos.TOP_RIGHT);
-//        telaEsquerda.addRow(0, labDepartamento, tfdDepartamento);
-//        telaEsquerda.addRow(1, labDescricao, tarDescricao);
-        Utilities.formBuilder(telaEsquerda, new ArrayList<Control>(Arrays.asList (tfdDepartamento, tarDescricao)), new ArrayList<Label>(Arrays.asList (labDescricao, labDepartamento)), 0,0);
-        telaEsquerda.add(btnSalva, 1, 2);
-
-        telaDireita.setAlignment(Pos.TOP_RIGHT);
-        telaDireita.addRow(0, tableView);
-        telaDireita.addRow(1, btnEditar);
-
-        telaPrincipal.addRow(0,telaEsquerda, telaDireita);
-
-        setContent(telaPrincipal);
         refresh();
-    }
-
-    public void salvar(){
-
-
-        try {
-            dep.setNome(tfdDepartamento.getText());
-            dep.setDescricao(tarDescricao.getText());
-
-            depDAO.add(dep);
-
-            //mensagem de confirmação
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Registro Salvo");
-            alert.setHeaderText("Departamento salvo com sucesso.");
-            alert.show();
-
-            //limpeza dos campos
-            tfdDepartamento.setText("");
-            tfdDepartamento.requestFocus();
-            tarDescricao.setText("");
-
-        }catch (Exception ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ocorreu um erro ao salvar o registro");
-            alert.setHeaderText("Houve um problema durante o salvamento do registro.");
-            alert.show();
-            throw new IllegalStateException(ex);//verificar tipo de exception
-        }
-
-    }
-
-    public void editar(){
-        System.out.println("editing");
     }
 
     //Iniciação das variaveis
@@ -199,23 +165,18 @@ public class DepartmentRegisterTab extends parts.ManagementTab<Departamento> {
     private double tarHeigt = 50;
 
     //Criação dos componentes da tela
+    private Label labid = new Label("ID:");
     private Label labDepartamento = new Label("Departamento:");
     private Label labDescricao = new Label("Descrição:");
 
+    private TextField idField = new TextField("Novo");
     private TextField tfdDepartamento = new TextField();
     private TextArea tarDescricao = new TextArea();
-
-    //botão salvar
-    private Button btnSalva = new Button("Salvar");
-    private Button btnEditar = new Button("Editar");
 
     //grid
     private GridPane telaPrincipal = new GridPane();
     private GridPane telaEsquerda = new GridPane();
     private GridPane telaDireita = new GridPane();
-
-    //entidade
-    private Departamento dep = new Departamento();
 
     //dao
     private DepartmentDAO depDAO = new DepartmentDAO();
