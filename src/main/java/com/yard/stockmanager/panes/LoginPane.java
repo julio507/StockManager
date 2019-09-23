@@ -6,6 +6,7 @@
 package com.yard.stockmanager.panes;
 
 import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -96,6 +97,19 @@ public class LoginPane extends GridPane
             }
         });
 
+
+        btnOk.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    doEvent();
+                }
+            }
+
+        });
+    }
+
+    private void doEvent(){
         btnOk.setOnKeyPressed(event);
     }
 

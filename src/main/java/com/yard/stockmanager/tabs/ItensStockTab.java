@@ -1,5 +1,6 @@
 package com.yard.stockmanager.tabs;
 
+import com.yard.stockmanager.parts.Utilities;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -10,6 +11,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ItensStockTab extends Tab {
     private Stage stage;
@@ -76,8 +80,8 @@ public class ItensStockTab extends Tab {
         //Labels
         labCodProd.setFont(font);
         labCodProd.setPrefSize(labWidth, labHeight);
-        lanNomeProd.setFont(font);
-        lanNomeProd.setPrefSize(labWidth, labHeight);
+        labNomeProd.setFont(font);
+        labNomeProd.setPrefSize(labWidth, labHeight);
         labMarcaProd.setFont(font);
         labMarcaProd.setPrefSize(labWidth, labHeight);
         labDepartamentoProd.setFont(font);
@@ -154,15 +158,18 @@ public class ItensStockTab extends Tab {
         telaEsquerda.addRow(5, labBairroEstq, tfdBairroEstq);
         //dados do produto
         telaEsquerda.addRow(6, hbxTitleProd);
-        telaEsquerda.addRow(7, labCodProd, tfdCodProd, btnBuscarProd);
-        telaEsquerda.addRow(8, lanNomeProd, tfdNomeProd);
-        telaEsquerda.addRow(9, labMarcaProd, tfdMarcaProd);
-        telaEsquerda.addRow(10, labDepartamentoProd, tfdDepartamentoProd);
-        telaEsquerda.addRow(11, labCategoriaProd, tfdCategoriaProd);
-        telaEsquerda.addRow(12, labUnidadeProd, tfdUnidadeProd);
-        telaEsquerda.addRow(13, labValorProd, tfdValorProd);
+//        telaEsquerda.addRow(7, labCodProd, tfdCodProd, btnBuscarProd);
+//        telaEsquerda.addRow(8, labNomeProd, tfdNomeProd);
+//        telaEsquerda.addRow(9, labMarcaProd, tfdMarcaProd);
+//        telaEsquerda.addRow(10, labDepartamentoProd, tfdDepartamentoProd);
+//        telaEsquerda.addRow(11, labCategoriaProd, tfdCategoriaProd);
+//        telaEsquerda.addRow(12, labUnidadeProd, tfdUnidadeProd);
+//        telaEsquerda.addRow(13, labValorProd, tfdValorProd);
+        Utilities.formBuilder(telaEsquerda, new ArrayList<Control>(Arrays.asList(tfdCodProd, tfdNomeProd, tfdMarcaProd, tfdDepartamentoProd, tfdCategoriaProd, tfdUnidadeProd, tfdValorProd)),
+                new ArrayList<Label>(Arrays.asList(labCodProd, labNomeProd, labMarcaProd, labDepartamentoProd, labCategoriaProd, labUnidadeProd, labValorProd)), 0, 7);
         //botões
         telaEsquerda.add(btnSalva,1,14);
+        telaEsquerda.add(btnBuscarProd,2,7);
 
         //inclui a tabela e os botoes na tela da direita
         telaDireita.setAlignment(Pos.TOP_RIGHT);
@@ -204,7 +211,7 @@ public class ItensStockTab extends Tab {
     private HBox hbxTitleProd = new HBox(txtTitleProd);
 
     private Label labCodProd = new Label("Código:");
-    private Label lanNomeProd = new Label("Produto:");
+    private Label labNomeProd = new Label("Produto:");
     private Label labMarcaProd = new Label("Marca:");
     private Label labDepartamentoProd = new Label("Departamento:");
     private Label labCategoriaProd = new Label("Categoria:");

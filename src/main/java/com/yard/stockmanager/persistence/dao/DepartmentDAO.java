@@ -2,7 +2,11 @@ package com.yard.stockmanager.persistence.dao;
 
 import com.yard.stockmanager.persistence.entity.Departamento;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
+import javafx.scene.control.TableView;
 import org.hibernate.Session;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DepartmentDAO implements Dao<Departamento> {
 
@@ -25,8 +29,8 @@ public class DepartmentDAO implements Dao<Departamento> {
     public void delete(int id) {
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        Departamento func = (Departamento) s.load(Departamento.class, id);
-        s.delete(func);
+        Departamento dep = (Departamento) s.load(Departamento.class, id);
+        s.delete(dep);
         s.getTransaction().commit();
         s.close();
     }
@@ -38,5 +42,15 @@ public class DepartmentDAO implements Dao<Departamento> {
         s.update(departamento);
         s.getTransaction().commit();
         s.close();
+    }
+
+    public static List<Departamento> getAll() {
+        List depList = new ArrayList();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        depList = s.createQuery("FROM Departamento").list();
+        s.getTransaction().commit();
+        s.close();
+        return depList;
     }
 }
