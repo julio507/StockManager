@@ -17,7 +17,6 @@ import java.util.List;
 
 public class StockManagerTab extends ManagementTab<Estoque>
 {
-    private Font font = new Font(20);
 
     public StockManagerTab()
     {
@@ -78,16 +77,6 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     private void initComponents()
     {
-
-        labNome.setFont(font);
-        labEndeeco.setFont(font);
-        labDescricao.setFont(font);
-        labTelefone.setFont(font);
-
-        tfdNome.setFont(font);
-        tfdEndereco.setFont(font);
-        tfdDescricao.setFont(font);
-        tfdTelefone.setFont(font);
 
         innerGrid.addRow(0,labNome, tfdNome);
         innerGrid.addRow(1,labEndeeco, tfdEndereco);

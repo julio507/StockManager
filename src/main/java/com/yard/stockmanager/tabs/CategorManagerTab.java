@@ -7,6 +7,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn;
+import javafx.scene.text.Font;
 import parts.ManagementTab;
 
 import java.util.List;
@@ -69,6 +70,7 @@ public class CategorManagerTab extends ManagementTab<Categoria>
     }
 
     public void initComponents(){
+
         innerGrid.addRow(0, labNome, tfdNome);
         innerGrid.addRow(1, labDescricao, tfdDescricao);
 
