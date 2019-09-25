@@ -5,19 +5,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema stockmanager
+-- Schema StockManager
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema stockmanager
+-- Schema StockManager
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `stockmanager` DEFAULT CHARACTER SET utf8 ;
-USE `stockmanager` ;
+CREATE SCHEMA IF NOT EXISTS `StockManager` DEFAULT CHARACTER SET utf8 ;
+USE `StockManager` ;
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Cidade`
+-- Table `StockManager`.`Cidade`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Cidade` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Cidade` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(100) NOT NULL,
   `UF` VARCHAR(2) NOT NULL,
@@ -26,9 +26,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Endereco`
+-- Table `StockManager`.`Endereco`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Endereco` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Endereco` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Cidade_id` INT NOT NULL,
   `Endereco` VARCHAR(150) NOT NULL,
@@ -38,42 +38,41 @@ CREATE TABLE IF NOT EXISTS `stockmanager`.`Endereco` (
   `CEP` VARCHAR(10) NOT NULL,
   `Complementos` VARCHAR(25) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Endereco_Cidade1_idx` (`Cidade_id` ASC) VISIBLE,
+  INDEX `fk_Endereco_Cidade1_idx` (`Cidade_id` ASC)  ,
   CONSTRAINT `fk_Endereco_Cidade1`
     FOREIGN KEY (`Cidade_id`)
-    REFERENCES `stockmanager`.`Cidade` (`id`)
+    REFERENCES `StockManager`.`Cidade` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Pessoa`
+-- Table `StockManager`.`Pessoa`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Pessoa` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Pessoa` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Endereco_id` INT NOT NULL,
   `DenominacaoSocial` VARCHAR(90) NOT NULL,
   `Nome` VARCHAR(55) NOT NULL,
-  `Telefone` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NULL,
   `CNPJ` VARCHAR(45) NOT NULL,
   `CPF` VARCHAR(11) NOT NULL,
   `Observacoes` TEXT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Pessoa_Endereco1_idx` (`Endereco_id` ASC) VISIBLE,
+  INDEX `fk_Pessoa_Endereco1_idx` (`Endereco_id` ASC)  ,
   CONSTRAINT `fk_Pessoa_Endereco1`
     FOREIGN KEY (`Endereco_id`)
-    REFERENCES `stockmanager`.`Endereco` (`id`)
+    REFERENCES `StockManager`.`Endereco` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Funcionario`
+-- Table `StockManager`.`Funcionario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Funcionario` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Funcionario` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Pessoa_id` INT NOT NULL,
   `Login` VARCHAR(85) NOT NULL,
@@ -81,19 +80,19 @@ CREATE TABLE IF NOT EXISTS `stockmanager`.`Funcionario` (
   `Funcao` VARCHAR(100) NOT NULL,
   `NivelAcesso` INT(1) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Funcionario_Pessoa1_idx` (`Pessoa_id` ASC) VISIBLE,
+  INDEX `fk_Funcionario_Pessoa1_idx` (`Pessoa_id` ASC)  ,
   CONSTRAINT `fk_Funcionario_Pessoa1`
     FOREIGN KEY (`Pessoa_id`)
-    REFERENCES `stockmanager`.`Pessoa` (`id`)
+    REFERENCES `StockManager`.`Pessoa` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Categoria`
+-- Table `StockManager`.`Categoria`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Categoria` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Categoria` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(500) NOT NULL,
   `Descricao` TEXT NULL,
@@ -102,9 +101,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Departamento`
+-- Table `StockManager`.`Departamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Departamento` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Departamento` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(500) NOT NULL,
   `Descricao` TEXT NULL,
@@ -113,9 +112,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Unidade`
+-- Table `StockManager`.`Unidade`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Unidade` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Unidade` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(45) NOT NULL,
   `Sigla` VARCHAR(2) NOT NULL,
@@ -125,9 +124,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Marca`
+-- Table `StockManager`.`Marca`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Marca` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Marca` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(500) NOT NULL,
   `Descricao` TEXT NULL,
@@ -136,9 +135,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Produto`
+-- Table `StockManager`.`Produto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Produto` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Produto` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Marca_id` INT NOT NULL,
   `Departamento_id` INT NOT NULL,
@@ -149,37 +148,37 @@ CREATE TABLE IF NOT EXISTS `stockmanager`.`Produto` (
   `Quantidade` VARCHAR(45) NOT NULL,
   `CustoUnitario` DECIMAL(11,2) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Produto_Departamento1_idx` (`Departamento_id` ASC) VISIBLE,
-  INDEX `fk_Produto_Categoria1_idx` (`Categoria_id` ASC) VISIBLE,
-  INDEX `fk_Produto_Unidade1_idx` (`Unidade_id` ASC) VISIBLE,
-  INDEX `fk_Produto_Marca1_idx` (`Marca_id` ASC) VISIBLE,
+  INDEX `fk_Produto_Departamento1_idx` (`Departamento_id` ASC)  ,
+  INDEX `fk_Produto_Categoria1_idx` (`Categoria_id` ASC)  ,
+  INDEX `fk_Produto_Unidade1_idx` (`Unidade_id` ASC)  ,
+  INDEX `fk_Produto_Marca1_idx` (`Marca_id` ASC)  ,
   CONSTRAINT `fk_Produto_Departamento1`
     FOREIGN KEY (`Departamento_id`)
-    REFERENCES `stockmanager`.`Departamento` (`id`)
+    REFERENCES `StockManager`.`Departamento` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Produto_Categoria1`
     FOREIGN KEY (`Categoria_id`)
-    REFERENCES `stockmanager`.`Categoria` (`id`)
+    REFERENCES `StockManager`.`Categoria` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Produto_Unidade1`
     FOREIGN KEY (`Unidade_id`)
-    REFERENCES `stockmanager`.`Unidade` (`id`)
+    REFERENCES `StockManager`.`Unidade` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Produto_Marca1`
     FOREIGN KEY (`Marca_id`)
-    REFERENCES `stockmanager`.`Marca` (`id`)
+    REFERENCES `StockManager`.`Marca` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`NFE`
+-- Table `StockManager`.`NFE`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`NFE` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`NFE` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Pessoa_id` INT NOT NULL,
   `NumNF` INT NULL,
@@ -188,63 +187,63 @@ CREATE TABLE IF NOT EXISTS `stockmanager`.`NFE` (
   `Tipo` CHAR(1) NOT NULL,
   `observações` TEXT NULL,
   PRIMARY KEY (`id`, `Pessoa_id`),
-  INDEX `fk_NFE_Pessoa1_idx` (`Pessoa_id` ASC) VISIBLE,
+  INDEX `fk_NFE_Pessoa1_idx` (`Pessoa_id` ASC)  ,
   CONSTRAINT `fk_NFE_Pessoa1`
     FOREIGN KEY (`Pessoa_id`)
-    REFERENCES `stockmanager`.`Pessoa` (`id`)
+    REFERENCES `StockManager`.`Pessoa` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`NFE_has_Produto`
+-- Table `StockManager`.`NFE_has_Produto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`NFE_has_Produto` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`NFE_has_Produto` (
   `NFE_id` INT NOT NULL,
   `NFE_Pessoa_id` INT NOT NULL,
   `Produto_id` INT NOT NULL,
   `Quantidade` DOUBLE NOT NULL,
   `ValorProdutos` DOUBLE NOT NULL,
   PRIMARY KEY (`NFE_id`, `NFE_Pessoa_id`, `Produto_id`),
-  INDEX `fk_NFE_has_Produto_Produto1_idx` (`Produto_id` ASC) VISIBLE,
-  INDEX `fk_NFE_has_Produto_NFE1_idx` (`NFE_id` ASC, `NFE_Pessoa_id` ASC) VISIBLE,
+  INDEX `fk_NFE_has_Produto_Produto1_idx` (`Produto_id` ASC)  ,
+  INDEX `fk_NFE_has_Produto_NFE1_idx` (`NFE_id` ASC, `NFE_Pessoa_id` ASC)  ,
   CONSTRAINT `fk_NFE_has_Produto_Produto1`
     FOREIGN KEY (`Produto_id`)
-    REFERENCES `stockmanager`.`Produto` (`id`)
+    REFERENCES `StockManager`.`Produto` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_NFE_has_Produto_NFE1`
     FOREIGN KEY (`NFE_id` , `NFE_Pessoa_id`)
-    REFERENCES `stockmanager`.`NFE` (`id` , `Pessoa_id`)
+    REFERENCES `StockManager`.`NFE` (`id` , `Pessoa_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Estoque`
+-- Table `StockManager`.`Estoque`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Estoque` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Estoque` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Endereco_id` INT NOT NULL,
   `Nome` VARCHAR(500) NOT NULL,
   `Descricao` TEXT NULL,
   `Telefone` VARCHAR(25) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Estoque_Endereco1_idx` (`Endereco_id` ASC) VISIBLE,
+  INDEX `fk_Estoque_Endereco1_idx` (`Endereco_id` ASC)  ,
   CONSTRAINT `fk_Estoque_Endereco1`
     FOREIGN KEY (`Endereco_id`)
-    REFERENCES `stockmanager`.`Endereco` (`id`)
+    REFERENCES `StockManager`.`Endereco` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Agendamento`
+-- Table `StockManager`.`Agendamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Agendamento` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Agendamento` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `NFE_id` INT NOT NULL,
   `NFE_Pessoa_id` INT NOT NULL,
@@ -253,48 +252,48 @@ CREATE TABLE IF NOT EXISTS `stockmanager`.`Agendamento` (
   `Data` DATETIME NULL,
   `Estado` CHAR(1) NOT NULL,
   PRIMARY KEY (`id`, `NFE_id`, `NFE_Pessoa_id`, `Funcionario_id`),
-  INDEX `fk_Agendamento_Funcionario1_idx` (`Funcionario_id` ASC) VISIBLE,
-  INDEX `fk_Agendamento_NFE1_idx` (`NFE_id` ASC, `NFE_Pessoa_id` ASC) VISIBLE,
+  INDEX `fk_Agendamento_Funcionario1_idx` (`Funcionario_id` ASC)  ,
+  INDEX `fk_Agendamento_NFE1_idx` (`NFE_id` ASC, `NFE_Pessoa_id` ASC)  ,
   CONSTRAINT `fk_Agendamento_Funcionario1`
     FOREIGN KEY (`Funcionario_id`)
-    REFERENCES `stockmanager`.`Funcionario` (`id`)
+    REFERENCES `StockManager`.`Funcionario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Agendamento_NFE1`
     FOREIGN KEY (`NFE_id` , `NFE_Pessoa_id`)
-    REFERENCES `stockmanager`.`NFE` (`id` , `Pessoa_id`)
+    REFERENCES `StockManager`.`NFE` (`id` , `Pessoa_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Estoque_has_Produto`
+-- Table `StockManager`.`Estoque_has_Produto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Estoque_has_Produto` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Estoque_has_Produto` (
   `Estoque_id` INT NOT NULL,
   `Produto_id` INT NOT NULL,
   `Quantidade` DOUBLE NOT NULL,
   PRIMARY KEY (`Estoque_id`, `Produto_id`),
-  INDEX `fk_Estoque_has_Produto_Produto1_idx` (`Produto_id` ASC) VISIBLE,
-  INDEX `fk_Estoque_has_Produto_Estoque1_idx` (`Estoque_id` ASC) VISIBLE,
+  INDEX `fk_Estoque_has_Produto_Produto1_idx` (`Produto_id` ASC)  ,
+  INDEX `fk_Estoque_has_Produto_Estoque1_idx` (`Estoque_id` ASC)  ,
   CONSTRAINT `fk_Estoque_has_Produto_Estoque1`
     FOREIGN KEY (`Estoque_id`)
-    REFERENCES `stockmanager`.`Estoque` (`id`)
+    REFERENCES `StockManager`.`Estoque` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Estoque_has_Produto_Produto1`
     FOREIGN KEY (`Produto_id`)
-    REFERENCES `stockmanager`.`Produto` (`id`)
+    REFERENCES `StockManager`.`Produto` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Telefones`
+-- Table `StockManager`.`Telefones`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Telefones` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Telefones` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Numero` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -302,9 +301,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Tipo`
+-- Table `StockManager`.`Tipo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Tipo` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Tipo` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -312,45 +311,45 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Pessoa_has_Telefones`
+-- Table `StockManager`.`Pessoa_has_Telefones`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Pessoa_has_Telefones` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Pessoa_has_Telefones` (
   `Pessoa_id` INT NOT NULL,
   `Telefones_id` INT NOT NULL,
   `descricao` TEXT NULL,
   PRIMARY KEY (`Pessoa_id`, `Telefones_id`),
-  INDEX `fk_Pessoa_has_Telefones_Telefones1_idx` (`Telefones_id` ASC) VISIBLE,
-  INDEX `fk_Pessoa_has_Telefones_Pessoa1_idx` (`Pessoa_id` ASC) VISIBLE,
+  INDEX `fk_Pessoa_has_Telefones_Telefones1_idx` (`Telefones_id` ASC)  ,
+  INDEX `fk_Pessoa_has_Telefones_Pessoa1_idx` (`Pessoa_id` ASC)  ,
   CONSTRAINT `fk_Pessoa_has_Telefones_Pessoa1`
     FOREIGN KEY (`Pessoa_id`)
-    REFERENCES `stockmanager`.`Pessoa` (`id`)
+    REFERENCES `StockManager`.`Pessoa` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Pessoa_has_Telefones_Telefones1`
     FOREIGN KEY (`Telefones_id`)
-    REFERENCES `stockmanager`.`Telefones` (`id`)
+    REFERENCES `StockManager`.`Telefones` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stockmanager`.`Pessoa_has_Tipo`
+-- Table `StockManager`.`Pessoa_has_Tipo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `stockmanager`.`Pessoa_has_Tipo` (
+CREATE TABLE IF NOT EXISTS `StockManager`.`Pessoa_has_Tipo` (
   `Pessoa_id` INT NOT NULL,
   `Tipo_id` INT NOT NULL,
   PRIMARY KEY (`Pessoa_id`, `Tipo_id`),
-  INDEX `fk_Pessoa_has_Tipo_Tipo1_idx` (`Tipo_id` ASC) VISIBLE,
-  INDEX `fk_Pessoa_has_Tipo_Pessoa1_idx` (`Pessoa_id` ASC) VISIBLE,
+  INDEX `fk_Pessoa_has_Tipo_Tipo1_idx` (`Tipo_id` ASC)  ,
+  INDEX `fk_Pessoa_has_Tipo_Pessoa1_idx` (`Pessoa_id` ASC)  ,
   CONSTRAINT `fk_Pessoa_has_Tipo_Pessoa1`
     FOREIGN KEY (`Pessoa_id`)
-    REFERENCES `stockmanager`.`Pessoa` (`id`)
+    REFERENCES `StockManager`.`Pessoa` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Pessoa_has_Tipo_Tipo1`
     FOREIGN KEY (`Tipo_id`)
-    REFERENCES `stockmanager`.`Tipo` (`id`)
+    REFERENCES `StockManager`.`Tipo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
