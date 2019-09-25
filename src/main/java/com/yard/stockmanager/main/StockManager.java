@@ -7,6 +7,7 @@ package com.yard.stockmanager.main;
 
 import com.yard.stockmanager.panes.LoginPane;
 import com.yard.stockmanager.panes.MainPane;
+import com.yard.stockmanager.useful.Error;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -63,12 +64,7 @@ public class StockManager extends Application
 
             else
             {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Erro do Login");
-                alert.setHeaderText(null);
-                alert.setContentText("Verifique seu login e senha!");
-
-                alert.showAndWait();
+                Error.message( "Verifique seu Login e Senha" );
             }
         }
     };
