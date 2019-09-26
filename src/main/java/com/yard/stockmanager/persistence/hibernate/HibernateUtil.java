@@ -12,7 +12,7 @@ public class HibernateUtil {
     {
         try {
             conf = new Configuration();
-            conf.configure("Hibernate.cfg.xml");
+            conf.configure("hibernate.cfg.xml");
 
             System.out.println("configurou");
 
