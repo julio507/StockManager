@@ -7,7 +7,7 @@
     <session-factory>
 
         <!-- SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
 
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
