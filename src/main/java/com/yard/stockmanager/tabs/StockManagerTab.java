@@ -1,6 +1,7 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.persistence.dao.EstoqueDAO;
+import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.entity.Estoque;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TableCell;
@@ -42,15 +43,17 @@ public class StockManagerTab extends ManagementTab<Estoque>
     @Override
     public void save() {
         Estoque est = new Estoque();
+        Endereco end = new Endereco();
 
         est.setNome(tfdNome.getText());
         est.setDescricao(tfdDescricao.getText());
         est.setTelefone(tfdTelefone.getText());
+        end.setId(1);
+        est.setEnderecoid(end);
 
         EstoqueDAO estDao = new EstoqueDAO();
-
         estDao.add(est);
-        
+
         refresh();
     }
 

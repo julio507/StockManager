@@ -67,7 +67,7 @@ public class EstoqueDAO
         List depList = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        depList = s.createQuery("FROM Departamento").list();
+        depList = s.createQuery("FROM Estoque").list();
         s.getTransaction().commit();
         s.close();
         return depList;
