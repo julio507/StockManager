@@ -1,11 +1,12 @@
 package com.yard.stockmanager.useful;
 
+import javafx.scene.control.Alert;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javafx.scene.control.Alert;
 
 public class Error {
 

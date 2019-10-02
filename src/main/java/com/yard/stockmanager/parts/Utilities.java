@@ -3,8 +3,6 @@ package com.yard.stockmanager.parts;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import org.hibernate.cfg.NotYetImplementedException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
