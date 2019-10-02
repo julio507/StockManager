@@ -34,6 +34,12 @@ public class DepartmentRegisterTab extends parts.ManagementTab<Departamento> {
 
     @Override
     public boolean validate() {
+        if(!idField.getText().equals("Novo") && idField.getText().trim().isEmpty()) {
+            return false;
+        }
+        if(tfdDepartamento.getText().trim().isEmpty() || tfdDepartamento.getText().length() <= 3){
+            return false;
+        }
         return true;
     }
 
