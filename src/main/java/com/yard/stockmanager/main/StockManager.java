@@ -12,8 +12,6 @@ import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -65,6 +63,8 @@ public class StockManager extends Application
             else
             {
                 Error.message( "Verifique seu Login e Senha" );
+                
+                Error.log( "test->>>>log" );
             }
         }
     };
