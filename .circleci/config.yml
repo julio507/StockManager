@@ -21,6 +21,11 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
 
     steps:
+
+      - run:
+            name: install javafx
+            command: sudo apt-get install openjfx
+
       - checkout
 
       # Download and cache dependencies
