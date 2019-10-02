@@ -1,6 +1,5 @@
 package com.yard.stockmanager.tabs;
 
-import com.yard.stockmanager.parts.Utilities;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -11,9 +10,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ItensStockTab extends Tab {
     private Stage stage;
@@ -158,18 +154,15 @@ public class ItensStockTab extends Tab {
         telaEsquerda.addRow(5, labBairroEstq, tfdBairroEstq);
         //dados do produto
         telaEsquerda.addRow(6, hbxTitleProd);
-//        telaEsquerda.addRow(7, labCodProd, tfdCodProd, btnBuscarProd);
-//        telaEsquerda.addRow(8, labNomeProd, tfdNomeProd);
-//        telaEsquerda.addRow(9, labMarcaProd, tfdMarcaProd);
-//        telaEsquerda.addRow(10, labDepartamentoProd, tfdDepartamentoProd);
-//        telaEsquerda.addRow(11, labCategoriaProd, tfdCategoriaProd);
-//        telaEsquerda.addRow(12, labUnidadeProd, tfdUnidadeProd);
-//        telaEsquerda.addRow(13, labValorProd, tfdValorProd);
-        Utilities.formBuilder(telaEsquerda, new ArrayList<Control>(Arrays.asList(tfdCodProd, tfdNomeProd, tfdMarcaProd, tfdDepartamentoProd, tfdCategoriaProd, tfdUnidadeProd, tfdValorProd)),
-                new ArrayList<Label>(Arrays.asList(labCodProd, labNomeProd, labMarcaProd, labDepartamentoProd, labCategoriaProd, labUnidadeProd, labValorProd)), 0, 7);
+        telaEsquerda.addRow(7, labCodProd, tfdCodProd, btnBuscarProd);
+        telaEsquerda.addRow(8, labNomeProd, tfdNomeProd);
+        telaEsquerda.addRow(9, labMarcaProd, tfdMarcaProd);
+        telaEsquerda.addRow(10, labDepartamentoProd, tfdDepartamentoProd);
+        telaEsquerda.addRow(11, labCategoriaProd, tfdCategoriaProd);
+        telaEsquerda.addRow(12, labUnidadeProd, tfdUnidadeProd);
+        telaEsquerda.addRow(13, labValorProd, tfdValorProd);
         //botões
-        telaEsquerda.add(btnSalva,1,14);
-        telaEsquerda.add(btnBuscarProd,2,7);
+//
 
         //inclui a tabela e os botoes na tela da direita
         telaDireita.setAlignment(Pos.TOP_RIGHT);
