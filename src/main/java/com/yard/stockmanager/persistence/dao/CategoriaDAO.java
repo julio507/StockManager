@@ -2,8 +2,6 @@ package com.yard.stockmanager.persistence.dao;
 
 import com.yard.stockmanager.persistence.entity.Categoria;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 

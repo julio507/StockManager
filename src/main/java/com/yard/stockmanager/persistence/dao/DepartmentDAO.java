@@ -2,7 +2,6 @@ package com.yard.stockmanager.persistence.dao;
 
 import com.yard.stockmanager.persistence.entity.Departamento;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
-import javafx.scene.control.TableView;
 import org.hibernate.Session;
 
 import java.util.ArrayList;

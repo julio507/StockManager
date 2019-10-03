@@ -1,13 +1,10 @@
 package com.yard.stockmanager.persistence.dao;
 
 
-import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.entity.Estoque;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 import org.hibernate.Session;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +64,7 @@ public class EstoqueDAO
         List depList = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        depList = s.createQuery("FROM Departamento").list();
+        depList = s.createQuery("FROM Estoque").list();
         s.getTransaction().commit();
         s.close();
         return depList;

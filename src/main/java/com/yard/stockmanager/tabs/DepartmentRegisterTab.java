@@ -1,17 +1,22 @@
 package com.yard.stockmanager.tabs;
 
+import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.DepartmentDAO;
 import com.yard.stockmanager.persistence.entity.Departamento;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 import java.util.List;
 
-public class DepartmentRegisterTab extends parts.ManagementTab<Departamento> {
+public class DepartmentRegisterTab extends ManagementTab<Departamento> {
     private Stage stage;
     private Font font = new Font(14);
     private Departamento selected;

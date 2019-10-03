@@ -1,14 +1,13 @@
 package com.yard.stockmanager.tabs;
 
+import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.CategoriaDAO;
 import com.yard.stockmanager.persistence.entity.Categoria;
 import javafx.collections.FXCollections;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn;
-import javafx.scene.text.Font;
-import parts.ManagementTab;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 

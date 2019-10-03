@@ -1,23 +1,13 @@
 package com.yard.stockmanager.tabs;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+
+import com.yard.stockmanager.parts.ManagementTab;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
-import java.util.Arrays;
-import java.util.List;
-
-import java.awt.*;
-
-public class PeopleRegisterTab extends parts.ManagementTab<Object>
+public class PeopleRegisterTab extends ManagementTab<Object>
 {
 
     private Stage stage;
