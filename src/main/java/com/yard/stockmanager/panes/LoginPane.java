@@ -110,7 +110,8 @@ public class LoginPane extends GridPane
     }
 
     private void doEvent(){
-        btnOk.setOnKeyPressed(event);
+        btnOk.setOnAction(event);
+        btnOk.fire();
     }
 
 
