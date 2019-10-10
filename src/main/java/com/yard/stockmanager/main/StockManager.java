@@ -64,7 +64,7 @@ public class StockManager extends Application
             {
                 Error.message( "Verifique seu Login e Senha" );
                 
-                Error.log( "test->>>>log" );
+                Error.log( "Falha de Login", this.getClass() );
             }
         }
     };

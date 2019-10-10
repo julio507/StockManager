@@ -193,3 +193,4 @@ nbdist/
 # End of https://www.gitignore.io/api/maven,netbeans,intellij
 /src/main/resources/hibernate.cfg.xml
 /src/main/resources/hibernate.cfg.xml
+logs.log
