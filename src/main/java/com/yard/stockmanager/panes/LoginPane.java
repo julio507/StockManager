@@ -6,6 +6,8 @@
 package com.yard.stockmanager.panes;
 
 import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
+
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -29,7 +31,7 @@ import javafx.scene.text.Text;
 public class LoginPane extends GridPane
 {
 
-    public LoginPane(EventHandler event)
+    public LoginPane(EventHandler<Event> event)
     {
         this.event = event;
         initComponent();

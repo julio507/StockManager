@@ -11,36 +11,30 @@ import javafx.event.EventType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 /**
  *
  * @author julio
  */
-public class TabMenuItem
-        extends
-        MenuItem {
-    private Stage stage;
+public abstract class TabMenuItem extends MenuItem {
 
-    public TabMenuItem(String text, final TabPane parent, final Tab tab) {
+    public abstract Tab getTab();
+
+    public TabMenuItem(String text, final TabPane parent) {
         super(text);
 
-        addEventHandler(EventType.ROOT, new EventHandler() {
+        addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                if (!parent.getTabs().contains(tab)) {
-                    parent.getTabs().add(tab);
+                Tab t = getTab();
+
+                if (!parent.getTabs().contains(t)) {
+                    parent.getTabs().add(t);
                 }
 
-                parent.getSelectionModel().select(tab);
+                parent.getSelectionModel().select(t);
 
             }
         });
     }
 }
-
-
-
-
