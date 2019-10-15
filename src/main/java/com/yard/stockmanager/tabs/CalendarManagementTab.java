@@ -17,13 +17,13 @@ public class CalendarManagementTab extends Tab {
 
     private enum DayWeek
     {
-        DOM( "Domingo" ),
         SEG( "Segunda" ),
         TER( "Terça" ),
-        QUA( "Quanrta" ),
+        QUA( "Quarta" ),
         QUI( "Quinta" ),
         SEX( "Sexta" ),
-        SAB( "Sabado" );
+        SAB( "Sabado" ),
+        DOM( "Domingo" );
 
         private final String name;
 
@@ -39,6 +39,8 @@ public class CalendarManagementTab extends Tab {
     }
 
     public CalendarManagementTab() {
+        super("Calendario");
+        
         initCompoents();
 
         refreshContent();
@@ -46,7 +48,7 @@ public class CalendarManagementTab extends Tab {
 
     private void refreshContent() {
         LocalDate localDate = LocalDate.now();
-        
+
         for (int i = 1; i < localDate.lengthOfMonth(); i++) 
         {
             LocalDate date = localDate.withDayOfMonth(i);
@@ -55,20 +57,21 @@ public class CalendarManagementTab extends Tab {
             BorderPane pane = new BorderPane();
             
             field.setText( date.toString() );
+            field.setEditable( false );
 
             pane.setTop( field );
+            pane.setMinHeight(100);
 
-            grid.add(pane, date.get( ChronoField.ALIGNED_WEEK_OF_MONTH ), date.get( ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH ));
+            grid.add(pane, date.get( ChronoField.DAY_OF_WEEK ), date.get( ChronoField.ALIGNED_WEEK_OF_MONTH ) );
         }
 
         for (DayWeek d : DayWeek.values()) {
             TextField field = new TextField();
 
             field.setText( d.toString() );
-
-            grid.add(field, d.ordinal(), 0);
+            field.setEditable( false );
+            grid.add(field, d.ordinal() + 1, 0);
         }
-
     }
 
     public void initCompoents() {
