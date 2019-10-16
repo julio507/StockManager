@@ -9,54 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EstoqueDAO
-        implements
+        extends
             Dao<Estoque>
 {
-    @Override
-    public void add(Estoque estoque)
-    {
-
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        s.save(estoque);
-        s.getTransaction().commit();
-        s.close();
-        /*try
-        {
-            String sql = "insert into estoque value ( default, 1, '" + estoque.getNome() + "', '" + estoque.getDescricao() + "', '" + estoque.getTelefone() + "')";
-            System.out.println(sql);
-        }
-
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }*/
-    }
-
-    @Override
-    public Estoque get(int id) {
-        return null;
-    }
-
-
-    @Override
-    public void delete(int id) {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        Estoque est = (Estoque) s.load(Estoque.class, id);
-        s.delete(est);
-        s.getTransaction().commit();
-        s.close();
-    }
-
-    @Override
-    public void update(Estoque estoque) {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        s.update(estoque);
-        s.getTransaction().commit();
-        s.close();
-    }
 
     public List<Estoque> getAll()
     {

@@ -8,7 +8,7 @@ public class HibernateUtil {
     private static SessionFactory factory = null;
     private static Configuration conf;
 
-    private static SessionFactory buildSessionFactory()
+    public static SessionFactory buildSessionFactory()
     {
         try {
             conf = new Configuration();

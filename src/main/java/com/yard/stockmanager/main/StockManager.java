@@ -7,12 +7,12 @@ package com.yard.stockmanager.main;
 
 import com.yard.stockmanager.panes.LoginPane;
 import com.yard.stockmanager.panes.MainPane;
+import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 import com.yard.stockmanager.useful.Error;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -27,7 +27,8 @@ public class StockManager extends Application
     @Override
     public void start(Stage primaryStage)
     {
-        main.setStage( primaryStage );
+        HibernateUtil.buildSessionFactory();
+
         StackPane root = new StackPane();
 
         bp.setCenter(login);
@@ -50,7 +51,7 @@ public class StockManager extends Application
         launch(args);
     }
 
-    private EventHandler event = new EventHandler()
+    private EventHandler<Event> event = new EventHandler<Event>()
     {
         @Override
         public void handle(Event event)
@@ -64,7 +65,7 @@ public class StockManager extends Application
             {
                 Error.message( "Verifique seu Login e Senha" );
                 
-                Error.log( "test->>>>log" );
+                Error.log( "Falha de Login", this.getClass() );
             }
         }
     };
@@ -72,5 +73,4 @@ public class StockManager extends Application
     private BorderPane bp = new BorderPane();
     private MainPane main = new MainPane();
     private LoginPane login = new LoginPane(event);
-    private MenuBar menu = new MenuBar();
 }

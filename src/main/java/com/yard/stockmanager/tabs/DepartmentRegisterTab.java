@@ -83,7 +83,7 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
         try
         {
             Departamento f = (Departamento) getSelected();
-            depDAO.delete(f.getId());
+            depDAO.delete( f );
 
             refresh();
         }
