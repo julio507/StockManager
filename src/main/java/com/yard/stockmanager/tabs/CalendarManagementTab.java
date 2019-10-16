@@ -1,5 +1,6 @@
 package com.yard.stockmanager.tabs;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
@@ -47,6 +48,7 @@ public class CalendarManagementTab extends Tab {
     }
 
     private void refreshContent() {
+        
         LocalDate localDate = LocalDate.now();
 
         for (int i = 1; i < localDate.lengthOfMonth(); i++) 

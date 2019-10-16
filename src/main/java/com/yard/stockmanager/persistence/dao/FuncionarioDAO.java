@@ -20,45 +20,9 @@ import java.util.List;
 
 //link do video com o codigo fonte utilização: https://youtu.be/ZOIjNF4Yr20?list=PLR7lDCnFejO_vlNeE6Ghl6gps38MvJiTm
 public class FuncionarioDAO
-        implements
+        extends
             Dao<Funcionario>
 {
-    @Override
-    public void add(Funcionario t)
-    {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        s.save(t);
-        s.getTransaction().commit();
-        s.close();
-    }
-
-    @Override
-    public Funcionario get(int id) {
-        return null;
-    }
-
-
-    @Override
-    public void delete(int id)
-    {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        Funcionario func = (Funcionario) s.load(Funcionario.class, id);
-        s.delete(func);
-        s.getTransaction().commit();
-        s.close();
-    }
-
-    @Override
-    public void update(Funcionario funcionario) {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        s.update(funcionario);
-        s.getTransaction().commit();
-        s.close();
-    }
-
     public boolean doLogin( String login, String password )
     {
         try 
