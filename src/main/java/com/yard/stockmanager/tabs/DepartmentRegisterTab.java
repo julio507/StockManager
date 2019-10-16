@@ -10,15 +10,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import java.util.List;
 
 public class DepartmentRegisterTab extends ManagementTab<Departamento> {
-    private Stage stage;
-    private Font font = new Font(14);
+
     private Departamento selected;
 
     public DepartmentRegisterTab()
@@ -29,9 +25,7 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
 
     @Override
     public void refresh() {
-        DepartmentDAO dao = new DepartmentDAO();
-
-        List<Departamento> list = dao.getAll();
+        List<Departamento> list = depDAO.getAll();
 
         tableView.setItems(FXCollections.observableArrayList( list ));
         tableView.refresh();
@@ -103,7 +97,7 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
 
     @Override
     public void select() {
-         selected= (Departamento) getSelected();
+         selected = (Departamento) getSelected();
 
         if (selected != null)
         {
@@ -128,24 +122,14 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
     }
 
     private void initComponents() {
-        // Labels
-        labDepartamento.setFont(font);
-        labDepartamento.setPrefSize(labWidth,labHeight);
-
-        labDescricao.setFont(font);
-        labDescricao.setPrefSize(labWidth,labHeight);
 
         //TextFields
         tfdDepartamento.setEditable(true);
-        tfdDepartamento.setFont(font);
-        tfdDepartamento.setPrefSize(tfdWidth,tfdHeight);
-
         idField.setDisable(true);
 
         //textArea
         tarDescricao.setEditable(true);
-        tarDescricao.setFont(font);
-        tarDescricao.setPrefSize(tarWidth,tarHeigt);
+
 
         //Colunas da tabela
         TableColumn<Departamento, Integer> id = new TableColumn<>("ID");
@@ -167,14 +151,6 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
         refresh();
     }
 
-    //Iniciação das variaveis
-    private double labWidth = 240;
-    private double labHeight = 50;
-    private double tfdWidth = 300;
-    private double tfdHeight = 20;
-    private double tarWidth = 300;
-    private double tarHeigt = 50;
-
     //Criação dos componentes da tela
     private Label labid = new Label("ID:");
     private Label labDepartamento = new Label("Departamento:");
@@ -183,11 +159,6 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
     private TextField idField = new TextField("Novo");
     private TextField tfdDepartamento = new TextField();
     private TextArea tarDescricao = new TextArea();
-
-    //grid
-    private GridPane telaPrincipal = new GridPane();
-    private GridPane telaEsquerda = new GridPane();
-    private GridPane telaDireita = new GridPane();
 
     //dao
     private DepartmentDAO depDAO = new DepartmentDAO();

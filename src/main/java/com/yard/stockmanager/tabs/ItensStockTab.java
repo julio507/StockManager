@@ -1,187 +1,146 @@
 package com.yard.stockmanager.tabs;
 
-import javafx.geometry.Insets;
+import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.entity.EstoqueHasProduto;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-public class ItensStockTab extends Tab {
-    private Stage stage;
-    private Font font = new Font(14);
+public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
 
     public ItensStockTab() {
         super("Cadastro de Itens por Estoque");
         initComponents();
     }
 
-    public void setStage(Stage s) {
-        this.stage = s;
+    @Override
+    public void refresh() {
+
     }
 
-    public Stage getStage() {
-        return stage;
+    @Override
+    public boolean validate() {
+        return true;
     }
 
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void edit() {
+
+    }
+
+    @Override
+    public void changeStatus() {
+
+    }
+
+    @Override
+    public void select() {
+
+    }
+
+    @Override
+    public void clear() {
+
+    }
 
     private void initComponents() {
-        //Componentes da infos do estoque
-        //debug
-//        telaEsquerda.setGridLinesVisible(true);
-//        telaDireita.setGridLinesVisible(true);
-//        telaPrincipal.setGridLinesVisible(true);
 
         //Text
         txtTitleEstq.setFont(Font.font("System", FontWeight.BOLD, 20));
 
-        // Labels
-        labCodEstq.setFont(font);
-        labCodEstq.setPrefSize(labWidth, labHeight);
-        labNomeEstq.setFont(font);
-        labNomeEstq.setPrefSize(labWidth, labHeight);
-        labEnderecoEstq.setFont(font);
-        labEnderecoEstq.setPrefSize(labWidth, labHeight);
-        labRuaEstq.setFont(font);
-        labRuaEstq.setPrefSize(labWidth, labHeight);
-        labBairroEstq.setFont(font);
-        labBairroEstq.setPrefSize(labWidth, labHeight);
-
         //TextFields
         tfdCodEstq.setEditable(false);
-        tfdCodEstq.setFont(font);
         tfdCodEstq.setText("--selecione o Estoque--");
-        tfdCodEstq.setPrefSize(tfdWidth, tfdHeight);
         tfdNomeEstq.setEditable(false);
-        tfdNomeEstq.setFont(font);
-        tfdNomeEstq.setPrefSize(tfdWidth, tfdHeight);
         tfdEnderecoEstq.setEditable(false);
-        tfdEnderecoEstq.setFont(font);
-        tfdEnderecoEstq.setPrefSize(tfdWidth, tfdHeight);
         tfdRuaEstq.setEditable(false);
-        tfdRuaEstq.setFont(font);
-        tfdRuaEstq.setPrefSize(tfdWidth, tfdHeight);
         tfdBairroEstq.setEditable(false);
-        tfdBairroEstq.setFont(font);
-        tfdBairroEstq.setPrefSize(tfdWidth, tfdHeight);
 
         //componentes das infos do produto
         //Text
         txtTitleProd.setFont(Font.font("System", FontWeight.BOLD, 20));
 
-        //Labels
-        labCodProd.setFont(font);
-        labCodProd.setPrefSize(labWidth, labHeight);
-        labNomeProd.setFont(font);
-        labNomeProd.setPrefSize(labWidth, labHeight);
-        labMarcaProd.setFont(font);
-        labMarcaProd.setPrefSize(labWidth, labHeight);
-        labDepartamentoProd.setFont(font);
-        labDepartamentoProd.setPrefSize(labWidth, labHeight);
-        labCategoriaProd.setFont(font);
-        labCategoriaProd.setPrefSize(labWidth, labHeight);
-        labUnidadeProd.setFont(font);
-        labUnidadeProd.setPrefSize(labWidth, labHeight);
-        labValorProd.setFont(font);
-        labValorProd.setPrefSize(labWidth, labHeight);
-
         //TextFields
         tfdCodProd.setEditable(false);
-        tfdCodProd.setFont(font);
-        tfdCodProd.setPrefSize(tfdWidth, tfdHeight);
         tfdCodProd.setText("--selecione o Produto--");
         tfdNomeProd.setEditable(false);
-        tfdNomeProd.setFont(font);
-        tfdNomeProd.setPrefSize(tfdWidth, tfdHeight);
         tfdMarcaProd.setEditable(false);
-        tfdMarcaProd.setFont(font);
-        tfdMarcaProd.setPrefSize(tfdWidth, tfdHeight);
         tfdDepartamentoProd.setEditable(false);
-        tfdDepartamentoProd.setFont(font);
-        tfdDepartamentoProd.setPrefSize(tfdWidth, tfdHeight);
         tfdCategoriaProd.setEditable(false);
-        tfdCategoriaProd.setFont(font);
-        tfdCategoriaProd.setPrefSize(tfdWidth, tfdHeight);
         tfdUnidadeProd.setEditable(false);
-        tfdUnidadeProd.setFont(font);
-        tfdUnidadeProd.setPrefSize(tfdWidth, tfdHeight);
         tfdValorProd.setEditable(false);
-        tfdValorProd.setFont(font);
-        tfdValorProd.setPrefSize(tfdWidth, tfdHeight);
+
+
+        //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
+        //alinhamento
+        innerGrid.setAlignment(Pos.TOP_RIGHT);
+        //dados do estoque
+        innerGrid.addRow(0, hbxTitleEstq);
+        innerGrid.addRow(1, labCodEstq, tfdCodEstq, btnBuscarEstq);
+        innerGrid.addRow(2, labNomeEstq, tfdNomeEstq);
+        innerGrid.addRow(3, labEnderecoEstq, tfdEnderecoEstq);
+        innerGrid.addRow(4, labRuaEstq, tfdRuaEstq);
+        innerGrid.addRow(5, labBairroEstq, tfdBairroEstq);
+        //dados do produto
+        innerGrid.addRow(6, hbxTitleProd);
+        innerGrid.addRow(7, labCodProd, tfdCodProd, btnBuscarProd);
+        innerGrid.addRow(8, labNomeProd, tfdNomeProd);
+        innerGrid.addRow(9, labMarcaProd, tfdMarcaProd);
+        innerGrid.addRow(10, labDepartamentoProd, tfdDepartamentoProd);
+        innerGrid.addRow(11, labCategoriaProd, tfdCategoriaProd);
+        innerGrid.addRow(12, labUnidadeProd, tfdUnidadeProd);
+        innerGrid.addRow(13, labValorProd, tfdValorProd);
 
         //Botões
-        btnSalva.setVisible(true);
-        btnSalva.setPrefSize(100, 30);
-        btnRemover.setVisible(true);
-        btnRemover.setPrefSize(100, 30);
         btnBuscarEstq.setVisible(true);
         btnBuscarEstq.setPrefSize(70, 30);
         btnBuscarProd.setVisible(true);
         btnBuscarProd.setPrefSize(70, 30);
         btnBuscarProd.setDisable(true);
 
+
+        TableColumn<EstoqueHasProduto, Integer>id = new TableColumn<>("Cod. Prod.");
+        TableColumn<EstoqueHasProduto, String> nome = new TableColumn<>("Prod.");
+        TableColumn<EstoqueHasProduto, String> marca = new TableColumn<>("Marca");
+        TableColumn<EstoqueHasProduto, String> departamento = new TableColumn<>("Departamento");
+        TableColumn<EstoqueHasProduto, String> categoria = new TableColumn<>("Categoria");
+        TableColumn<EstoqueHasProduto, Double> unidade = new TableColumn<>("Unidade");
+        TableColumn<EstoqueHasProduto, Double> valor = new TableColumn<>("Valor");
         //Colunas da tabela
-        colunaCodigo.setCellValueFactory(new PropertyValueFactory<>("Cod. Prod."));
-        colunaNomeProd.setCellValueFactory(new PropertyValueFactory<>("Prod."));
-        colunaMarca.setCellValueFactory(new PropertyValueFactory<>("Marca"));
-        colunaDepartamento.setCellValueFactory(new PropertyValueFactory<>("Departamento"));
-        colunaCategoria.setCellValueFactory(new PropertyValueFactory<>("Categoria"));
-        colunaUnidade.setCellValueFactory(new PropertyValueFactory<>("Unidade"));
-        colunaValor.setCellValueFactory(new PropertyValueFactory<>("valor"));
+        id.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, Integer>("Cod. Prod."));
+        nome.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Prod."));
+        marca.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Marca"));
+        departamento.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Departamento"));
+        categoria.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Categoria"));
+        unidade.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, Double>("Unidade"));
+        valor.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, Double>("valor"));
 
         //Tabela
-        tabela.setPrefSize(900, 900);
-        tabela.getColumns().addAll(colunaCodigo, colunaNomeProd, colunaMarca, colunaDepartamento, colunaCategoria, colunaUnidade, colunaValor);
+        tableView.getColumns().addAll(
+                id,
+                nome,
+                marca,
+                departamento,
+                categoria,
+                unidade,
+                valor
+        );
 
-        //Inicializa os paineis da tela
-        telaPrincipal.setPadding(new Insets(0));
-        telaEsquerda.setPadding(new Insets(100));
-        telaDireita.setPadding(new Insets(100));
-
-        //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
-        //alinhamento
-        telaEsquerda.setAlignment(Pos.TOP_RIGHT);
-        //dados do estoque
-        telaEsquerda.addRow(0, hbxTitleEstq);
-        telaEsquerda.addRow(1, labCodEstq, tfdCodEstq, btnBuscarEstq);
-        telaEsquerda.addRow(2, labNomeEstq, tfdNomeEstq);
-        telaEsquerda.addRow(3, labEnderecoEstq, tfdEnderecoEstq);
-        telaEsquerda.addRow(4, labRuaEstq, tfdRuaEstq);
-        telaEsquerda.addRow(5, labBairroEstq, tfdBairroEstq);
-        //dados do produto
-        telaEsquerda.addRow(6, hbxTitleProd);
-        telaEsquerda.addRow(7, labCodProd, tfdCodProd, btnBuscarProd);
-        telaEsquerda.addRow(8, labNomeProd, tfdNomeProd);
-        telaEsquerda.addRow(9, labMarcaProd, tfdMarcaProd);
-        telaEsquerda.addRow(10, labDepartamentoProd, tfdDepartamentoProd);
-        telaEsquerda.addRow(11, labCategoriaProd, tfdCategoriaProd);
-        telaEsquerda.addRow(12, labUnidadeProd, tfdUnidadeProd);
-        telaEsquerda.addRow(13, labValorProd, tfdValorProd);
-        //botões
-//
-
-        //inclui a tabela e os botoes na tela da direita
-        telaDireita.setAlignment(Pos.TOP_RIGHT);
-        telaDireita.add(tabela, 0, 0, 2, 1);
-        telaDireita.addRow(1, btnRemover, btnFinalizar);
-
-
-        telaPrincipal.addRow(0, telaEsquerda, telaDireita);
-
-        setContent(telaPrincipal);
+        refresh();
 
     }
-
-    //Iniciação das variaveis
-    private double labWidth = 240;
-    private double labHeight = 50;
-    private double tfdWidth = 300;
-    private double tfdHeight = 20;
-
     //Criação dos componentes da tela
     //componentes do estoque
     private Text txtTitleEstq = new Text("Dados do Estoque");
@@ -219,24 +178,8 @@ public class ItensStockTab extends Tab {
     private TextField tfdUnidadeProd = new TextField();
     private TextField tfdValorProd = new TextField();
 
-    private Button btnSalva = new Button("Adicionar");
-    private Button btnRemover = new Button("Remover");
-    private Button btnFinalizar = new Button("Finalizar");
     private Button btnBuscarEstq = new Button("Buscar");
     private Button btnBuscarProd = new Button("Buscar");
 
-    private TableView tabela = new TableView<>();
-    private TableColumn colunaCodigo = new TableColumn<>("Cod. Prod.");
-    private TableColumn colunaNomeProd = new TableColumn<>("Prod.");
-    private TableColumn colunaMarca = new TableColumn<>("Marca");
-    private TableColumn colunaDepartamento = new TableColumn<>("Departamento");
-    private TableColumn colunaCategoria = new TableColumn<>("Categoria");
-    private TableColumn colunaUnidade = new TableColumn<>("Unidade");
-    private TableColumn colunaValor = new TableColumn<>("Valor");
-
-    private GridPane telaPrincipal = new GridPane();
-    private GridPane telaEsquerda = new GridPane();
-    private GridPane telaDireita = new GridPane();
 }
 
-//}
