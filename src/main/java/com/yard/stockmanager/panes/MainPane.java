@@ -39,7 +39,8 @@ public class MainPane
                 categoryManagerTab,
                 peopleRegisterTab,
                 departmentRegisterTab,
-                itensStockTab
+                itensStockTab,
+                addressManagerTab
         );
         
         operationsMenu.getItems().addAll(
@@ -137,6 +138,12 @@ public class MainPane
         public Tab getTab() {
             return new CalendarManagementTab();
         }
+    };
+
+    private TabMenuItem addressManagerTab = new TabMenuItem("Gerenciamento de Endereços", tabPane )
+    {
+        @Override
+        public Tab getTab() { return new AddressManagerTab(); }
     };
 
     private MenuBar menu = new MenuBar();
