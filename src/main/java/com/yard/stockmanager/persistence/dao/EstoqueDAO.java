@@ -15,7 +15,6 @@ public class EstoqueDAO
 
     public List<Estoque> getAll()
     {
-
         List depList = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
@@ -23,21 +22,5 @@ public class EstoqueDAO
         s.getTransaction().commit();
         s.close();
         return depList;
-
-        /*List<Estoque> list = new ArrayList<>();
-
-        try
-        {
-            String sql = "select * from estoque";
-
-
-        }
-
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-
-        return list;*/
     }
 }

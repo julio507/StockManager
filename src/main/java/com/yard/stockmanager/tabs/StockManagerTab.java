@@ -68,7 +68,6 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     @Override
     public void save() {
-        System.out.println("SALVA");
         Estoque est = new Estoque();
         Endereco end = new Endereco();
 
