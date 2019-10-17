@@ -9,11 +9,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import com.yard.stockmanager.useful.Error;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StockManagerTab extends ManagementTab<Estoque>
 {
+
+    private Estoque selected;
 
     public StockManagerTab()
     {
@@ -33,11 +37,38 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     @Override
     public boolean validate() {
-        return true;
+
+        String errors = "";
+
+        if (tfdNome.getText().isEmpty())
+        {
+            errors=errors+"Nome";
+        }
+
+        if (tfdDescricao.getText().isEmpty())
+        {
+            errors= errors+"Descrição";
+        }
+        if(tfdTelefone.getText().isEmpty())
+        {
+            errors=errors+"Telefone";
+        }
+        if(tfdEndereco.getText().isEmpty())
+        {
+            errors=errors+"Endereço";
+        }
+
+        if (!errors.isEmpty())
+        {
+            Error.messageAndLog(errors);
+        }
+
+        return errors.isEmpty();
     }
 
     @Override
     public void save() {
+        System.out.println("SALVA");
         Estoque est = new Estoque();
         Endereco end = new Endereco();
 
@@ -55,7 +86,21 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     @Override
     public void edit() {
+        Estoque est = new Estoque();
+        Endereco end = new Endereco();
 
+        est.setId(this.id);
+        est.setNome(tfdNome.getText());
+        est.setDescricao(tfdDescricao.getText());
+        est.setTelefone(tfdTelefone.getText());
+        end.setId(1);
+        est.setEnderecoid(end);
+
+        EstoqueDAO estDao = new EstoqueDAO();
+        estDao.update(est);
+        System.out.println("Edita");
+
+        refresh();
     }
 
     @Override
@@ -65,7 +110,20 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     @Override
     public void select() {
+        selected = (Estoque) getSelected();
 
+        if (selected != null)
+        {
+            tfdNome.setText(selected.getNome());
+            tfdDescricao.setText(selected.getDescricao());
+            tfdTelefone.setText(selected.getTelefone());
+            id = selected.getId();
+        }
+
+        else
+        {
+            clear();
+        }
     }
 
     @Override
@@ -106,6 +164,8 @@ public class StockManagerTab extends ManagementTab<Estoque>
         refresh();
         
     }
+
+    private int id;
 
     //Criação dos componentes da tela
     private Label labEndeeco = new Label("Rua:");

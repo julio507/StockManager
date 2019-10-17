@@ -31,10 +31,15 @@ public abstract class Dao<T>
 
     public void update( T t )
     {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        s.update(t);
-        s.getTransaction().commit();
-        s.close();
+        try{
+            Session s = HibernateUtil.getSessionFactory().openSession();
+            s.beginTransaction();
+            System.out.println(t);
+            s.update(t);
+            s.getTransaction().commit();
+            s.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
     };
 }
