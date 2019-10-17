@@ -32,7 +32,7 @@ public class Mail {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("helimar.baggattini@universo.univates.br","hygbnjuhUn15");
+                        return new PasswordAuthentication("seuEmail@gmail.com","senha");
                     }
                 });
 
@@ -42,9 +42,9 @@ public class Mail {
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("helimar.baggattini@universo.univates.br"));//Remetente
+            message.setFrom(new InternetAddress("seuEmail@gmail.com"));//Remetente
 
-            Address[] toUser = InternetAddress.parse("helimarbaggattini15@gmail.com");//destinos;//Destinatário(s)
+            Address[] toUser = InternetAddress.parse("emailDestino@gmail.com");//destinos;//Destinatário(s)
 
             message.setRecipients(Message.RecipientType.TO, toUser);
             message.setSubject("Enviando email com JavaMail");//Assunto
