@@ -33,10 +33,12 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
 
     @Override
     public boolean validate() {
-        if(!idField.getText().equals("Novo") && idField.getText().trim().isEmpty()) {
+        if(idField.getText().equals("Novo") && (tfdDepartamento.getText().trim().isEmpty() || tfdDepartamento.getText().trim().length() <= 3)){
+            Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
             return false;
         }
-        if(tfdDepartamento.getText().trim().isEmpty() || tfdDepartamento.getText().length() <= 3){
+        else if(!idField.getText().equals("Novo") && (tfdDepartamento.getText().trim().isEmpty() || tfdDepartamento.getText().length() <= 3)){
+            Error.message("Erro ao Editar. Verifique os dados Inseridos!");
             return false;
         }
         return true;
@@ -51,6 +53,8 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
             f.setNome(tfdDepartamento.getText());
 
             f.setDescricao(tarDescricao.getText());
+
+            f.setAtivo('1');
 
             depDAO.add(f);
         }
@@ -83,7 +87,13 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
         try
         {
             Departamento f = (Departamento) getSelected();
-            depDAO.delete( f );
+            if (f.getAtivo() == '1')
+                f.setAtivo('0');
+            else
+            {
+                f.setAtivo('1');
+            }
+            depDAO.update( f );
 
             refresh();
         }
@@ -101,7 +111,7 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
 
         if (selected != null)
         {
-            idField.setText(selected.getId().toString());
+            idField.setText(selected.getId()+"");
             tfdDepartamento.setText(selected.getNome());
             tarDescricao.setText(selected.getDescricao());
         }
@@ -135,14 +145,16 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
         TableColumn<Departamento, Integer> id = new TableColumn<>("ID");
         TableColumn<Departamento, String> dep = new TableColumn<>("Departamento");
         TableColumn<Departamento, String> desc = new TableColumn<>("Descrição");
+        TableColumn<Departamento, Character> atv = new TableColumn<>("Ativo");
 
         id.setCellValueFactory(new PropertyValueFactory<Departamento, Integer>("id"));
         dep.setCellValueFactory(new PropertyValueFactory<Departamento, String>("Nome"));
         desc.setCellValueFactory(new PropertyValueFactory<Departamento, String>("Descricao"));
+        atv.setCellValueFactory(new PropertyValueFactory<Departamento, Character>("Ativo"));
 
         //Tabela
         tableView.setPrefSize(1000, 1000);
-        tableView.getColumns().addAll(id, dep, desc);
+        tableView.getColumns().addAll(id, dep, desc, atv);
 
         innerGrid.addRow(0, labid, idField);
         innerGrid.addRow(1,labDepartamento, tfdDepartamento);
