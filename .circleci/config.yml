@@ -22,10 +22,6 @@ jobs:
 
     steps:
 
-      - run:
-            name: install javafx
-            command: sudo apt-get install openjfx
-
       - checkout
 
       # Download and cache dependencies
