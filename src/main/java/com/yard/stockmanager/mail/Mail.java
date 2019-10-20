@@ -9,7 +9,7 @@ import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 public class Mail {
-    public static void sendMessage(Address[] destinos)
+    public static void sendMessage(String fromUser, String password, Address[] toUsers, String subject, String text)
     {
         Properties props = new Properties();
         /** Parâmetros de conexão com servidor Gmail */
@@ -32,7 +32,7 @@ public class Mail {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("seuEmail@gmail.com","senha");
+                        return new PasswordAuthentication(fromUser, password);//("seuEmail@gmail.com","senha");
                     }
                 });
 
@@ -44,15 +44,15 @@ public class Mail {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("seuEmail@gmail.com"));//Remetente
 
-            Address[] toUser = InternetAddress.parse("emailDestino@gmail.com");//destinos;//Destinatário(s)
+            Address[] toUser = toUsers;//InternetAddress.parse("emailDestino@gmail.com");//Destinatário(s)
 
             message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Enviando email com JavaMail");//Assunto
-            message.setText("Enviei este email utilizando JavaMail com minha conta GMail !");
+            message.setSubject(subject);//("Enviando email com JavaMail");//Assunto
+            message.setText(text);//("Enviei este email utilizando JavaMail com minha conta GMail !");
             /**Método para enviar a mensagem criada*/
             Transport.send(message);
 
-            System.out.println("Feito!!!");
+            System.out.println("Mensagem Enviada!!!");
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
