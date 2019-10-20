@@ -75,7 +75,7 @@ public class StockManagerTab extends ManagementTab<Estoque>
         est.setDescricao(tfdDescricao.getText());
         est.setTelefone(tfdTelefone.getText());
         end.setId(1);
-        est.setEnderecoid(end);
+        est.setEndereco(end);
 
         EstoqueDAO estDao = new EstoqueDAO();
         estDao.add(est);
@@ -93,7 +93,7 @@ public class StockManagerTab extends ManagementTab<Estoque>
         est.setDescricao(tfdDescricao.getText());
         est.setTelefone(tfdTelefone.getText());
         end.setId(1);
-        est.setEnderecoid(end);
+        est.setEndereco(end);
 
         EstoqueDAO estDao = new EstoqueDAO();
         estDao.update(est);
