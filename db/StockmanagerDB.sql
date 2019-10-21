@@ -103,7 +103,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `StockManager`.`categoria` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(500) NOT NULL,
+  `nome` VARCHAR(200) NOT NULL,
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
@@ -116,7 +116,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `StockManager`.`departamento` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(500) NOT NULL,
+  `nome` VARCHAR(200) NOT NULL,
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
@@ -144,7 +144,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `StockManager`.`marca` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(500) NOT NULL,
+  `nome` VARCHAR(200) NOT NULL,
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
@@ -267,7 +267,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `StockManager`.`estoque` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `endereco_id` INT NOT NULL,
-  `nome` VARCHAR(500) NOT NULL,
+  `nome` VARCHAR(200) NOT NULL,
   `descricao` TEXT NULL,
   `telefone` VARCHAR(25) NOT NULL,
   `ativo` CHAR NOT NULL,
