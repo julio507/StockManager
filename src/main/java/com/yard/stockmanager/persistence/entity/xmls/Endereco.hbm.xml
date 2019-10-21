@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Endereco" table="endereco" catalog="stockmanager" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="cidade" class="hibr.Cidade" fetch="select">
+            <column name="cidade_id" not-null="true" />
+        </many-to-one>
+        <property name="endereco" type="string">
+            <column name="endereco" length="150" not-null="true" />
+        </property>
+        <property name="rua" type="string">
+            <column name="rua" length="45" not-null="true" />
+        </property>
+        <property name="numero" type="string">
+            <column name="numero" length="5" not-null="true" />
+        </property>
+        <property name="bairro" type="string">
+            <column name="bairro" length="45" />
+        </property>
+        <property name="cep" type="string">
+            <column name="cep" length="10" not-null="true" />
+        </property>
+        <property name="complementos" type="string">
+            <column name="complementos" length="25" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+        <set name="pessoas" table="pessoa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="endereco_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Pessoa" />
+        </set>
+        <set name="estoques" table="estoque" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="endereco_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Estoque" />
+        </set>
+        <set name="nfesForEnderecodestId" table="nfe" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="enderecodest_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Nfe" />
+        </set>
+        <set name="nfesForEnderecoremId" table="nfe" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="enderecorem_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Nfe" />
+        </set>
+    </class>
+</hibernate-mapping>

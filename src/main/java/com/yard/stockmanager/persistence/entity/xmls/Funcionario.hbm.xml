@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Funcionario" table="funcionario" catalog="stockmanager" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="pessoa" class="hibr.Pessoa" fetch="select">
+            <column name="pessoa_id" not-null="true" />
+        </many-to-one>
+        <property name="login" type="string">
+            <column name="login" length="85" not-null="true" unique="true" />
+        </property>
+        <property name="senha" type="string">
+            <column name="senha" length="40" not-null="true" />
+        </property>
+        <property name="funcao" type="string">
+            <column name="funcao" length="100" not-null="true" />
+        </property>
+        <property name="nivelacesso" type="char">
+            <column name="nivelacesso" length="1" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="100" not-null="true" />
+        </property>
+        <property name="senhaemail" type="string">
+            <column name="senhaemail" length="45" not-null="true" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+        <set name="insercaos" table="insercao" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="funcionario_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Insercao" />
+        </set>
+        <set name="agendamentos" table="agendamento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="funcionario_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Agendamento" />
+        </set>
+    </class>
+</hibernate-mapping>

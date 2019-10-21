@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Nfe" table="nfe" catalog="stockmanager" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="enderecoByEnderecodestId" class="hibr.Endereco" fetch="select">
+            <column name="enderecodest_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enderecoByEnderecoremId" class="hibr.Endereco" fetch="select">
+            <column name="enderecorem_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="pessoaByPessoadestId" class="hibr.Pessoa" fetch="select">
+            <column name="pessoadest_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="pessoaByPessoaremId" class="hibr.Pessoa" fetch="select">
+            <column name="pessoarem_id" not-null="true" />
+        </many-to-one>
+        <property name="numnf" type="java.lang.Integer">
+            <column name="numnf" />
+        </property>
+        <property name="dataemissao" type="date">
+            <column name="dataemissao" length="10" not-null="true" />
+        </property>
+        <property name="valornota" type="big_decimal">
+            <column name="valornota" precision="13" scale="3" not-null="true" />
+        </property>
+        <property name="tipo" type="char">
+            <column name="tipo" length="1" not-null="true" />
+        </property>
+        <property name="observacoes" type="string">
+            <column name="observacoes" length="65535" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+        <set name="nfeHasProdutos" table="nfe_has_produto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="nfe_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.NfeHasProduto" />
+        </set>
+    </class>
+</hibernate-mapping>

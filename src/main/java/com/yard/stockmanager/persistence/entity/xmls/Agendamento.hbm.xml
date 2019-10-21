@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Agendamento" table="agendamento" catalog="stockmanager" optimistic-lock="version">
+        <composite-id name="id" class="hibr.AgendamentoId">
+            <key-property name="id" type="int">
+                <column name="id" />
+            </key-property>
+            <key-property name="funcionarioId" type="int">
+                <column name="funcionario_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="funcionario" class="hibr.Funcionario" update="false" insert="false" fetch="select">
+            <column name="funcionario_id" not-null="true" />
+        </many-to-one>
+        <property name="descricao" type="string">
+            <column name="descricao" length="65535" />
+        </property>
+        <property name="data" type="timestamp">
+            <column name="data" length="19" not-null="true" />
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+        <set name="pessoaHasAgendamentos" table="pessoa_has_agendamento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agendamento_id" not-null="true" />
+                <column name="agendamento_funcionario_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.PessoaHasAgendamento" />
+        </set>
+    </class>
+</hibernate-mapping>

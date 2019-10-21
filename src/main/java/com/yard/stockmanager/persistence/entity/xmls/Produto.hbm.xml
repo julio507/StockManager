@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Produto" table="produto" catalog="stockmanager" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="categoria" class="hibr.Categoria" fetch="select">
+            <column name="categoria_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departamento" class="hibr.Departamento" fetch="select">
+            <column name="departamento_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="marca" class="hibr.Marca" fetch="select">
+            <column name="marca_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unidade" class="hibr.Unidade" fetch="select">
+            <column name="unidade_id" not-null="true" />
+        </many-to-one>
+        <property name="nome" type="string">
+            <column name="nome" length="45" not-null="true" />
+        </property>
+        <property name="descricao" type="string">
+            <column name="descricao" length="45" not-null="true" />
+        </property>
+        <property name="quantidade" type="string">
+            <column name="quantidade" length="45" not-null="true" />
+        </property>
+        <property name="custounitario" type="big_decimal">
+            <column name="custounitario" precision="11" not-null="true" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+        <set name="nfeHasProdutos" table="nfe_has_produto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="produto_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.NfeHasProduto" />
+        </set>
+        <set name="estoqueHasProdutos" table="estoque_has_produto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="produto_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.EstoqueHasProduto" />
+        </set>
+    </class>
+</hibernate-mapping>

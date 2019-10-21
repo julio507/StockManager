@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Insercao" table="insercao" catalog="stockmanager" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="funcionario" class="hibr.Funcionario" fetch="select">
+            <column name="funcionario_id" not-null="true" />
+        </many-to-one>
+        <property name="data" type="timestamp">
+            <column name="data" length="19" not-null="true" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+        <set name="estoqueHasProdutos" table="estoque_has_produto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="insercao_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.EstoqueHasProduto" />
+        </set>
+    </class>
+</hibernate-mapping>

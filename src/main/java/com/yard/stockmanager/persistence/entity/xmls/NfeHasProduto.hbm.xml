@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.NfeHasProduto" table="nfe_has_produto" catalog="stockmanager" optimistic-lock="version">
+        <composite-id name="id" class="hibr.NfeHasProdutoId">
+            <key-property name="nfeId" type="int">
+                <column name="nfe_id" />
+            </key-property>
+            <key-property name="produtoId" type="int">
+                <column name="produto_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="nfe" class="hibr.Nfe" update="false" insert="false" fetch="select">
+            <column name="nfe_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="produto" class="hibr.Produto" update="false" insert="false" fetch="select">
+            <column name="produto_id" not-null="true" />
+        </many-to-one>
+        <property name="quantidade" type="double">
+            <column name="quantidade" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="valorprodutos" type="double">
+            <column name="valorprodutos" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Pessoa" table="pessoa" catalog="stockmanager" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="endereco" class="hibr.Endereco" fetch="select">
+            <column name="endereco_id" not-null="true" />
+        </many-to-one>
+        <property name="denominacaosocial" type="string">
+            <column name="denominacaosocial" length="90" />
+        </property>
+        <property name="nome" type="string">
+            <column name="nome" length="55" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <property name="cnpj" type="string">
+            <column name="cnpj" length="45" unique="true" />
+        </property>
+        <property name="cpf" type="string">
+            <column name="cpf" length="14" unique="true" />
+        </property>
+        <property name="observacoes" type="string">
+            <column name="observacoes" length="65535" />
+        </property>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+        <set name="pessoaHasAgendamentos" table="pessoa_has_agendamento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.PessoaHasAgendamento" />
+        </set>
+        <set name="funcionarios" table="funcionario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Funcionario" />
+        </set>
+        <set name="pessoaHasTelefoneses" table="pessoa_has_telefones" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.PessoaHasTelefones" />
+        </set>
+        <set name="pessoaHasTipos" table="pessoa_has_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoa_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.PessoaHasTipo" />
+        </set>
+        <set name="nfesForPessoadestId" table="nfe" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoadest_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Nfe" />
+        </set>
+        <set name="nfesForPessoaremId" table="nfe" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pessoarem_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Nfe" />
+        </set>
+    </class>
+</hibernate-mapping>

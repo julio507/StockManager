@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.PessoaHasAgendamento" table="pessoa_has_agendamento" catalog="stockmanager" optimistic-lock="version">
+        <composite-id name="id" class="hibr.PessoaHasAgendamentoId">
+            <key-property name="pessoaId" type="int">
+                <column name="pessoa_id" />
+            </key-property>
+            <key-property name="agendamentoId" type="int">
+                <column name="agendamento_id" />
+            </key-property>
+            <key-property name="agendamentoFuncionarioId" type="int">
+                <column name="agendamento_funcionario_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="agendamento" class="hibr.Agendamento" update="false" insert="false" fetch="select">
+            <column name="agendamento_id" not-null="true" />
+            <column name="agendamento_funcionario_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="pessoa" class="hibr.Pessoa" update="false" insert="false" fetch="select">
+            <column name="pessoa_id" not-null="true" />
+        </many-to-one>
+        <property name="ativo" type="char">
+            <column name="ativo" length="1" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
