@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`endereco` (
   `complementos` VARCHAR(25) NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Endereco_Cidade1_idx` (`cidade_id` ASC) VISIBLE,
+  INDEX `fk_Endereco_Cidade1_idx` (`cidade_id` ASC) ,
   CONSTRAINT `fk_Endereco_Cidade1`
     FOREIGN KEY (`cidade_id`)
     REFERENCES `StockManager`.`cidade` (`id`)
@@ -63,9 +63,9 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`pessoa` (
   `observacoes` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Pessoa_Endereco1_idx` (`endereco_id` ASC) VISIBLE,
-  UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC) VISIBLE,
-  UNIQUE INDEX `cnpj_UNIQUE` (`cnpj` ASC) VISIBLE,
+  INDEX `fk_Pessoa_Endereco1_idx` (`endereco_id` ASC) ,
+  UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC) ,
+  UNIQUE INDEX `cnpj_UNIQUE` (`cnpj` ASC) ,
   CONSTRAINT `fk_Pessoa_Endereco1`
     FOREIGN KEY (`endereco_id`)
     REFERENCES `StockManager`.`endereco` (`id`)
@@ -88,8 +88,8 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`funcionario` (
   `senhaemail` VARCHAR(45) NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Funcionario_Pessoa1_idx` (`pessoa_id` ASC) VISIBLE,
-  UNIQUE INDEX `ogin_UNIQUE` (`login` ASC) VISIBLE,
+  INDEX `fk_Funcionario_Pessoa1_idx` (`pessoa_id` ASC) ,
+  UNIQUE INDEX `ogin_UNIQUE` (`login` ASC) ,
   CONSTRAINT `fk_Funcionario_Pessoa1`
     FOREIGN KEY (`pessoa_id`)
     REFERENCES `StockManager`.`pessoa` (`id`)
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`categoria` (
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) VISIBLE)
+  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) )
 ENGINE = InnoDB;
 
 
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`departamento` (
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) VISIBLE)
+  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) )
 ENGINE = InnoDB;
 
 
@@ -134,8 +134,8 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`unidade` (
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) VISIBLE,
-  UNIQUE INDEX `sigla_UNIQUE` (`sigla` ASC) VISIBLE)
+  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) ,
+  UNIQUE INDEX `sigla_UNIQUE` (`sigla` ASC) )
 ENGINE = InnoDB;
 
 
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`marca` (
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) VISIBLE)
+  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) )
 ENGINE = InnoDB;
 
 
@@ -167,10 +167,10 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`produto` (
   `custounitario` DECIMAL(11,2) NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Produto_Departamento1_idx` (`departamento_id` ASC) VISIBLE,
-  INDEX `fk_Produto_Categoria1_idx` (`categoria_id` ASC) VISIBLE,
-  INDEX `fk_Produto_Unidade1_idx` (`unidade_id` ASC) VISIBLE,
-  INDEX `fk_Produto_Marca1_idx` (`marca_id` ASC) VISIBLE,
+  INDEX `fk_Produto_Departamento1_idx` (`departamento_id` ASC) ,
+  INDEX `fk_Produto_Categoria1_idx` (`categoria_id` ASC) ,
+  INDEX `fk_Produto_Unidade1_idx` (`unidade_id` ASC) ,
+  INDEX `fk_Produto_Marca1_idx` (`marca_id` ASC) ,
   CONSTRAINT `fk_Produto_Departamento1`
     FOREIGN KEY (`departamento_id`)
     REFERENCES `StockManager`.`departamento` (`id`)
@@ -210,10 +210,10 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`nfe` (
   `observacoes` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_nfe_pessoa1_idx` (`pessoarem_id` ASC) VISIBLE,
-  INDEX `fk_nfe_pessoa2_idx` (`pessoadest_id` ASC) VISIBLE,
-  INDEX `fk_nfe_endereco1_idx` (`enderecorem_id` ASC) VISIBLE,
-  INDEX `fk_nfe_endereco2_idx` (`enderecodest_id` ASC) VISIBLE,
+  INDEX `fk_nfe_pessoa1_idx` (`pessoarem_id` ASC) ,
+  INDEX `fk_nfe_pessoa2_idx` (`pessoadest_id` ASC) ,
+  INDEX `fk_nfe_endereco1_idx` (`enderecorem_id` ASC) ,
+  INDEX `fk_nfe_endereco2_idx` (`enderecodest_id` ASC) ,
   CONSTRAINT `fk_nfe_pessoa1`
     FOREIGN KEY (`pessoarem_id`)
     REFERENCES `StockManager`.`pessoa` (`id`)
@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`nfe_has_produto` (
   `valorprodutos` DOUBLE NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`nfe_id`, `produto_id`),
-  INDEX `fk_nfe_has_produto_produto1_idx` (`produto_id` ASC) VISIBLE,
+  INDEX `fk_nfe_has_produto_produto1_idx` (`produto_id` ASC) ,
   CONSTRAINT `fk_nfe_has_produto_nfe1`
     FOREIGN KEY (`nfe_id`)
     REFERENCES `StockManager`.`nfe` (`id`)
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`estoque` (
   `telefone` VARCHAR(25) NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Estoque_Endereco1_idx` (`endereco_id` ASC) VISIBLE,
+  INDEX `fk_Estoque_Endereco1_idx` (`endereco_id` ASC) ,
   CONSTRAINT `fk_Estoque_Endereco1`
     FOREIGN KEY (`endereco_id`)
     REFERENCES `StockManager`.`endereco` (`id`)
@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`agendamento` (
   `estado` CHAR(1) NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`, `funcionario_id`),
-  INDEX `fk_Agendamento_Funcionario1_idx` (`funcionario_id` ASC) VISIBLE,
+  INDEX `fk_Agendamento_Funcionario1_idx` (`funcionario_id` ASC) ,
   CONSTRAINT `fk_Agendamento_Funcionario1`
     FOREIGN KEY (`funcionario_id`)
     REFERENCES `StockManager`.`funcionario` (`id`)
@@ -310,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`insercao` (
   `data` DATETIME NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_insercao_funcionario1_idx` (`funcionario_id` ASC) VISIBLE,
+  INDEX `fk_insercao_funcionario1_idx` (`funcionario_id` ASC) ,
   CONSTRAINT `fk_insercao_funcionario1`
     FOREIGN KEY (`funcionario_id`)
     REFERENCES `StockManager`.`funcionario` (`id`)
@@ -329,9 +329,9 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`estoque_has_produto` (
   `quantidade` DOUBLE NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`insercao_id`, `Estoque_id`, `produto_id`),
-  INDEX `fk_Estoque_has_Produto_Produto1_idx` (`produto_id` ASC) VISIBLE,
-  INDEX `fk_Estoque_has_Produto_Estoque1_idx` (`Estoque_id` ASC) VISIBLE,
-  INDEX `fk_estoque_has_produto_insercao1_idx` (`insercao_id` ASC) VISIBLE,
+  INDEX `fk_Estoque_has_Produto_Produto1_idx` (`produto_id` ASC) ,
+  INDEX `fk_Estoque_has_Produto_Estoque1_idx` (`Estoque_id` ASC) ,
+  INDEX `fk_estoque_has_produto_insercao1_idx` (`insercao_id` ASC) ,
   CONSTRAINT `fk_Estoque_has_Produto_Estoque1`
     FOREIGN KEY (`Estoque_id`)
     REFERENCES `StockManager`.`estoque` (`id`)
@@ -370,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`tipo` (
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) VISIBLE)
+  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) )
 ENGINE = InnoDB;
 
 
@@ -383,8 +383,8 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`pessoa_has_telefones` (
   `descricao` TEXT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`pessoa_id`, `telefones_id`),
-  INDEX `fk_Pessoa_has_Telefones_Telefones1_idx` (`telefones_id` ASC) VISIBLE,
-  INDEX `fk_Pessoa_has_Telefones_Pessoa1_idx` (`pessoa_id` ASC) VISIBLE,
+  INDEX `fk_Pessoa_has_Telefones_Telefones1_idx` (`telefones_id` ASC) ,
+  INDEX `fk_Pessoa_has_Telefones_Pessoa1_idx` (`pessoa_id` ASC) ,
   CONSTRAINT `fk_Pessoa_has_Telefones_Pessoa1`
     FOREIGN KEY (`pessoa_id`)
     REFERENCES `StockManager`.`pessoa` (`id`)
@@ -406,8 +406,8 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`pessoa_has_tipo` (
   `tipo_id` INT NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`pessoa_id`, `tipo_id`),
-  INDEX `fk_Pessoa_has_Tipo_Tipo1_idx` (`tipo_id` ASC) VISIBLE,
-  INDEX `fk_Pessoa_has_Tipo_Pessoa1_idx` (`pessoa_id` ASC) VISIBLE,
+  INDEX `fk_Pessoa_has_Tipo_Tipo1_idx` (`tipo_id` ASC) ,
+  INDEX `fk_Pessoa_has_Tipo_Pessoa1_idx` (`pessoa_id` ASC) ,
   CONSTRAINT `fk_Pessoa_has_Tipo_Pessoa1`
     FOREIGN KEY (`pessoa_id`)
     REFERENCES `StockManager`.`pessoa` (`id`)
@@ -430,8 +430,8 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`pessoa_has_agendamento` (
   `agendamento_funcionario_id` INT NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`pessoa_id`, `agendamento_id`, `agendamento_funcionario_id`),
-  INDEX `fk_pessoa_has_agendamento_agendamento1_idx` (`agendamento_id` ASC, `agendamento_funcionario_id` ASC) VISIBLE,
-  INDEX `fk_pessoa_has_agendamento_pessoa1_idx` (`pessoa_id` ASC) VISIBLE,
+  INDEX `fk_pessoa_has_agendamento_agendamento1_idx` (`agendamento_id` ASC, `agendamento_funcionario_id` ASC) ,
+  INDEX `fk_pessoa_has_agendamento_pessoa1_idx` (`pessoa_id` ASC) ,
   CONSTRAINT `fk_pessoa_has_agendamento_pessoa1`
     FOREIGN KEY (`pessoa_id`)
     REFERENCES `StockManager`.`pessoa` (`id`)

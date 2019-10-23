@@ -50,6 +50,9 @@
         <mapping class="com.yard.stockmanager.persistence.entity.Telefones" />
         <mapping class="com.yard.stockmanager.persistence.entity.Tipo" />
         <mapping class="com.yard.stockmanager.persistence.entity.Unidade" />
+        <mapping class="com.yard.stockmanager.persistence.entity.Insercao" />
+        <mapping class="com.yard.stockmanager.persistence.entity.PessoaHasAgendamento" />
+        <mapping class="com.yard.stockmanager.persistence.entity.PessoaHasTipo" />
 
     </session-factory>
 </hibernate-configuration>
