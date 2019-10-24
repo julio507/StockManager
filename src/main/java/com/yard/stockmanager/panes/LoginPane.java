@@ -7,7 +7,7 @@ package com.yard.stockmanager.panes;
 
 import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
 
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,7 +18,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -31,7 +38,7 @@ import javafx.scene.text.Text;
 public class LoginPane extends GridPane
 {
 
-    public LoginPane(EventHandler<Event> event)
+    public LoginPane(EventHandler<ActionEvent> event)
     {
         this.event = event;
         initComponent();
@@ -116,7 +123,7 @@ public class LoginPane extends GridPane
     }
 
 
-    private EventHandler event;
+    private EventHandler<ActionEvent> event;
 
     private TextField tfLogin = new TextField();
     private TextField tfPassword = new PasswordField();

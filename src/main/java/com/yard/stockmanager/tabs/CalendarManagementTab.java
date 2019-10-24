@@ -6,12 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import com.yard.stockmanager.parts.DayList;
-import com.yard.stockmanager.parts.DayList.DayWeek;
-import com.yard.stockmanager.parts.DayList.Month;
+import com.yard.stockmanager.parts.CalendarSidePane;
+import com.yard.stockmanager.parts.DayBlock;
+import com.yard.stockmanager.parts.DayBlock.DayWeek;
+import com.yard.stockmanager.parts.DayBlock.Month;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -41,12 +45,23 @@ public class CalendarManagementTab extends Tab {
 
             WeekFields week = WeekFields.of(Locale.getDefault());
 
-            centerGrid.add(new DayList(date), date.get(week.dayOfWeek()), date.get(week.weekOfWeekBasedYear()));
+            DayBlock block = new DayBlock(date);
+
+            centerGrid.add(block, date.get(week.dayOfWeek()), date.get(week.weekOfWeekBasedYear()));
+
+            block.setOnClick(new EventHandler<Event>() {
+
+                @Override
+                public void handle(Event event) {
+                    sidePane.setDate( block.getDate() );
+                }
+            });
         }
 
         for (DayWeek d : DayWeek.values()) {
             TextField field = new TextField();
-
+            field.setAlignment( Pos.CENTER );
+            field.setPrefWidth(100);
             field.setText(d.toString());
             field.setEditable(false);
             centerGrid.add(field, d.ordinal() + 1, 0);
@@ -69,9 +84,15 @@ public class CalendarManagementTab extends Tab {
         monthCombo.getItems().addAll(months);
 
         topGrid.addRow(0, monthLabel, monthCombo, yearLabel, yearCombo);
+        topGrid.setAlignment( Pos.CENTER );
+        topGrid.setHgap( 20 );
+        topGrid.setPrefHeight( 50 );
+
+        centerGrid.setAlignment( Pos.CENTER );
 
         borderpane.setTop(topGrid);
         borderpane.setCenter(centerGrid);
+        borderpane.setRight( sidePane );
         setContent(borderpane);
 
         monthCombo.valueProperty().addListener(new ChangeListener<Month>() {
@@ -100,8 +121,10 @@ public class CalendarManagementTab extends Tab {
     private Label monthLabel = new Label("Mes:");
     private Label yearLabel = new Label("Ano:");
 
-    private ComboBox monthCombo = new ComboBox<Month>();
-    private ComboBox yearCombo = new ComboBox<Integer>();
+    private ComboBox<Month> monthCombo = new ComboBox<Month>();
+    private ComboBox<Integer> yearCombo = new ComboBox<Integer>();
+
+    private CalendarSidePane sidePane = new CalendarSidePane();
 
     private GridPane topGrid = new GridPane();
 

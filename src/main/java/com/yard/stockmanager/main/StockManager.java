@@ -9,8 +9,9 @@ import com.yard.stockmanager.panes.LoginPane;
 import com.yard.stockmanager.panes.MainPane;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 import com.yard.stockmanager.useful.Error;
+
 import javafx.application.Application;
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -51,10 +52,10 @@ public class StockManager extends Application
         launch(args);
     }
 
-    private EventHandler<Event> event = new EventHandler<Event>()
+    private EventHandler<ActionEvent> event = new EventHandler<ActionEvent>()
     {
         @Override
-        public void handle(Event event)
+        public void handle(ActionEvent event)
         {
             if (login.doLogin())
             {

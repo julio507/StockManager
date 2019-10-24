@@ -1,16 +1,17 @@
 package com.yard.stockmanager.parts;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
-import org.hibernate.annotations.SourceType;
+import com.yard.stockmanager.useful.DateFormat;
 
-import javafx.event.EventHandler;
 import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 
-public class DayList extends BorderPane {
+public class DayBlock extends BorderPane {
     
     public enum DayWeek
     {
@@ -64,10 +65,9 @@ public class DayList extends BorderPane {
     }
 
     private LocalDate date;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private Font font = new Font( 20 );
 
-    public DayList(LocalDate date) {
-        super();
+    public DayBlock(LocalDate date) {
         this.date = date;
 
         initComponents();
@@ -76,22 +76,37 @@ public class DayList extends BorderPane {
     }
 
     public void refreshContent() {
-        field.setText(date.format(formatter));
+        field.setText( DateFormat.getDayString(date) );
     }
 
+    /**
+     * @return the date
+     */
+    public LocalDate getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setOnClick( EventHandler<Event> event )
+    {
+        field.setOnMouseClicked( event );
+    };
+
     private void initComponents() {
-        setTop(field);
-        setMinHeight(100);
-
+        field.setPrefHeight(100);
         field.setEditable(false);
+        field.setFont( font );
+        field.setAlignment( Pos.CENTER );
+        setPrefHeight(100);
+        setPrefWidth(100);
 
-        setOnMouseClicked(new EventHandler<Event>() {
-
-            @Override
-            public void handle(Event event) {
-
-            }
-        });
+        setTop(field);
     }
 
     private TextField field = new TextField();

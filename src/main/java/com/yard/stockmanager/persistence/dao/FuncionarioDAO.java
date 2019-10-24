@@ -5,13 +5,16 @@
  */
 package com.yard.stockmanager.persistence.dao;
 
-import com.yard.stockmanager.persistence.entity.Funcionario;
-import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.yard.stockmanager.persistence.entity.Funcionario;
+import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
+import com.yard.stockmanager.useful.Encoding;
+import com.yard.stockmanager.useful.Error;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -32,12 +35,12 @@ public class FuncionarioDAO
             String hql = "FROM Funcionario f WHERE f.login = :login and f.senha = :senha";
             Query query = s.createQuery(hql);
             query.setParameter("login", login);
-            query.setParameter("senha", password);
+            query.setParameter("senha", Encoding.encodeToMD5( password ));
             s.beginTransaction();
             func = query.list();
             s.close();
 
-            if (func.get(0).getLogin().equals(login) && func.get(0).getSenha().equals(password))
+            if (func.get(0).getLogin().equals(login) && func.get(0).getSenha().equals( Encoding.encodeToMD5(password)))
             {
                 return true;
             }
@@ -46,10 +49,11 @@ public class FuncionarioDAO
                 return false;
             }
         }
+        
         catch (Exception e)
         {
-            System.out.println(e);
-            
+            Error.exception(e);
+
             return false;
         }
     }
