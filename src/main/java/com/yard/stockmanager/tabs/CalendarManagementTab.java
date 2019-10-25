@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import com.yard.stockmanager.parts.CalendarSidePane;
+import com.yard.stockmanager.panes.CalendarSidePane;
 import com.yard.stockmanager.parts.DayBlock;
 import com.yard.stockmanager.parts.DayBlock.DayWeek;
 import com.yard.stockmanager.parts.DayBlock.Month;

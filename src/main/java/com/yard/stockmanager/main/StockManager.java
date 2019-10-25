@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -39,6 +40,7 @@ public class StockManager extends Application
         Scene scene = new Scene(root, 720, 460);
 
         primaryStage.setTitle("StockManager");
+        primaryStage.getIcons().add( new Image( "img/icon.png" ) );
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();

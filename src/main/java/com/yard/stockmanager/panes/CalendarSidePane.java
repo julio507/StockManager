@@ -1,13 +1,17 @@
-package com.yard.stockmanager.parts;
+package com.yard.stockmanager.panes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yard.stockmanager.parts.Window;
 import com.yard.stockmanager.persistence.entity.Agendamento;
 import com.yard.stockmanager.useful.DateFormat;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -73,10 +77,23 @@ public class CalendarSidePane
     {
         dateField.setFont( font );
         dateField.setEditable( false );
+        dateField.setAlignment( Pos.CENTER );
 
         setTop( dateField );
         setCenter( list );
         setBottom( newButton );
+
+        newButton.setOnAction( new EventHandler<ActionEvent>(){
+        
+            @Override
+            public void handle(ActionEvent event) {
+                PendencyFormPane form = new PendencyFormPane();
+
+                Window window = new Window( getScene(), form, "Formulario De Pendência" );
+
+                window.showAndWait();
+            }
+        } );
     }
 
     private TextField dateField = new TextField();

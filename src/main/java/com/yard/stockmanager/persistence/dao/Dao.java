@@ -1,31 +1,23 @@
 package com.yard.stockmanager.persistence.dao;
 
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
+import com.yard.stockmanager.useful.Error;
 
 import org.hibernate.Session;
 
 public abstract class Dao<T> {
     public void add(T t) {
         try {
-
             Session s = HibernateUtil.getSessionFactory().openSession();
             s.beginTransaction();
             s.save(t);
             s.getTransaction().commit();
             s.close();
         } catch (Exception e) {
-            System.out.println(e);
+            Error.exception(e);
         }
 
-    }
-
-    ;
-
-    public T get(int id) {
-        return null;
-    }
-
-    ;
+    };
 
     public void delete(T t) {
         Session s = HibernateUtil.getSessionFactory().openSession();
@@ -33,9 +25,7 @@ public abstract class Dao<T> {
         s.delete(t);
         s.getTransaction().commit();
         s.close();
-    }
-
-    ;
+    };
 
     public void update(T t) {
         try {
@@ -46,9 +36,7 @@ public abstract class Dao<T> {
             s.getTransaction().commit();
             s.close();
         } catch (Exception e) {
-            System.out.println(e);
+            Error.exception(e);
         }
-    }
-
-    ;
+    };
 }
