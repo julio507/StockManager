@@ -23,7 +23,7 @@ public class EstoqueHasProdutoDAO extends Dao<EstoqueHasProduto> {
         List<Object[]> insList = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        insList = (List<Object[]>) s.createQuery("select distinct p.id, p.nome, m.nome, u.sigla, es.quantidade, p.custounitario " +
+        insList = (List<Object[]>) s.createQuery("select distinct p.id, p.nome, m.nome, u.sigla, es.quantidade, es.valorunitario " +
                 "from Produto p, EstoqueHasProduto es, Insercao i, Marca m, Unidade u " +
                 "where p.id = es.produto and es.insercao = 1 and p.marca = m.id and u.id = p.unidade and p.nome like '%" + busca + "%'").list();
         s.getTransaction().commit();
