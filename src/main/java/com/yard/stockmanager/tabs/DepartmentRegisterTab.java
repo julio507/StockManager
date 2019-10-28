@@ -5,10 +5,7 @@ import com.yard.stockmanager.persistence.dao.DepartmentDAO;
 import com.yard.stockmanager.persistence.entity.Departamento;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
@@ -25,9 +22,9 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
 
     @Override
     public void refresh() {
-        List<Departamento> list = depDAO.getAll();
+        List<Departamento> list = depDAO.getAll(getFilter());
 
-        tableView.setItems(FXCollections.observableArrayList( list ));
+        tableView.setItems(FXCollections.observableArrayList(list));
         tableView.refresh();
     }
 
@@ -131,6 +128,8 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
         tarDescricao.setText("");
     }
 
+
+
     private void initComponents() {
 
         //TextFields
@@ -153,6 +152,7 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
         atv.setCellValueFactory(new PropertyValueFactory<Departamento, Character>("Ativo"));
 
         //Tabela
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setPrefSize(1000, 1000);
         tableView.getColumns().addAll(id, dep, desc, atv);
 

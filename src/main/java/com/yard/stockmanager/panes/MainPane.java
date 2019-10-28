@@ -40,7 +40,8 @@ public class MainPane
                 peopleRegisterTab,
                 departmentRegisterTab,
                 itensStockTab,
-                addressManagerTab
+                addressManagerTab,
+                cityRegistreTab
         );
         
         operationsMenu.getItems().addAll(
@@ -145,6 +146,12 @@ public class MainPane
         @Override
         public Tab getTab() { return new AddressManagerTab(); }
     };
+
+    private TabMenuItem cityRegistreTab = new TabMenuItem("Cadastro de Cidades", tabPane ){
+        @Override
+        public Tab getTab() { return new CityRegisterTab(); }
+    };
+
 
     private MenuBar menu = new MenuBar();
 

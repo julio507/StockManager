@@ -18,4 +18,14 @@ public class DepartmentDAO extends Dao<Departamento> {
         s.close();
         return depList;
     }
+
+    public static List<Departamento> getAll(String busca) {
+        List depList = new ArrayList();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        depList = s.createQuery("FROM Departamento where nome like '%" + busca + "%'").list();
+        s.getTransaction().commit();
+        s.close();
+        return depList;
+    }
 }
