@@ -4,14 +4,13 @@ import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.EstoqueDAO;
 import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.entity.Estoque;
+import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.yard.stockmanager.useful.Error;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StockManagerTab extends ManagementTab<Estoque>

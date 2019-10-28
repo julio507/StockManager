@@ -1,6 +1,5 @@
 package com.yard.stockmanager.persistence.dao;
 
-import com.yard.stockmanager.persistence.entity.Departamento;
 import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 import org.hibernate.Session;

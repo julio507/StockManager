@@ -13,14 +13,13 @@ public class EstoqueDAO
             Dao<Estoque>
 {
 
-    public List<Estoque> getAll()
-    {
-        List depList = new ArrayList();
+    public static List<Estoque> getAll() {
+        List list = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        depList = s.createQuery("FROM Estoque").list();
+        list = s.createQuery("select e.id, e.endereco, e.nome, e.descricao, e.telefone, e.ativo FROM Estoque e").list();
         s.getTransaction().commit();
         s.close();
-        return depList;
+        return list;
     }
 }

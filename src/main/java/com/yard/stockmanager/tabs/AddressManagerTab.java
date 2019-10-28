@@ -3,7 +3,6 @@ package com.yard.stockmanager.tabs;
 import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.EnderecoDAO;
 import com.yard.stockmanager.persistence.entity.Endereco;
-import com.yard.stockmanager.persistence.entity.Estoque;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
