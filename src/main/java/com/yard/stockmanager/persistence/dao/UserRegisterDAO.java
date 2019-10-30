@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRegisterDAO {
+public class UserRegisterDAO
     extends
     Dao<Funcionario> {
         public static List<Funcionario> getAll() {
