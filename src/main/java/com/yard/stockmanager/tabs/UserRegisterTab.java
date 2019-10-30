@@ -1,11 +1,18 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.dao.UserRegisterDAO;
+import com.yard.stockmanager.persistence.entity.Estoque;
+import com.yard.stockmanager.persistence.entity.Funcionario;
+import com.yard.stockmanager.useful.Error;
+import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class UserRegisterTab extends ManagementTab<Object> {
 
@@ -20,13 +27,53 @@ public class UserRegisterTab extends ManagementTab<Object> {
 
     @Override
     public void refresh() {
+        UserRegisterDAO dao = new UserRegisterDAO();
+        List<Funcionario> list = dao.getAll();
+
+        tableView.setItems(FXCollections.observableArrayList( list ));
+        tableView.refresh();
 
     }
 
     @Override
     public boolean validate() {
-        return false;
+        String errors = "";
+
+        if (tfdCodigo.getText().isEmpty()) {
+            errors = errors + "Código";
+        }
+        if (tfdNomeUsuario.getText().isEmpty()) {
+            errors = errors + "Nome do Usuário";
+        }
+        if (tfdSenha.getText().isEmpty()) {
+            errors = errors + "Senha";
+        }
+        if (tfdNomeFuncionario.getText().isEmpty()) {
+            errors = errors + "Nome do Funcionário";
+        }
+        if (tfdSenha.getText().isEmpty()) {
+            errors = errors + "Senha";
+        }
+        if (tfdEmail.getText().isEmpty()) {
+            errors = errors + "Email";
+        }
+        if (tfdTelefone.getText().isEmpty()) {
+            errors = errors + "Telefone";
+        }
+        if (tfdFuncao.getText().isEmpty()) {
+            errors = errors + "Função";
+        }
+        if (tfdNivelAcesso.getText().isEmpty()) {
+            errors = errors + "Nível de Acesso";
+        }
+        if (!errors.isEmpty())
+        {
+            Error.messageAndLog(errors);
+        }
+
+        return errors.isEmpty();
     }
+
 
     @Override
     public void save() {

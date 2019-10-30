@@ -1,41 +1,134 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.dao.PeopleRegisterDAO;
+import com.yard.stockmanager.persistence.entity.Endereco;
+import com.yard.stockmanager.persistence.entity.Estoque;
+import com.yard.stockmanager.persistence.entity.Pessoa;
+import com.yard.stockmanager.persistence.entity.Telefones;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class PeopleRegisterTab extends ManagementTab<Object>
-{
+import javax.swing.*;
+import java.util.List;
 
-    private Stage stage;
-    private Font font = new Font(14);
+public class PeopleRegisterTab extends ManagementTab<Object> {
+    private Pessoa selected;
 
-    public PeopleRegisterTab()
-    {
+    public PeopleRegisterTab() {
         super("Cadastro de Pessoas");
         initComponents();
     }
 
     @Override
     public void refresh() {
+        PeopleRegisterDAO dao = new PeopleRegisterDAO();
+
+        List<Pessoa> list = dao.getAll();
+
+        tableView.setItems(FXCollections.observableArrayList(list));
+        tableView.refresh();
 
     }
 
     @Override
     public boolean validate() {
-        return false;
+        String errors = "";
+
+        if (tfdCodigo.getText().isEmpty()) {
+            errors = errors + "Código";
+        }
+
+        if (tfdDenominacaoSocial.getText().isEmpty()) {
+            errors = errors + "Denominação Social";
+        }
+        if (tfdNome.getText().isEmpty()) {
+            errors = errors + "Nome";
+        }
+        if (tfdTelefone.getText().isEmpty()) {
+            errors = errors + "Telefone";
+        }
+        if (tfdEmail.getText().isEmpty()) {
+            errors = errors + "Email";
+        }
+        if (tfdCnpj.getText().isEmpty()) {
+            errors = errors + "CNPJ";
+        }
+        if (tfdCpf.getText().isEmpty()) {
+            errors = errors + "CPF";
+        }
+        if (tfdRua.getText().isEmpty()) {
+            errors = errors + "Rua";
+        }
+        if (tfdNumero.getText().isEmpty()) {
+            errors = errors + "Número";
+        }
+        if (tfdBairro.getText().isEmpty()) {
+            errors = errors + "Bairro";
+        }
+        if (tfdCep.getText().isEmpty()) {
+            errors = errors + "CEP";
+        }
+        if (tfdCidade.getText().isEmpty()) {
+            errors = errors + "Cidade";
+        }
+        if (tfdUf.getText().isEmpty()) {
+            errors = errors + "UF";
+        }
+        if (tfdObservacoes.getText().isEmpty()) {
+            errors = errors + "Observações";
+        }
+        if (tfdTipo.getText().isEmpty()) {
+            errors = errors + "Tipo";
+        }
+        return errors.isEmpty();
     }
 
     @Override
     public void save() {
+        Pessoa pes = new Pessoa();
+        Endereco end = new Endereco();
+        Telefones tel = new Telefones();
 
+        pes.setId(1);
+        pes.setDenominacaosocial(tfdDenominacaoSocial.getText());
+        pes.setNome(tfdNome.getText());
+        pes.setEmail(tfdEmail.getText());
+        pes.setCnpj(tfdCnpj.getText());
+        pes.setCpf(tfdCpf.getText());
+        pes.setObservacoes(tfdObservacoes.getText());
+        pes.setEndereco(end);
+//        falta combobox dos telefones/tipos
+
+        PeopleRegisterDAO pesDao = new PeopleRegisterDAO();
+        pesDao.add(pes);
     }
 
     @Override
     public void edit() {
+        Pessoa pes = new Pessoa();
+        Endereco end = new Endereco();
+
+        pes.setId(this.id);
+        pes.setDenominacaosocial(tfdDenominacaoSocial.getText());
+        pes.setNome(tfdNome.getText());
+        pes.setEmail(tfdEmail.getText());
+        pes.setCnpj(tfdCnpj.getText());
+        pes.setCpf(tfdCpf.getText());
+        pes.setObservacoes(tfdObservacoes.getText());
+        pes.setEndereco(end);
+//        falta telefones / tipos
+
+        PeopleRegisterDAO pesDao = new PeopleRegisterDAO();
+        pesDao.update(pes);
+        System.out.println("Edita");
+
+        refresh();
 
     }
 
@@ -46,8 +139,26 @@ public class PeopleRegisterTab extends ManagementTab<Object>
 
     @Override
     public void select() {
+        selected = (Pessoa) getSelected();
 
+        if (selected != null) {
+            tfdDenominacaoSocial.setText(selected.getDenominacaosocial());
+            tfdNome.setText(selected.getNome());
+            tfdEmail.setText(selected.getEmail());
+            tfdCnpj.setText(selected.getCnpj());
+            tfdCpf.setText(selected.getCpf());
+            tfdObservacoes.setText(selected.getObservacoes());
+            id = selected.getId();
+            // falta telefone/tipo
+        }
+        else
+            {
+            clear();
+        }
     }
+
+
+
 
     @Override
     public void clear() {
@@ -111,7 +222,10 @@ public class PeopleRegisterTab extends ManagementTab<Object>
         refresh();
     }
 
+    private int id;
+
     //Criação dos componentes da tela
+
     private Label labCodigo = new Label("Código:");
     private Label labDenominacaoSocial = new Label("Denominação Social");
     private Label labNome = new Label("Nome:");
@@ -127,6 +241,7 @@ public class PeopleRegisterTab extends ManagementTab<Object>
     private Label labUf = new Label("UF:");
     private Label labObservacoes = new Label("Observações:");
     private Label labTipo = new Label("Tipo:");
+    private JComboBox<String> comboBox = new JComboBox<String>();
 
     private TextField tfdCodigo = new TextField();
     private TextField tfdDenominacaoSocial = new TextField();
