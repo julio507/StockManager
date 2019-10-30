@@ -27,17 +27,19 @@ public class EstoqueHasProduto  implements java.io.Serializable {
      private Insercao insercao;
      private Produto produto;
      private double quantidade;
+    private double valorunitario;
      private char ativo;
 
     public EstoqueHasProduto() {
     }
 
-    public EstoqueHasProduto(EstoqueHasProdutoId id, Estoque estoque, Insercao insercao, Produto produto, double quantidade, char ativo) {
+    public EstoqueHasProduto(EstoqueHasProdutoId id, Estoque estoque, Insercao insercao, Produto produto, double quantidade,double valorunitario, char ativo) {
        this.id = id;
        this.estoque = estoque;
        this.insercao = insercao;
        this.produto = produto;
        this.quantidade = quantidade;
+       this.valorunitario = valorunitario;
        this.ativo = ativo;
     }
    
@@ -96,7 +98,15 @@ public class EstoqueHasProduto  implements java.io.Serializable {
         this.quantidade = quantidade;
     }
 
-    
+    @Column(name="valorunitario", nullable=false, precision=22, scale=0)
+    public double getValorunitario() {
+        return this.valorunitario;
+    }
+
+    public void setValorunitario(double valorunitario) {
+        this.valorunitario = valorunitario;
+    }
+
     @Column(name="ativo", nullable=false, length=1)
     public char getAtivo() {
         return this.ativo;
