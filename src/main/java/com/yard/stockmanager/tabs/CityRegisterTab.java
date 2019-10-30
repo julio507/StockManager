@@ -4,6 +4,9 @@ import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.CidadeDAO;
 import com.yard.stockmanager.persistence.entity.Cidade;
 import com.yard.stockmanager.useful.Error;
+
+import org.hibernate.ScrollableResults;
+
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -12,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
+
+import javax.swing.Scrollable;
 
 public class CityRegisterTab extends ManagementTab<Cidade> {
 
@@ -24,7 +29,7 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
 
     @Override
     public void refresh() {
-        List<Cidade> list = cidDAO.getAll(getFilter());
+        List<Cidade> list = cidDAO.getPagination( getFilter(), 0, lastPage );
 
         tableView.setItems(FXCollections.observableArrayList(list));
         tableView.refresh();
@@ -33,20 +38,22 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
 
     @Override
     public boolean validate() {
-        if(idField.getText().equals("Novo") && (tfdCidade.getText().trim().isEmpty() || tfdCidade.getText().trim().length() <= 3)){
+        if (idField.getText().equals("Novo")
+                && (tfdCidade.getText().trim().isEmpty() || tfdCidade.getText().trim().length() <= 3)) {
             Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
             return false;
-        }
-        else if(!idField.getText().equals("Novo") && (tfdCidade.getText().trim().isEmpty() || tfdCidade.getText().length() <= 3)){
+        } else if (!idField.getText().equals("Novo")
+                && (tfdCidade.getText().trim().isEmpty() || tfdCidade.getText().length() <= 3)) {
             Error.message("Erro ao Editar. Verifique os dados Inseridos!");
             return false;
         }
 
-        if(idField.getText().equals("Novo") && (tfdUF.getText().trim().isEmpty() || tfdUF.getText().trim().length() != 2)){
+        if (idField.getText().equals("Novo")
+                && (tfdUF.getText().trim().isEmpty() || tfdUF.getText().trim().length() != 2)) {
             Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
             return false;
-        }
-        else if(!idField.getText().equals("Novo") && (tfdUF.getText().trim().isEmpty() || tfdUF.getText().length() != 2)){
+        } else if (!idField.getText().equals("Novo")
+                && (tfdUF.getText().trim().isEmpty() || tfdUF.getText().length() != 2)) {
             Error.message("Erro ao Editar. Verifique os dados Inseridos!");
             return false;
         }
@@ -56,8 +63,7 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
 
     @Override
     public void save() {
-        try
-        {
+        try {
             Cidade c = new Cidade();
 
             c.setNome(tfdCidade.getText());
@@ -69,8 +75,7 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
             cidDAO.add(c);
         }
 
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Error.message(e.getMessage());
         }
 
@@ -78,15 +83,14 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
 
     @Override
     public void edit() {
-        try{
+        try {
             Cidade c = (Cidade) getSelected();
 
             c.setNome(tfdCidade.getText());
             c.setUf(tfdUF.getText());
 
             cidDAO.update(c);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Error.message(e.getMessage());
         }
 
@@ -96,22 +100,19 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
 
     @Override
     public void changeStatus() {
-        try
-        {
+        try {
             Cidade c = (Cidade) getSelected();
             if (c.getAtivo() == '1')
                 c.setAtivo('0');
-            else
-            {
+            else {
                 c.setAtivo('1');
             }
-            cidDAO.update( c );
+            cidDAO.update(c);
 
             refresh();
         }
 
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Error.message(e.getMessage());
         }
 
@@ -121,15 +122,13 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
     public void select() {
         selected = (Cidade) getSelected();
 
-        if (selected != null)
-        {
-            idField.setText(selected.getId()+"");
+        if (selected != null) {
+            idField.setText(selected.getId() + "");
             tfdCidade.setText(selected.getNome());
             tfdUF.setText(selected.getUf());
         }
 
-        else
-        {
+        else {
             clear();
         }
     }
@@ -143,14 +142,19 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
         tfdUF.setText("");
     }
 
+    @Override
+    public void doPagination() {
+        lastPage++;
+        refresh();
+    }
+
     private void initComponents() {
-        //TextFields
+        // TextFields
         idField.setDisable(true);
         tfdCidade.setEditable(true);
         tfdUF.setEditable(true);
 
-
-        //Colunas da tabela
+        // Colunas da tabela
         TableColumn<Cidade, Integer> id = new TableColumn<>("ID");
         TableColumn<Cidade, String> cidade = new TableColumn<>("Cidade");
         TableColumn<Cidade, String> uf = new TableColumn<>("UF");
@@ -161,20 +165,20 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
         uf.setCellValueFactory(new PropertyValueFactory<Cidade, String>("Uf"));
         atv.setCellValueFactory(new PropertyValueFactory<Cidade, Character>("Ativo"));
 
-        //Tabela
+        // Tabela
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setPrefSize(1000, 1000);
         tableView.getColumns().addAll(id, cidade, uf, atv);
 
         innerGrid.addRow(0, labid, idField);
-        innerGrid.addRow(1,labCidade, tfdCidade);
-        innerGrid.addRow(2,labUF, tfdUF);
+        innerGrid.addRow(1, labCidade, tfdCidade);
+        innerGrid.addRow(2, labUF, tfdUF);
 
         refresh();
 
     }
 
-    //Criação dos componentes da tela
+    // Criação dos componentes da tela
     private Label labid = new Label("ID:");
     private Label labCidade = new Label("Cidade:");
     private Label labUF = new Label("UF:");
@@ -183,6 +187,6 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
     private TextField tfdCidade = new TextField();
     private TextField tfdUF = new TextField();
 
-    //dao
+    // dao
     private CidadeDAO cidDAO = new CidadeDAO();
 }

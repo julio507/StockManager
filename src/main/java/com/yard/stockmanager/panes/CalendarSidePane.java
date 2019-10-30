@@ -1,7 +1,9 @@
 package com.yard.stockmanager.panes;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.yard.stockmanager.parts.Window;
@@ -88,6 +90,19 @@ public class CalendarSidePane
             @Override
             public void handle(ActionEvent event) {
                 PendencyFormPane form = new PendencyFormPane();
+                
+                if( list.getSelectionModel().getSelectedItem() != null )
+                {
+                    form.setSource( list.getSelectionModel().getSelectedItem() );
+                }
+
+                else
+                {
+                    Agendamento a = new Agendamento();
+                    a.setData( Date.from( date.atStartOfDay( ZoneId.systemDefault() ).toInstant() ) );
+
+                    form.setSource( a );
+                }
 
                 Window window = new Window( getScene(), form, "Formulario De Pendência" );
 

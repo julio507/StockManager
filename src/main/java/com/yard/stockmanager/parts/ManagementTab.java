@@ -7,11 +7,17 @@ package com.yard.stockmanager.parts;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -32,6 +38,8 @@ public abstract class ManagementTab<T>
 
     private boolean printable = false;
     private Font font = new Font(20);
+    protected int lastPage = 25;
+
     public ManagementTab(String label)
     {
         super(label);
@@ -54,6 +62,11 @@ public abstract class ManagementTab<T>
 
     public void print(){};
     
+    public void doPagination()
+    {
+        
+    }
+
     public Object getSelected()
     {
         return selected;
@@ -131,10 +144,21 @@ public abstract class ManagementTab<T>
 
         printButton.setDisable(!printable);
         
-        saveButton.setOnAction(new EventHandler()
+        tableView.setOnScroll( new EventHandler<ScrollEvent>() {
+
+            @Override
+            public void handle(ScrollEvent event) {
+                if( event.getDeltaY() < 0.0 )
+                {
+                    doPagination();
+                }
+            }
+        } );
+
+        saveButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle(Event event)
+            public void handle(ActionEvent event)
             {
                 if (validate())
                 {
@@ -148,16 +172,15 @@ public abstract class ManagementTab<T>
                         edit();
                     }
 
-                    
                     refresh();
                 }
             }
         });
 
-        disableButton.setOnAction(new EventHandler()
+        disableButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle(Event event)
+            public void handle(ActionEvent event)
             {
                 if (selected != null)
                 {
@@ -176,16 +199,16 @@ public abstract class ManagementTab<T>
             }
         });
 
-        newButton.setOnAction(new EventHandler()
+        newButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle(Event event)
+            public void handle(ActionEvent event)
             {
                 clear();
             }
         });
 
-        tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener()
+        tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>()
         {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue)
@@ -196,19 +219,19 @@ public abstract class ManagementTab<T>
             }
         });
 
-        searchButton.setOnAction(new EventHandler()
+        searchButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle(Event event)
+            public void handle(ActionEvent event)
             {
                 refresh();
             }
         });
         
-        printButton.setOnAction( new EventHandler()
+        printButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle(Event event)
+            public void handle(ActionEvent event)
             {
                 print();
             }
@@ -228,7 +251,7 @@ public abstract class ManagementTab<T>
     private Button printButton = new Button( "Imprimir" );
 
     protected GridPane innerGrid = new GridPane();
-    protected TableView<T> tableView = new TableView();
+    protected TableView<T> tableView = new TableView<T>();
 
     private GridPane outerGrid = new GridPane();
     private GridPane bottomGrid = new GridPane();

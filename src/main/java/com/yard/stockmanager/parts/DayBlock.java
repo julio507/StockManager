@@ -99,12 +99,12 @@ public class DayBlock extends BorderPane {
     };
 
     private void initComponents() {
-        field.setPrefHeight(100);
+        field.setPrefHeight(75);
         field.setEditable(false);
         field.setFont( font );
         field.setAlignment( Pos.CENTER );
-        setPrefHeight(100);
-        setPrefWidth(100);
+        setPrefHeight( 75 );
+        setPrefWidth(75);
 
         setTop(field);
     }
