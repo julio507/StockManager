@@ -27,6 +27,9 @@
         <property name="quantidade" type="double">
             <column name="quantidade" precision="22" scale="0" not-null="true" />
         </property>
+        <property name="valorunitario" type="double">
+            <column name="valorunitario" precision="22" scale="0" not-null="true" />
+        </property>
         <property name="ativo" type="char">
             <column name="ativo" length="1" not-null="true" />
         </property>
