@@ -110,9 +110,10 @@ public class Unidade  implements java.io.Serializable {
         this.produtos = produtos;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
 
 

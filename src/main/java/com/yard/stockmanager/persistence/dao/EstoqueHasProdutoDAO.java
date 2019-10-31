@@ -25,7 +25,7 @@ public class EstoqueHasProdutoDAO extends Dao<EstoqueHasProduto> {
         s.beginTransaction();
         insList = (List<Object[]>) s.createQuery("select distinct p.id, p.nome, m.nome, u.sigla, es.quantidade, es.valorunitario " +
                 "from Produto p, EstoqueHasProduto es, Insercao i, Marca m, Unidade u " +
-                "where p.id = es.produto and es.insercao = 1 and p.marca = m.id and u.id = p.unidade and p.nome like '%" + busca + "%'").list();
+                "where p.id = es.produto and es.insercao = "+ busca +" and p.marca = m.id and u.id = p.unidade").list();
         s.getTransaction().commit();
         s.close();
 
