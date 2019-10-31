@@ -14,7 +14,7 @@ public class UserRegisterDAO
         List list = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        list = s.createQuery("select f.id, f.pessoa, f.login, f.senha, f.funcao, f.nivelacesso, f.email, f.senhaemail, f.ativo FROM funcionario f ").list();
+        list = s.createQuery("select f.id, f.pessoa, f.login, f.senha, f.senhaemail, f.ativo, f.funcao FROM Funcionario f ").list();
         s.getTransaction().commit();
         s.close();
         return list;

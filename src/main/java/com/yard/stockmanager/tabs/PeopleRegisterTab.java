@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.util.List;
 
-public class PeopleRegisterTab extends ManagementTab<Object> {
+public class PeopleRegisterTab extends ManagementTab<Pessoa> {
     private Pessoa selected;
 
     public PeopleRegisterTab() {
@@ -62,29 +62,11 @@ public class PeopleRegisterTab extends ManagementTab<Object> {
         if (tfdCpf.getText().isEmpty()) {
             errors = errors + "CPF";
         }
-        if (tfdRua.getText().isEmpty()) {
-            errors = errors + "Rua";
-        }
-        if (tfdNumero.getText().isEmpty()) {
-            errors = errors + "Número";
-        }
-        if (tfdBairro.getText().isEmpty()) {
-            errors = errors + "Bairro";
-        }
-        if (tfdCep.getText().isEmpty()) {
-            errors = errors + "CEP";
-        }
-        if (tfdCidade.getText().isEmpty()) {
-            errors = errors + "Cidade";
-        }
-        if (tfdUf.getText().isEmpty()) {
-            errors = errors + "UF";
-        }
         if (tfdObservacoes.getText().isEmpty()) {
             errors = errors + "Observações";
         }
-        if (tfdTipo.getText().isEmpty()) {
-            errors = errors + "Tipo";
+        if (tfdAtivo.getText().isEmpty()) {
+            errors = errors + "Ativo";
         }
         return errors.isEmpty();
     }
@@ -175,31 +157,19 @@ public class PeopleRegisterTab extends ManagementTab<Object> {
         innerGrid.addRow(4,labEmail, tfdEmail);
         innerGrid.addRow(5,labCnpj, tfdCnpj);
         innerGrid.addRow(6,labCpf, tfdCpf);
-        innerGrid.addRow(7,labRua, tfdRua);
-        innerGrid.addRow(8,labNumero, tfdNumero);
-        innerGrid.addRow(9,labBairro, tfdBairro);
-        innerGrid.addRow(10,labCep, tfdCep);
-        innerGrid.addRow(11,labCidade, tfdCidade);
-        innerGrid.addRow(12,labUf, tfdUf);
-        innerGrid.addRow(13,labObservacoes, tfdObservacoes);
-        innerGrid.addRow(14,labTipo, tfdTipo);
+        innerGrid.addRow(7,labObservacoes, tfdObservacoes);
+        innerGrid.addRow(8,labAtivo, tfdAtivo);
 
 
-        TableColumn<Object, Integer> id = new TableColumn<>("Código");
-        TableColumn<Object, String> denominaçãoSocial = new TableColumn<>("Denominação Social");
-        TableColumn<Object, String> nome = new TableColumn<>("Nome");
-        TableColumn<Object, String> telefone = new TableColumn<>("Telefone");
-        TableColumn<Object, String> email = new TableColumn<>("E-mail");
-        TableColumn<Object, String> cnpj = new TableColumn<>("Cnpj");
-        TableColumn<Object, String> cpf = new TableColumn<>("Cpf");
-        TableColumn<Object, String> rua = new TableColumn<>("Rua");
-        TableColumn<Object, Integer> numero = new TableColumn<>("Número");
-        TableColumn<Object, String> bairro = new TableColumn<>("Bairro");
-        TableColumn<Object, String> cep = new TableColumn<>("Cep");
-        TableColumn<Object, String> cidade = new TableColumn<>("Cidade");
-        TableColumn<Object, String> uf = new TableColumn<>("UF");
-        TableColumn<Object, String> observacoes = new TableColumn<>("Observações");
-        TableColumn<Object, Integer> tipo = new TableColumn<>("Tipo");
+        TableColumn<Pessoa, Integer> id = new TableColumn<>("Código");
+        TableColumn<Pessoa, String> denominaçãoSocial = new TableColumn<>("Denominação Social");
+        TableColumn<Pessoa, String> nome = new TableColumn<>("Nome");
+        TableColumn<Pessoa, String> telefone = new TableColumn<>("Telefone");
+        TableColumn<Pessoa, String> email = new TableColumn<>("E-mail");
+        TableColumn<Pessoa, String> cnpj = new TableColumn<>("Cnpj");
+        TableColumn<Pessoa, String> cpf = new TableColumn<>("Cpf");
+        TableColumn<Pessoa, String> observacoes = new TableColumn<>("Observações");
+        TableColumn<Pessoa, Character> ativo = new TableColumn<>("Ativo");
 
         tableView.getColumns().addAll(
                 id,
@@ -209,14 +179,8 @@ public class PeopleRegisterTab extends ManagementTab<Object> {
                 email,
                 cnpj,
                 cpf,
-                rua,
-                numero,
-                bairro,
-                cep,
-                cidade,
-                uf,
                 observacoes,
-                tipo
+                ativo
         );
 
         refresh();
@@ -233,14 +197,8 @@ public class PeopleRegisterTab extends ManagementTab<Object> {
     private Label labEmail = new Label("E-mail:");
     private Label labCnpj = new Label("CNPJ");
     private Label labCpf = new Label("CPF:");
-    private Label labRua = new Label("Rua:");
-    private Label labNumero = new Label ("Número");
-    private Label labBairro = new Label("Bairro:");
-    private Label labCep = new Label("CEP:");
-    private Label labCidade = new Label("Cidade:");
-    private Label labUf = new Label("UF:");
     private Label labObservacoes = new Label("Observações:");
-    private Label labTipo = new Label("Tipo:");
+    private Label labAtivo = new Label("Ativo:");
     private JComboBox<String> comboBox = new JComboBox<String>();
 
     private TextField tfdCodigo = new TextField();
@@ -250,13 +208,7 @@ public class PeopleRegisterTab extends ManagementTab<Object> {
     private TextField tfdEmail = new TextField();
     private TextField tfdCnpj = new TextField();
     private TextField tfdCpf = new TextField();
-    private TextField tfdRua = new TextField();
-    private TextField tfdNumero = new TextField();
-    private TextField tfdBairro = new TextField();
-    private TextField tfdCep = new TextField();
-    private TextField tfdCidade = new TextField();
-    private TextField tfdUf= new TextField();
     private TextField tfdObservacoes = new TextField();
-    private TextField tfdTipo = new TextField();
+    private TextField tfdAtivo = new TextField();
 
 }

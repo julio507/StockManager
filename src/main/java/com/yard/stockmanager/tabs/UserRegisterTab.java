@@ -2,7 +2,7 @@ package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.UserRegisterDAO;
-import com.yard.stockmanager.persistence.entity.Estoque;
+import com.yard.stockmanager.persistence.entity.*;
 import com.yard.stockmanager.persistence.entity.Funcionario;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
@@ -14,10 +14,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class UserRegisterTab extends ManagementTab<Object> {
-
-    private Stage stage;
-    private Font font = new Font(14);
+public class UserRegisterTab extends ManagementTab<Funcionario> {
 
     public UserRegisterTab() {
         super("Cadastro de Usuario");
@@ -48,18 +45,13 @@ public class UserRegisterTab extends ManagementTab<Object> {
         if (tfdSenha.getText().isEmpty()) {
             errors = errors + "Senha";
         }
-        if (tfdNomeFuncionario.getText().isEmpty()) {
-            errors = errors + "Nome do Funcionário";
-        }
         if (tfdSenha.getText().isEmpty()) {
             errors = errors + "Senha";
         }
         if (tfdEmail.getText().isEmpty()) {
             errors = errors + "Email";
         }
-        if (tfdTelefone.getText().isEmpty()) {
-            errors = errors + "Telefone";
-        }
+
         if (tfdFuncao.getText().isEmpty()) {
             errors = errors + "Função";
         }
@@ -72,12 +64,29 @@ public class UserRegisterTab extends ManagementTab<Object> {
         }
 
         return errors.isEmpty();
+        //}
     }
 
 
     @Override
     public void save() {
+        Funcionario fun = new Funcionario();
+        Pessoa pes = new Pessoa();
+        Telefones tel = new Telefones();
+        PessoaHasTelefones pht = new PessoaHasTelefones();
 
+        fun.setLogin(tfdNomeUsuario.getText());
+        System.out.println("salvou");
+        fun.setSenha(tfdSenha.getText());
+        fun.setEmail(tfdEmail.getText());
+        fun.setFuncao(tfdFuncao.getText());
+        fun.setNivelacesso(tfdNivelAcesso.getText().charAt(0));
+        pht.setTelefones(tel);
+        fun.setPessoa(pes);
+
+        UserRegisterDAO useDao = new UserRegisterDAO();
+        useDao.add(fun);
+        System.out.println("funcionou");
     }
 
     @Override
@@ -104,28 +113,22 @@ public class UserRegisterTab extends ManagementTab<Object> {
         innerGrid.addRow(0, labCodigo, tfdCodigo);
         innerGrid.addRow(1, labNomeUsuario, tfdNomeUsuario);
         innerGrid.addRow(2, labSenha, tfdSenha);
-        innerGrid.addRow(3, labNomeFuncionario, tfdNomeFuncionario);
-        innerGrid.addRow(4, labEmail, tfdEmail);
-        innerGrid.addRow(5, labTelefone, tfdTelefone);
-        innerGrid.addRow(6, labFuncao, tfdFuncao);
-        innerGrid.addRow(7, labNivelAcesso, tfdNivelAcesso);
+        innerGrid.addRow(3, labEmail, tfdEmail);
+        innerGrid.addRow(4, labFuncao, tfdFuncao);
+        innerGrid.addRow(5, labNivelAcesso, tfdNivelAcesso);
 
-        TableColumn<Object, Integer> id = new TableColumn<>("Código");
-        TableColumn<Object, String> nomeUsuario = new TableColumn<>("Nome Usuário");
-        TableColumn<Object, String> Senha = new TableColumn<>("Senha");
-        TableColumn<Object, String> nomeFuncionario = new TableColumn<>("Nome do Funcionário");
-        TableColumn<Object, String> Email = new TableColumn<>("Email");
-        TableColumn<Object, String> Telefone = new TableColumn<>("Telefone");
-        TableColumn<Object, String> Funcao = new TableColumn<>("Função");
-        TableColumn<Object, Integer> nivelAcesso = new TableColumn<>("Nível de Acesso");
+        TableColumn<Funcionario, Integer> id = new TableColumn<>("Código");
+        TableColumn<Funcionario, String> nomeUsuario = new TableColumn<>("Nome Usuário");
+        TableColumn<Funcionario, String> Senha = new TableColumn<>("Senha");
+        TableColumn<Funcionario, String> Email = new TableColumn<>("Email");
+        TableColumn<Funcionario, String> Funcao = new TableColumn<>("Função");
+        TableColumn<Funcionario, Integer> nivelAcesso = new TableColumn<>("Nível de Acesso");
 
         tableView.getColumns().addAll(
                 id,
                 nomeUsuario,
                 Senha,
-                nomeFuncionario,
                 Email,
-                Telefone,
                 Funcao,
                 nivelAcesso
         );
@@ -137,18 +140,14 @@ public class UserRegisterTab extends ManagementTab<Object> {
     private Label labCodigo = new Label("Código:");
     private Label labNomeUsuario = new Label("Login:");
     private Label labSenha = new Label("Senha:");
-    private Label labNomeFuncionario = new Label("Nome do Funcionário");
     private Label labEmail = new Label("E-mail:");
-    private Label labTelefone = new Label("Telefone:");
     private Label labFuncao = new Label("Função:");
     private Label labNivelAcesso = new Label("Nível de Acesso:");
 
     private TextField tfdCodigo = new TextField();
     private TextField tfdNomeUsuario = new TextField();
     private TextField tfdSenha = new TextField();
-    private TextField tfdNomeFuncionario = new TextField();
     private TextField tfdEmail = new TextField();
-    private TextField tfdTelefone = new TextField();
     private TextField tfdFuncao = new TextField();
     private TextField tfdNivelAcesso = new TextField();
 }
