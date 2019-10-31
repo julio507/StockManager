@@ -21,4 +21,14 @@ public class Window extends Stage {
         setScene(scene);
     }
 
+    public Window( Scene owner, Parent pane, String title, int width, int height) {
+        Scene scene = new Scene(pane, width, height);
+
+        getIcons().add( new Image( "img/icon.png" ) );
+        initModality(Modality.WINDOW_MODAL);
+        initOwner( owner.getWindow() );
+        setTitle(title);
+        setScene(scene);
+    }
+
 }

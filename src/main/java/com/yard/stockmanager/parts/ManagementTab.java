@@ -37,6 +37,7 @@ public abstract class ManagementTab<T>
     private Object selected;
 
     private boolean printable = false;
+    private boolean doubleAction = false;
     private Font font = new Font(20);
     protected int lastPage = 25;
 
@@ -59,6 +60,8 @@ public abstract class ManagementTab<T>
     public abstract void select();
 
     public abstract void clear();
+
+    public void details(){};
 
     public void print(){};
     
@@ -92,6 +95,19 @@ public abstract class ManagementTab<T>
         this.printable = printable;
         
         printButton.setDisable(!printable);
+    }
+
+    public boolean isDoubleAction() {
+        return doubleAction;
+    }
+
+    public void setDoubleAction(boolean doubleAction) {
+        this.doubleAction = doubleAction;
+
+        if (doubleAction)
+        {
+            bottomGrid.add(detailButton, 4, 1, 1, 1);
+        }
     }
 
     private void initComponents()
@@ -236,6 +252,16 @@ public abstract class ManagementTab<T>
                 print();
             }
         });
+
+        detailButton.setOnAction( new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                details();
+            }
+        });
+
     }
 
     protected Label mark = new Label("*");
@@ -249,6 +275,7 @@ public abstract class ManagementTab<T>
     private Button newButton = new Button("Limpar/Novo");
     private Button disableButton = new Button("Desabilitar/Habilitar");
     private Button printButton = new Button( "Imprimir" );
+    private Button detailButton = new Button( "Detalhes" );
 
     protected GridPane innerGrid = new GridPane();
     protected TableView<T> tableView = new TableView<T>();
