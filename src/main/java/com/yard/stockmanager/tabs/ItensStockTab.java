@@ -1,19 +1,36 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
-import com.yard.stockmanager.persistence.entity.EstoqueHasProduto;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import com.yard.stockmanager.parts.Window;
+import com.yard.stockmanager.persistence.dao.EstoqueHasProdutoDAO;
+import com.yard.stockmanager.persistence.dao.InsercaoDAO;
+import com.yard.stockmanager.persistence.entity.Estoque;
+import com.yard.stockmanager.persistence.entity.Produto;
+import com.yard.stockmanager.useful.Error;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+
+public class ItensStockTab extends ManagementTab<Object[]> {
+
+    private Object selected[] = new Object[10];
+    private String id;
+    private List<TableColumn<Object[], ?>> colsProd;
+    private List<TableColumn<Object[], ?>> colsInsercoes;
+
+    Estoque estoque;
+    Produto produto;
+
+    Window window;
+
 
     public ItensStockTab() {
         super("Cadastro de Itens por Estoque");
@@ -22,7 +39,16 @@ public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
 
     @Override
     public void refresh() {
+        List<Object[]> list = InsercaoDAO.getinserts(getFilter());
+        tableView.setItems(FXCollections.observableArrayList(list));
+        tableView.refresh();
+    }
 
+    public void loadList() {
+
+        List<Object[]> list = EstoqueHasProdutoDAO.getinserts(id);
+        tableView.setItems(FXCollections.observableArrayList(list));
+        tableView.refresh();
     }
 
     @Override
@@ -47,7 +73,8 @@ public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
 
     @Override
     public void select() {
-
+        selected = (Object[]) getSelected();
+        id = tableView.getSelectionModel().getSelectedItem()[0].toString();
     }
 
     @Override
@@ -55,12 +82,37 @@ public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
 
     }
 
+    @Override
+    public void details() {
+        if(!tableView.getSelectionModel().isEmpty()){
+            tableView.getColumns().removeAll();
+            tableView.getColumns().clear();
+            tableView.getColumns().addAll(colsProd);
+            loadList();
+        }else{
+            Error.message("Selecione um registro para exibir seus detalhes");
+        }
+
+    }
+
+    public void setDadosEstoque(){
+        estoque = (Estoque) window.getSelected();
+
+
+    }
+
+    public void setDadosProduct(){
+        produto = (Produto) window.getSelected();
+    }
+
     private void initComponents() {
 
+        //tabela de duas acoes
+        this.setDoubleAction(true);
         //Text
         txtTitleEstq.setFont(Font.font("System", FontWeight.BOLD, 20));
 
-        //TextFields
+        //TextFields estoque
         tfdCodEstq.setEditable(false);
         tfdCodEstq.setText("--selecione o Estoque--");
         tfdNomeEstq.setEditable(false);
@@ -72,7 +124,7 @@ public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
         //Text
         txtTitleProd.setFont(Font.font("System", FontWeight.BOLD, 20));
 
-        //TextFields
+        //TextFields produto
         tfdCodProd.setEditable(false);
         tfdCodProd.setText("--selecione o Produto--");
         tfdNomeProd.setEditable(false);
@@ -82,10 +134,7 @@ public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
         tfdUnidadeProd.setEditable(false);
         tfdValorProd.setEditable(false);
 
-
         //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
-        //alinhamento
-        innerGrid.setAlignment(Pos.TOP_RIGHT);
         //dados do estoque
         innerGrid.addRow(0, hbxTitleEstq);
         innerGrid.addRow(1, labCodEstq, tfdCodEstq, btnBuscarEstq);
@@ -104,43 +153,91 @@ public class ItensStockTab extends ManagementTab<EstoqueHasProduto> {
         innerGrid.addRow(13, labValorProd, tfdValorProd);
 
         //Botões
+        //busca de estoque
         btnBuscarEstq.setVisible(true);
-        btnBuscarEstq.setPrefSize(70, 30);
+        btnBuscarEstq.setPrefSize(70, 10);
+
+
+        //evento do botão buscarEstoque
+        btnBuscarEstq.setOnAction(event -> {
+            ManagementTab tab = new StockManagerTab();
+
+            window = new Window( getTabPane().getScene(), tab, "Busca de Estoques");
+            window.showAndWait();
+        });
+
+        //busca de produtos
         btnBuscarProd.setVisible(true);
-        btnBuscarProd.setPrefSize(70, 30);
-        btnBuscarProd.setDisable(true);
+        btnBuscarProd.setPrefSize(70, 10);
+        btnBuscarProd.setDisable(false);
+
+        //evento do botão BuscarProdutos
+        btnBuscarProd.setOnAction( event -> {
+            ManagementTab tab = new ProductRegisterTab();
+
+            Window window = new Window( getTabPane().getScene(), tab, "Busca de Produtos");
+            window.showAndWait();
 
 
-        TableColumn<EstoqueHasProduto, Integer>id = new TableColumn<>("Cod. Prod.");
-        TableColumn<EstoqueHasProduto, String> nome = new TableColumn<>("Prod.");
-        TableColumn<EstoqueHasProduto, String> marca = new TableColumn<>("Marca");
-        TableColumn<EstoqueHasProduto, String> departamento = new TableColumn<>("Departamento");
-        TableColumn<EstoqueHasProduto, String> categoria = new TableColumn<>("Categoria");
-        TableColumn<EstoqueHasProduto, Double> unidade = new TableColumn<>("Unidade");
-        TableColumn<EstoqueHasProduto, Double> valor = new TableColumn<>("Valor");
-        //Colunas da tabela
-        id.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, Integer>("Cod. Prod."));
-        nome.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Prod."));
-        marca.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Marca"));
-        departamento.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Departamento"));
-        categoria.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, String>("Categoria"));
-        unidade.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, Double>("Unidade"));
-        valor.setCellValueFactory(new PropertyValueFactory<EstoqueHasProduto, Double>("valor"));
+        });
+
+        //tabela de inserções
+        TableColumn<Object[], Integer> idIns = new TableColumn<>("N. Inserção");
+        TableColumn<Object[], String> func = new TableColumn<>("Funcionário.");
+        TableColumn<Object[], Timestamp> data = new TableColumn<>("Data da Inserção");
+        TableColumn<Object[], String> estq = new TableColumn<>("Estoque");
+        TableColumn<Object[], Double> prod = new TableColumn<>("Qtd. Produtos");
+
+        //Colunas da tabela de inserções
+        //idIns.setCellValueFactory(new PropertyValueFactory<Object, Integer>("id"));
+//        func.setCellValueFactory(new PropertyValueFactory<Object[], String>("user."));
+//        data.setCellValueFactory(new PropertyValueFactory<Object[], Timestamp>("data"));
+//        estq.setCellValueFactory(new PropertyValueFactory<Object[], String>("estoque"));
+//        prod.setCellValueFactory(new PropertyValueFactory<Object[], Double>("produtos"));
+
+        idIns.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[0]));
+        func.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[1]));
+        data.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[2]));
+        estq.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[3]));
+        prod.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[4]));
+
+        colsInsercoes = Arrays.asList(idIns, func, data, estq, prod);
+
+
+        //tabela de produtos
+        TableColumn<Object[], Integer> id = new TableColumn<>("Cod. Prod.");
+        TableColumn<Object[], String> nome = new TableColumn<>("Prod.");
+        TableColumn<Object[], String> marca = new TableColumn<>("Marca");
+        TableColumn<Object[], String> departamento = new TableColumn<>("Unidade");
+        TableColumn<Object[], String> categoria = new TableColumn<>("Quantidade");
+        TableColumn<Object[], Double> unidade = new TableColumn<>("Valor Unitário");
+
+        //Colunas da tabela de produtos
+//        id.setCellValueFactory(new PropertyValueFactory<Object, Integer>("Cod. Prod."));
+//        nome.setCellValueFactory(new PropertyValueFactory<Object, String>("Prod."));
+//        marca.setCellValueFactory(new PropertyValueFactory<Object, String>("Marca"));
+//        departamento.setCellValueFactory(new PropertyValueFactory<Object, String>("Unidade"));
+//        categoria.setCellValueFactory(new PropertyValueFactory<Object, String>("Quantidade"));
+//        unidade.setCellValueFactory(new PropertyValueFactory<Object, Double>("Valor Unitário"));
+
+        id.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[0]));
+        nome.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[1]));
+        marca.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[2]));
+        departamento.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[3]));
+        categoria.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[4]));
+        unidade.setCellValueFactory(p -> new ReadOnlyObjectWrapper(p.getValue()[5]));
+
+
+        colsProd = Arrays.asList(id, nome, marca, departamento, categoria, unidade);
 
         //Tabela
-        tableView.getColumns().addAll(
-                id,
-                nome,
-                marca,
-                departamento,
-                categoria,
-                unidade,
-                valor
-        );
-
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.getColumns().addAll(colsInsercoes);
         refresh();
 
     }
+
+
     //Criação dos componentes da tela
     //componentes do estoque
     private Text txtTitleEstq = new Text("Dados do Estoque");
