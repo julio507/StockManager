@@ -6,8 +6,8 @@
 #define DHTPIN 4      //Data Pin
 #define DHTTYPE DHT11 //Sensor Type
 
-#define STASSID "Berserk"   //SSID
-#define STAPSK "bruchjulio" //Password
+#define STASSID ""   //SSID
+#define STAPSK "" //Password
 
 DHT dht(DHTPIN, DHTTYPE); //DHT Definition
 
