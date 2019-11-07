@@ -12,9 +12,6 @@
 DHT dht(DHTPIN, DHTTYPE); //DHT Definition
 
 ESP8266WebServer server(80); //Server Port
-WiFiClient client;
-
-String text = "";
 
 float h = 0; //Humidity
 float t = 0; //Temperature Celsius
@@ -25,10 +22,13 @@ float hif = 0; //Heat index Fahrenheit
 
 void handle()
 {
-  text = "";
-  text += "Temperature: " + String( t );
+  String data  =  "'h':'" + String(h) + "'," +
+                  "'t':'" + String(t) + "'," +
+                  "'f':'" + String(f) + "'," +
+                  "'hic':'" + String(hic) + "'," +
+                  "'hif':'" + String(hif) + "'";
 
-  server.send(200, "text/plain", text );
+  server.send(200, "text/plain", "{" + data + "}" );
 }
 
 void handleNotFound()
@@ -46,6 +46,21 @@ void handleNotFound()
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
+}
+
+void printSerial()
+{
+  Serial.print(F("Humidade: "));
+  Serial.print(h);
+  Serial.print(F("%  Temperature: "));
+  Serial.print(t);
+  Serial.print(F("°C "));
+  Serial.print(f);
+  Serial.print(F("°F  Heat index: "));
+  Serial.print(hic);
+  Serial.print(F("°C "));
+  Serial.print(hif);
+  Serial.println(F("°F"));
 }
 
 void wifiSetup()
@@ -110,17 +125,7 @@ void loop()
   hif = dht.computeHeatIndex(f, h);
   hic = dht.computeHeatIndex(t, h, false);
 
-  Serial.print(F("Humidade: "));
-  Serial.print(h);
-  Serial.print(F("%  Temperature: "));
-  Serial.print(t);
-  Serial.print(F("°C "));
-  Serial.print(f);
-  Serial.print(F("°F  Heat index: "));
-  Serial.print(hic);
-  Serial.print(F("°C "));
-  Serial.print(hif);
-  Serial.println(F("°F"));
+  printSerial();
 
   server.handleClient();
   MDNS.update();
