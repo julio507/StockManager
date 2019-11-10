@@ -123,9 +123,6 @@ public class Estoque  implements java.io.Serializable {
         this.estoqueHasProdutos = estoqueHasProdutos;
     }
 
-
-
-
 }
 
 

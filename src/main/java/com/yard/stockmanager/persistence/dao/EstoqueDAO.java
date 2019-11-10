@@ -13,11 +13,19 @@ public class EstoqueDAO
             Dao<Estoque>
 {
 
-    public static List<Estoque> getAll() {
-        List list = new ArrayList();
+    public static List<Estoque> getAll(String busca) {
+        List<Estoque> list;
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        list = s.createQuery("select e.id, e.endereco, e.nome, e.descricao, e.telefone, e.ativo FROM Estoque e").list();
+        list = s.createQuery("select new Estoque(e.id, e.endereco, e.nome, e.telefone, e.ativo) " +
+                "FROM Estoque e, Endereco p " +
+                "WHERE e.endereco = p.id and e.nome like '%" + busca + "%'").list();
+
+        for (Estoque e : list){
+            e.getId();
+            e.getEndereco().toString();
+        }
+
         s.getTransaction().commit();
         s.close();
         return list;

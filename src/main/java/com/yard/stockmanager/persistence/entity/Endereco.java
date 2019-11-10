@@ -194,9 +194,10 @@ public class Endereco  implements java.io.Serializable {
         this.nfesForEnderecoremId = nfesForEnderecoremId;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return rua +", "+ endereco +" - Nº "+ numero +", " + bairro +", "+ cidade;
+    }
 }
 
 
