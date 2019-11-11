@@ -26,9 +26,11 @@ public class StockManagerTab extends ManagementTab<Estoque>
 
     @Override
     public void refresh() {
-        List<Estoque> list = EstoqueDAO.getAll( getFilter() );
+        EstoqueDAO dao = new EstoqueDAO();
 
-        tableView.setItems(FXCollections.observableArrayList( list ));
+        List<Estoque> list = EstoqueDAO.getAll(getFilter());
+
+        tableView.setItems(FXCollections.observableArrayList(list));
         tableView.refresh();
     }
 

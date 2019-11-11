@@ -5,8 +5,6 @@ import com.yard.stockmanager.persistence.dao.CidadeDAO;
 import com.yard.stockmanager.persistence.entity.Cidade;
 import com.yard.stockmanager.useful.Error;
 
-import org.hibernate.ScrollableResults;
-
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -15,8 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
-
-import javax.swing.Scrollable;
 
 public class CityRegisterTab extends ManagementTab<Cidade> {
 
