@@ -19,6 +19,16 @@ public class EstoqueHasProdutoDAO extends Dao<EstoqueHasProduto> {
         return insList;
     }
 
+    public static EstoqueHasProduto getById(int id){
+        EstoqueHasProduto e = new EstoqueHasProduto();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        e = (EstoqueHasProduto) s.createQuery("FROM EstoqueHasProduto WHERE id = '"+ id +"'").getSingleResult();
+        s.getTransaction().commit();
+        s.close();
+        return e;
+    }
+
     public static List<Object[]> getinserts(String busca) {
         List<Object[]> insList = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
@@ -29,13 +39,13 @@ public class EstoqueHasProdutoDAO extends Dao<EstoqueHasProduto> {
         s.getTransaction().commit();
         s.close();
 
-        //debug
-        for(Object[] o: insList){
-            for(int i = 0; i < o.length; i++){
-                System.out.println(o[i]);
-                System.out.println(o[i].getClass());
-            }
-        }
+//        //debug
+//        for(Object[] o: insList){
+//            for(int i = 0; i < o.length; i++){
+//                System.out.println(o[i]);
+//                System.out.println(o[i].getClass());
+//            }
+//        }
 
         return insList;
     }

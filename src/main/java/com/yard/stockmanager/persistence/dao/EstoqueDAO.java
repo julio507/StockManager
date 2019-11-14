@@ -30,4 +30,14 @@ public class EstoqueDAO
         s.close();
         return list;
     }
+
+    public static Estoque getById(int id){
+        Estoque e = new Estoque();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        e = (Estoque)s.createQuery("FROM Estoque WHERE id = '"+ id +"'").getSingleResult();
+        s.getTransaction().commit();
+        s.close();
+        return e;
+    }
 }

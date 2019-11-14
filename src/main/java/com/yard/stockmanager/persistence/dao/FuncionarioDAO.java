@@ -57,4 +57,15 @@ public class FuncionarioDAO
             return false;
         }
     }
+
+    public static Funcionario getBy(String id) {
+
+        Funcionario f = new Funcionario();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        f = (Funcionario)s.createQuery("FROM Funcionario WHERE id = '"+ id +"'").getSingleResult();
+        s.getTransaction().commit();
+        s.close();
+        return f;
+    }
 }
