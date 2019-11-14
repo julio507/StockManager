@@ -8,7 +8,6 @@ import com.yard.stockmanager.persistence.entity.Agendamento;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 import com.yard.stockmanager.useful.Error;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 public class AgendamentoDAO extends Dao<Agendamento>
@@ -17,9 +16,10 @@ public class AgendamentoDAO extends Dao<Agendamento>
     {
         List<Agendamento> list = new ArrayList<Agendamento>();
 
+        Session s = HibernateUtil.getSessionFactory().openSession();
+
         try
         {
-            Session s = HibernateUtil.getSessionFactory().openSession();
             s.beginTransaction();
         }   
 
@@ -30,7 +30,7 @@ public class AgendamentoDAO extends Dao<Agendamento>
 
         finally
         {
-            
+            s.close();
         }
 
         return list;

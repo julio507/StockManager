@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.yard.stockmanager.parts.Window;
 import com.yard.stockmanager.persistence.entity.Agendamento;
+import com.yard.stockmanager.persistence.entity.AgendamentoId;
+import com.yard.stockmanager.useful.Current;
 import com.yard.stockmanager.useful.DateFormat;
 
 import javafx.collections.FXCollections;
@@ -100,7 +102,9 @@ public class CalendarSidePane
                 {
                     Agendamento a = new Agendamento();
                     a.setData( Date.from( date.atStartOfDay( ZoneId.systemDefault() ).toInstant() ) );
-
+                    a.setId( new AgendamentoId() );
+                    a.getId().setFuncionarioId( Current.getUser() );
+                    
                     form.setSource( a );
                 }
 
