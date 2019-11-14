@@ -35,6 +35,7 @@ public class Window extends Stage {
         GridPane controlGrid = new GridPane();//grid de controles
         BorderPane basePane = new BorderPane();//fundo
         TabPane tabPane = new TabPane();//tab
+        tab.setClosable(false);
 
         //botoes
         //botão selecionar
@@ -44,6 +45,7 @@ public class Window extends Stage {
         {
             if (!tab.tableView.getSelectionModel().isEmpty()){
                 selected = tab.tableView.getSelectionModel().getSelectedItem();
+                ((Stage)(selecionar.getScene().getWindow())).close();
             }else{
                 Error.message("Nenhum item selecionado!");
             }
