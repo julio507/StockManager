@@ -1,14 +1,16 @@
 package com.yard.stockmanager.tabs;
 
+import com.yard.stockmanager.useful.CellFormat;
 import com.yard.stockmanager.parts.ManagementTab;
-import com.yard.stockmanager.persistence.dao.CategoriaDAO;
-import com.yard.stockmanager.persistence.dao.DepartmentDAO;
-import com.yard.stockmanager.persistence.dao.MarcaDAO;
-import com.yard.stockmanager.persistence.dao.UnidadeDAO;
+import com.yard.stockmanager.parts.MaskTextField;
+import com.yard.stockmanager.persistence.dao.*;
 import com.yard.stockmanager.persistence.entity.*;
+import com.yard.stockmanager.useful.Error;
+import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -19,6 +21,8 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
     private List<Departamento> departamento = DepartmentDAO.getAll();
     private List<Unidade> unidade = UnidadeDAO.getAll();
 
+    private Produto selected;
+
     public ProductRegisterTab() {
         super("Cadastro de Produtos");
         initComponents();
@@ -26,37 +30,150 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
 
     @Override
     public void refresh() {
+        List<Produto> list = prDao.getAll(getFilter());
+
+        tableView.setItems(FXCollections.observableArrayList(list));
+        tableView.refresh();
 
     }
 
     @Override
     public boolean validate() {
-        return false;
+
+        //validação das Combos
+        if (marcaCombo.getSelectionModel().isEmpty() || categoriaCombo.getSelectionModel().isEmpty()
+                || departamentoCombo.getSelectionModel().isEmpty() || unidadeCombo.getSelectionModel().isEmpty()){
+            Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
+            return false;
+        }
+
+        //validação do produto
+        if (idField.getText().equals("Novo")
+                && (prodField.getText().trim().isEmpty() || prodField.getText().trim().length() <= 3)) {
+            Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
+            return false;
+        } else if (!idField.getText().equals("Novo")
+                && (prodField.getText().trim().isEmpty() || prodField.getText().length() <= 3)) {
+            Error.message("Erro ao Editar. Verifique os dados Inseridos!");
+            return false;
+        }
+
+        if (idField.getText().equals("Novo")
+                && (valorField.getText().trim().isEmpty() || Double.parseDouble(valorField.getText()) < 0)) {
+            Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
+            return false;
+        } else if (!idField.getText().equals("Novo")
+                && (valorField.getText().trim().isEmpty() || Double.parseDouble(valorField.getText()) < 0)) {
+            Error.message("Erro ao Editar. Verifique os dados Inseridos!");
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public void save() {
+        try {
+            Produto p = new Produto();
 
+            p.setMarca(marcaCombo.getValue());
+            p.setCategoria(categoriaCombo.getValue());
+            p.setDepartamento(departamentoCombo.getValue());
+            p.setUnidade(unidadeCombo.getValue());
+            p.setNome(prodField.getText());
+            p.setDescricao(descricaoTar.getText());
+            p.setCustounitario(BigDecimal.valueOf(Double.parseDouble(valorField.getText())));
+            p.setAtivo('1');
+
+            prDao.add(p);
+        }
+
+        catch (Exception e) {
+            Error.message(e.getMessage());
+        }
     }
 
     @Override
     public void edit() {
+        try {
+            Produto p = (Produto) getSelected();
+
+            p.setMarca(marcaCombo.getValue());
+            p.setCategoria(categoriaCombo.getValue());
+            p.setDepartamento(departamentoCombo.getValue());
+            p.setUnidade(unidadeCombo.getValue());
+            p.setNome(prodField.getText());
+            p.setDescricao(descricaoTar.getText());
+            p.setCustounitario(BigDecimal.valueOf(Double.parseDouble(valorField.getText())));
+
+
+            prDao.update(p);
+        } catch (Exception e) {
+            Error.message(e.getMessage());
+        }
+
+        refresh();
 
     }
 
     @Override
     public void changeStatus() {
 
+        try {
+            Produto p = (Produto) getSelected();
+            if (p.getAtivo() == '1')
+                p.setAtivo('0');
+            else {
+                p.setAtivo('1');
+            }
+            prDao.update(p);
+
+            refresh();
+        }
+
+        catch (Exception e) {
+            Error.message(e.getMessage());
+        }
+
     }
 
     @Override
     public void select() {
+        selected = (Produto) getSelected();
 
+        if (selected != null) {
+
+            idField.setText(selected.getId() + "");
+            marcaCombo.setValue(selected.getMarca());
+            categoriaCombo.setValue(selected.getCategoria());
+            departamentoCombo.setValue(selected.getDepartamento());
+            unidadeCombo.setValue(selected.getUnidade());
+            prodField.setText(selected.getNome());
+            descricaoTar.setText(selected.getDescricao());
+            valorField.setText(selected.getCustounitario() + "");
+        }
+
+        else {
+            clear();
+        }
     }
 
     @Override
     public void clear() {
+        setSelected(null);
 
+        idField.setText("Novo");
+        marcaCombo.valueProperty().setValue(null);
+        marcaCombo.setPromptText("Selecione a Marca");
+        categoriaCombo.valueProperty().setValue(null);
+        categoriaCombo.setPromptText("Selecione a Categoria");
+        departamentoCombo.valueProperty().setValue(null);
+        departamentoCombo.setPromptText("Selecione a Departamento");
+        unidadeCombo.valueProperty().setValue(null);
+        unidadeCombo.setPromptText("Selecione a Unidade");
+        prodField.setText("");
+        descricaoTar.setText("");
+        valorField.setText("");
     }
 
     private void initComponents() {
@@ -64,9 +181,17 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
         idField.setDisable(true);
 
         marcaCombo.getItems().addAll(marca);
+        marcaCombo.setPromptText("Selecione a Marca");
+        marcaCombo.setPrefWidth(comboSize);
         categoriaCombo.getItems().addAll(categoria);
+        categoriaCombo.setPromptText("Selecione a Categoria");
+        categoriaCombo.setPrefWidth(comboSize);
         departamentoCombo.getItems().addAll(departamento);
+        departamentoCombo.setPromptText("Selecione o Departameno");
+        departamentoCombo.setPrefWidth(comboSize);
         unidadeCombo.getItems().addAll(unidade);
+        unidadeCombo.setPromptText("Selecione a Unidade");
+        unidadeCombo.setPrefWidth(comboSize);
 
 
         // Colunas da tabela
@@ -77,8 +202,10 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
         TableColumn<Produto, String> uni = new TableColumn<>("Unidade");
         TableColumn<Produto, String> prod = new TableColumn<>("Produto");
         TableColumn<Produto, String> desc = new TableColumn<>("Descrição");
-        TableColumn<Produto, Double> valor = new TableColumn<>("Valor");
+        TableColumn<Produto, String> qtd = new TableColumn<>("Quantidade");
+        TableColumn<Produto, BigDecimal> valor = new TableColumn<>("Valor");
         TableColumn<Produto, Character> ativo = new TableColumn<>("Ativo");
+
 
         id.setCellValueFactory(new PropertyValueFactory<Produto, Integer>("id"));
         marca.setCellValueFactory(new PropertyValueFactory<Produto, String>("marca"));
@@ -87,12 +214,18 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
         uni.setCellValueFactory(new PropertyValueFactory<Produto, String>("unidade"));
         prod.setCellValueFactory(new PropertyValueFactory<Produto, String>("nome"));
         desc.setCellValueFactory(new PropertyValueFactory<Produto, String>("descricao"));
-        valor.setCellValueFactory(new PropertyValueFactory<Produto, Double>("valorunitario"));
+        qtd.setCellValueFactory(new PropertyValueFactory<Produto, String>("quantidade"));
+        valor.setCellValueFactory(new PropertyValueFactory<Produto, BigDecimal>("custounitario"));
+        CellFormat.priceCellFormatting(valor);
         ativo.setCellValueFactory(new PropertyValueFactory<Produto, Character>("ativo"));
+
 
         // Tabela
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tableView.getColumns().addAll(id, marca, cat, dep, uni, prod, desc, valor, ativo);
+        tableView.getColumns().addAll(id, marca, cat, dep, uni, prod, desc, qtd, valor, ativo);
+
+        //MaskField
+        valorField.setMask("N!.NN");
 
         innerGrid.addRow(0, idLabel, idField);
         innerGrid.addRow(1, marcaLabel, marcaCombo);
@@ -123,12 +256,16 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
     private ComboBox<Categoria> categoriaCombo = new ComboBox<Categoria>();
     private ComboBox<Departamento> departamentoCombo = new ComboBox<Departamento>();
     private ComboBox<Unidade> unidadeCombo = new ComboBox<Unidade>();
+    private int comboSize = 470;
 
     //fields
     private TextField idField = new TextField("Novo");
     private TextField prodField = new TextField();
     private TextArea descricaoTar = new TextArea();
-    private TextField valorField = new TextField();
+    private MaskTextField valorField = new MaskTextField();
+
+    private ProdutoDAO prDao = new ProdutoDAO();
+
 
 }
 
