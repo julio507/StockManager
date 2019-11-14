@@ -123,6 +123,10 @@ public class Estoque  implements java.io.Serializable {
         this.estoqueHasProdutos = estoqueHasProdutos;
     }
 
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
 
 
