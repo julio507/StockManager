@@ -1,7 +1,13 @@
 package com.yard.stockmanager.panes;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import com.yard.stockmanager.persistence.dao.AgendamentoDAO;
+import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
 import com.yard.stockmanager.persistence.entity.Agendamento;
+import com.yard.stockmanager.persistence.entity.PessoaHasAgendamento;
+import com.yard.stockmanager.useful.DateFormat;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,6 +25,7 @@ import javafx.stage.Stage;
 public class PendencyFormPane extends BorderPane {
 
     private AgendamentoDAO dao = new AgendamentoDAO();
+    private FuncionarioDAO fdao = new FuncionarioDAO();
     private Agendamento source = new Agendamento();
 
     /**
@@ -26,6 +33,11 @@ public class PendencyFormPane extends BorderPane {
      */
     public PendencyFormPane() {
         initComponents();
+    }
+
+    public void refreshContent()
+    {
+        dateField.setText( DateFormat.getFormatedString( source.getData() ) );
     }
 
     /**
@@ -40,6 +52,7 @@ public class PendencyFormPane extends BorderPane {
      */
     public void setSource(Agendamento source) {
         this.source = source;
+        refreshContent();
     }
 
     private boolean validate()
@@ -47,9 +60,32 @@ public class PendencyFormPane extends BorderPane {
         return true;
     }
 
+    private Agendamento getInput()
+    {
+        Agendamento result = source;
+
+        if( result.getFuncionario() == null )
+        {
+            result.setDescricao(descriptionField.getText());
+            result.setPessoaHasAgendamentos( new HashSet<PessoaHasAgendamento>( new ArrayList<PessoaHasAgendamento>() ) );
+            result.setAtivo('1');
+        }
+
+        return result;
+    }
+
     private void doAction()
     {
-        dao.add( source );
+        if( validate() )
+        {
+            dao.add( getInput() );
+        }
+    }
+
+    private void close()
+    {
+        Stage stage = (Stage) getScene().getWindow();
+        stage.close();
     }
 
     private void initComponents() {
@@ -58,18 +94,15 @@ public class PendencyFormPane extends BorderPane {
         okButton.setAlignment(Pos.CENTER);
         grid.setAlignment(Pos.CENTER);
 
-        hboxDateTime.getChildren().addAll( dateField, timeLabel, timeField);
-
         hboxBottom.getChildren().addAll(okButton, cancelButton);
         hboxBottom.setAlignment(Pos.CENTER);
         hboxBottom.setPadding(new Insets(10));
-
-        grid.add( dateLabel, 0, 0, 1, 1 );
-        grid.add( hboxDateTime, 1, 0, 2, 1 );
         
-        grid.addRow(1, titleLabel, titleField);
-        grid.addRow(2, descriptionLabel, descriptionField);
-
+        grid.addRow(0, titleLabel, titleField);
+        grid.addRow(1, dateLabel, dateField);
+        grid.addRow(2, timeLabel, timeField);
+        grid.addRow(3, descriptionLabel, descriptionField);
+        
         setCenter(grid);
         setBottom(hboxBottom);
 
@@ -80,6 +113,7 @@ public class PendencyFormPane extends BorderPane {
                 if( validate() )
                 {
                     doAction();
+                    close();
                 }
             }
             
@@ -89,8 +123,7 @@ public class PendencyFormPane extends BorderPane {
         
             @Override
             public void handle(ActionEvent event) {
-                Stage stage = (Stage) getScene().getWindow();
-                stage.close();
+                close();
             }
         } );
 
@@ -109,7 +142,6 @@ public class PendencyFormPane extends BorderPane {
     private TextField titleField = new TextField();
     private TextArea descriptionField = new TextArea();
 
-    private HBox hboxDateTime = new HBox();
     private HBox hboxBottom = new HBox();
     private GridPane grid = new GridPane();
 }

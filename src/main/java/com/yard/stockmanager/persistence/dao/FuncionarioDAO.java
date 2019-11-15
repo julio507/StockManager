@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.yard.stockmanager.persistence.entity.Funcionario;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
+import com.yard.stockmanager.useful.Current;
 import com.yard.stockmanager.useful.Encoding;
 import com.yard.stockmanager.useful.Error;
 
@@ -42,6 +43,7 @@ public class FuncionarioDAO
 
             if (func.get(0).getLogin().equals(login) && func.get(0).getSenha().equals( Encoding.encodeToMD5(password)))
             {
+                Current.setUser(func.get(0).getId());
                 return true;
             }
             else

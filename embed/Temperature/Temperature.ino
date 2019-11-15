@@ -22,13 +22,13 @@ float hif = 0; //Heat index Fahrenheit
 
 void handle()
 {
-  String data  =  "'h':'" + String(h) + "'," +
-                  "'t':'" + String(t) + "'," +
-                  "'f':'" + String(f) + "'," +
-                  "'hic':'" + String(hic) + "'," +
-                  "'hif':'" + String(hif) + "'";
+  String data = "'h':'" + String(h) + "'," +
+                "'t':'" + String(t) + "'," +
+                "'f':'" + String(f) + "'," +
+                "'hic':'" + String(hic) + "'," +
+                "'hif':'" + String(hif) + "'";
 
-  server.send(200, "text/plain", "{" + data + "}" );
+  server.send(200, "text/plain", "{" + data + "}");
 }
 
 void handleNotFound()
@@ -96,7 +96,7 @@ void wifiSetup()
 void dhtSetup()
 {
   dht.begin();
-  Serial.println( "DHT sensor started" );
+  Serial.println("DHT sensor started");
 }
 
 void setup()

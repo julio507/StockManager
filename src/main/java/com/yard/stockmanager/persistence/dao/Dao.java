@@ -27,6 +27,16 @@ public abstract class Dao<T> {
         s.close();
     };
 
+    public T get( Class<T> c, int id )
+    {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        T o = s.get( c, id);
+        s.close();
+
+        return o;
+    }
+
     public void update(T t) {
         try {
             Session s = HibernateUtil.getSessionFactory().openSession();

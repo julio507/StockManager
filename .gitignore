@@ -195,3 +195,4 @@ nbdist/
 /src/main/resources/hibernate.cfg.xml
 *.log
 *.ick
+logs.log.lck
