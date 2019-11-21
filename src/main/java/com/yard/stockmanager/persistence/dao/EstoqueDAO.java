@@ -25,7 +25,6 @@ public class EstoqueDAO
             e.getId();
             e.getEndereco().toString();
         }
-
         s.getTransaction().commit();
         s.close();
         return list;

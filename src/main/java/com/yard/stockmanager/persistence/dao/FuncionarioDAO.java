@@ -70,4 +70,15 @@ public class FuncionarioDAO
         s.close();
         return f;
     }
+
+    public static Funcionario getByLogin(String login) {
+
+        Funcionario f = new Funcionario();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        f = (Funcionario)s.createQuery("FROM Funcionario WHERE login = '"+ login +"'").getSingleResult();
+        s.getTransaction().commit();
+        s.close();
+        return f;
+    }
 }

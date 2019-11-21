@@ -49,4 +49,5 @@ public class EstoqueHasProdutoDAO extends Dao<EstoqueHasProduto> {
 
         return insList;
     }
+
 }

@@ -20,16 +20,13 @@ public class InsercaoDAO extends Dao<Insercao> {
         try {
             Session s = HibernateUtil.getSessionFactory().openSession();
             s.beginTransaction();
-            Serializable ser = s.save(i);
-            if (ser != null) {
-                result = (Integer) ser;
-            }
+            s.save(i);
+            result = (Integer) s.createQuery("SELECT max(id) FROM Insercao").uniqueResult();
             s.getTransaction().commit();
             s.close();
         } catch (Exception e) {
             Error.exception(e);
         }
-
         return result;
     }
 
