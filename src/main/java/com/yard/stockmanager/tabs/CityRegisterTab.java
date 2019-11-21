@@ -4,6 +4,7 @@ import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.CidadeDAO;
 import com.yard.stockmanager.persistence.entity.Cidade;
 import com.yard.stockmanager.useful.Error;
+
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;

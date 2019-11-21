@@ -28,9 +28,9 @@ public class StockManagerTab extends ManagementTab<Estoque>
     public void refresh() {
         EstoqueDAO dao = new EstoqueDAO();
 
-        List<Estoque> list = dao.getAll();
+        List<Estoque> list = EstoqueDAO.getAll(getFilter());
 
-        tableView.setItems(FXCollections.observableArrayList( list ));
+        tableView.setItems(FXCollections.observableArrayList(list));
         tableView.refresh();
     }
 

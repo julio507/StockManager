@@ -42,7 +42,8 @@ public class MainPane
                 itensStockTab,
                 addressManagerTab,
                 cityRegistreTab,
-                productRegisterTab
+                productRegisterTab,
+                ItensManagerTab
         );
         
         operationsMenu.getItems().addAll(
@@ -125,6 +126,17 @@ public class MainPane
             return new DepartmentRegisterTab();
         }
     };
+
+    private TabMenuItem ItensManagerTab = new TabMenuItem("Saída de Produtos",tabPane)
+    {
+        @Override
+        public Tab getTab() {
+            return new ItensManagerTab();
+        }
+    };
+
+
+
     
     private TabMenuItem itensStockTab = new TabMenuItem("Cadastrar Itens em Estoque",tabPane)
     {

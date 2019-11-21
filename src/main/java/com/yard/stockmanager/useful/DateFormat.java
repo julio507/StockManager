@@ -1,7 +1,9 @@
 package com.yard.stockmanager.useful;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class DateFormat
 {
@@ -16,5 +18,16 @@ public class DateFormat
     public static String getFormatedString( LocalDate date )
     {
         return date.format( formatter );
+    }
+
+    public static String getFormatedString( Date date )
+    {
+        return getFormatedString( toLocalDate( date ) );
+    }
+
+    public static LocalDate toLocalDate(Date dateToConvert) {
+        return dateToConvert.toInstant()
+          .atZone(ZoneId.systemDefault())
+          .toLocalDate();
     }
 }

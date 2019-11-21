@@ -3,16 +3,12 @@ package com.yard.stockmanager.tabs;
 import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.PeopleRegisterDAO;
 import com.yard.stockmanager.persistence.entity.Endereco;
-import com.yard.stockmanager.persistence.entity.Estoque;
 import com.yard.stockmanager.persistence.entity.Pessoa;
 import com.yard.stockmanager.persistence.entity.Telefones;
 import javafx.collections.FXCollections;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.util.List;

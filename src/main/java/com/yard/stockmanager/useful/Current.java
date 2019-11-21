@@ -1,22 +1,20 @@
 package com.yard.stockmanager.useful;
 
-import com.yard.stockmanager.persistence.entity.Funcionario;
-
 public class Current
 {
-    private static Funcionario user;
+    private static int user;
 
     /**
      * @return the user
      */
-    public static Funcionario getUser() {
+    public static int getUser() {
         return user;
     }
 
     /**
      * @param user the user to set
      */
-    public static void setUser(Funcionario user) {
+    public static void setUser(int user) {
         Current.user = user;
     }
 }
