@@ -35,6 +35,7 @@ public abstract class ManagementTab<T>
 {
 
     private Object selected;
+    private Object bottomSelected;
 
     private boolean printable = false;
     private boolean doubleAction = false;
@@ -44,6 +45,13 @@ public abstract class ManagementTab<T>
     public ManagementTab(String label)
     {
         super(label);
+        initComponents();
+    }
+
+    public ManagementTab(String label, Boolean doubleAction)
+    {
+        super(label);
+        this.doubleAction = doubleAction;
         initComponents();
     }
 
@@ -80,6 +88,17 @@ public abstract class ManagementTab<T>
         this.selected = selected;
     }
 
+    //seleçoes da tabela inferior
+    public Object getBottomSelected()
+    {
+        return bottomSelected;
+    }
+
+    public void setBottomSelected(Object bottomSelected)
+    {
+        this.bottomSelected = bottomSelected;
+    }
+
     public String getFilter()
     {
         return searchField.getText();
@@ -97,21 +116,42 @@ public abstract class ManagementTab<T>
         printButton.setDisable(!printable);
     }
 
-    public boolean isDoubleAction() {
-        return doubleAction;
+    //metodos de edição das tabelas
+    public void selectBottom(){}//seleção dos registros da tabela inferior
+
+    public void editUpperRegister(){}
+
+    public void removeUpperRegister(){}
+
+    public void editBottomRegister(){}
+
+    public void removeBottomRegister(){}
+
+    //metodos para desabilitar os controles de edição das tabelas
+    public void disableUpperButtons(){
+        editButton.setDisable(true);
+        removeButton.setDisable(true);
     }
 
-    public void setDoubleAction(boolean doubleAction) {
-        this.doubleAction = doubleAction;
+    public void disableBottomButtons(){
+        editBottomButton.setDisable(true);
+        removeBottomButton.setDisable(true);
+    }
 
-        if (doubleAction)
-        {
-            bottomGrid.add(detailButton, 4, 1, 1, 1);
-        }
+    //metodos para habilitar os controles de edição das tabelas
+    public void enableUpperButtons(){
+        editButton.setDisable(false);
+        removeButton.setDisable(false);
+    }
+
+    public void enableBottomButtons(){
+        editBottomButton.setDisable(false);
+        removeBottomButton.setDisable(false);
     }
 
     private void initComponents()
     {
+
         mark.setTextFill(new Color(1, 0, 0, 0));
 
         ColumnConstraints cons1 = new ColumnConstraints();
@@ -135,11 +175,25 @@ public abstract class ManagementTab<T>
         outerGrid.getColumnConstraints().addAll(cons1, cons2);
         outerGrid.getRowConstraints().add(row1);
 
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setEditable(false);
         outerGrid.setPadding(new Insets(10));
 
         tablePane.setTop(searchGrid);
-        tablePane.setCenter(tableView);
+
+        //duas tabelas
+        if(!doubleAction) {
+            tablePane.setCenter(tableView);
+        }else{
+            upperTableButtonsGrid.addRow(0, editButton, removeButton);
+            bottomTableButtonsGrid.addRow(0, editBottomButton, removeBottomButton);
+
+            tableViewBottom.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            tableViewBottom.setEditable(false);
+            tablesGrid.addColumn(0, tableView,upperTableButtonsGrid, tableViewBottom, bottomTableButtonsGrid);
+            tablePane.setCenter(tablesGrid);
+        }
+
         tablePane.setPadding(new Insets(10));
         innerGrid.setPadding(new Insets(10));
 
@@ -235,6 +289,18 @@ public abstract class ManagementTab<T>
             }
         });
 
+        //selecão da tabela inferior
+        tableViewBottom.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>()
+        {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue)
+            {
+                setBottomSelected(newValue);
+
+                selectBottom();
+            }
+        });
+
         searchButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -253,15 +319,41 @@ public abstract class ManagementTab<T>
             }
         });
 
-        detailButton.setOnAction( new EventHandler<ActionEvent>()
+        editButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
-                details();
+                editUpperRegister();
             }
         });
 
+        removeButton.setOnAction( new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                removeUpperRegister();
+            }
+        });
+
+        editBottomButton.setOnAction( new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                editBottomRegister();
+            }
+        });
+
+        removeBottomButton.setOnAction( new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                removeBottomRegister();
+            }
+        });
     }
 
     protected Label mark = new Label("*");
@@ -275,13 +367,21 @@ public abstract class ManagementTab<T>
     private Button newButton = new Button("Limpar/Novo");
     private Button disableButton = new Button("Desabilitar/Habilitar");
     private Button printButton = new Button( "Imprimir" );
-    private Button detailButton = new Button( "Detalhes" );
+
+    private Button editButton = new Button("Editar");
+    private Button removeButton = new Button("Remover");
+    private Button editBottomButton = new Button("Editar");
+    private Button removeBottomButton = new Button("Remover");
 
     protected GridPane innerGrid = new GridPane();
     protected TableView<T> tableView = new TableView<T>();
+    protected TableView<T> tableViewBottom = new TableView<T>();
 
     private GridPane outerGrid = new GridPane();
     private GridPane bottomGrid = new GridPane();
+    private GridPane tablesGrid = new GridPane();
+    private GridPane upperTableButtonsGrid = new GridPane();
+    private GridPane bottomTableButtonsGrid = new GridPane();
     private BorderPane tablePane = new BorderPane();
     private BorderPane borderPane = new BorderPane();
     private BorderPane innerPane = new BorderPane();
