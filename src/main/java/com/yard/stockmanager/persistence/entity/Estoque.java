@@ -35,10 +35,11 @@ public class Estoque  implements java.io.Serializable {
     }
 
 	
-    public Estoque(int id, Endereco endereco, String nome, String telefone, char ativo) {
+    public Estoque(int id, Endereco endereco, String nome, String descricao,String telefone, char ativo) {
         this.id = id;
         this.endereco = endereco;
         this.nome = nome;
+        this.descricao = descricao;
         this.telefone = telefone;
         this.ativo = ativo;
     }
