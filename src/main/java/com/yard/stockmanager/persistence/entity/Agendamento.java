@@ -30,6 +30,7 @@ public class Agendamento  implements java.io.Serializable {
 
      private AgendamentoId id;
      private Funcionario funcionario;
+     private String titulo;
      private String descricao;
      private Date data;
      private char estado;
@@ -130,9 +131,15 @@ public class Agendamento  implements java.io.Serializable {
         this.pessoaHasAgendamentos = pessoaHasAgendamentos;
     }
 
-
-
-
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return descricao;
+    }
 }
 
 

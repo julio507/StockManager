@@ -30,4 +30,9 @@ public class DateFormat
           .atZone(ZoneId.systemDefault())
           .toLocalDate();
     }
+
+    public static Date toDate( LocalDate date )
+    {
+        return Date.from( date.atStartOfDay( ZoneId.systemDefault() ).toInstant() );
+    }
 }

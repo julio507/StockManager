@@ -1,12 +1,11 @@
 package com.yard.stockmanager.panes;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.yard.stockmanager.parts.Window;
+import com.yard.stockmanager.persistence.dao.AgendamentoDAO;
 import com.yard.stockmanager.persistence.entity.Agendamento;
 import com.yard.stockmanager.persistence.entity.AgendamentoId;
 import com.yard.stockmanager.useful.Current;
@@ -20,15 +19,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
-public class CalendarSidePane
-    extends BorderPane
-{
+public class CalendarSidePane extends BorderPane {
 
     private LocalDate date;
-    private Font font = new Font( 25 );
+    private Font font = new Font(25);
     private List<Agendamento> pendencies = new ArrayList<Agendamento>();
+
+    private AgendamentoDAO dao = new AgendamentoDAO();
 
     /**
      * 
@@ -37,13 +37,13 @@ public class CalendarSidePane
         initComponents();
     }
 
-    public void refreshContent()
-    {
-        if( date != null )
-        {
-            dateField.setText( DateFormat.getFormatedString(date) );
+    public void refreshContent() {
+        if (date != null) {
+            dateField.setText(DateFormat.getFormatedString(date));
 
-            list.setItems( FXCollections.observableArrayList( pendencies ) );
+            pendencies = dao.getForDate(date);
+
+            list.setItems(FXCollections.observableArrayList(pendencies));
         }
     }
 
@@ -77,46 +77,64 @@ public class CalendarSidePane
         this.pendencies = pendencies;
     }
 
-    private void initComponents()
-    {
-        dateField.setFont( font );
-        dateField.setEditable( false );
-        dateField.setAlignment( Pos.CENTER );
+    private void openForm(Agendamento a) {
+        PendencyFormPane form = new PendencyFormPane();
 
-        setTop( dateField );
-        setCenter( list );
-        setBottom( newButton );
+        form.setSource(a);
 
-        newButton.setOnAction( new EventHandler<ActionEvent>(){
-        
+        Window window = new Window(getScene(), form, "Formulario De Pendência");
+
+        window.showAndWait();
+    }
+
+    private void initComponents() {
+        dateField.setFont(font);
+        dateField.setEditable(false);
+        dateField.setAlignment(Pos.CENTER);
+
+        southBox.getChildren().addAll(newButton, editButton, removeButton);
+
+        setTop(dateField);
+        setCenter(list);
+        setBottom(southBox);
+
+        newButton.setOnAction(new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent event) {
-                PendencyFormPane form = new PendencyFormPane();
-                
-                if( list.getSelectionModel().getSelectedItem() != null )
-                {
-                    form.setSource( list.getSelectionModel().getSelectedItem() );
-                }
 
-                else
-                {
-                    Agendamento a = new Agendamento();
-                    a.setData( Date.from( date.atStartOfDay( ZoneId.systemDefault() ).toInstant() ) );
-                    a.setId( new AgendamentoId() );
-                    a.getId().setFuncionarioId( Current.getUser() );
-                    
-                    form.setSource( a );
-                }
+                Agendamento a = new Agendamento();
+                a.setData(DateFormat.toDate(date));
+                a.setId(new AgendamentoId());
+                a.getId().setFuncionarioId(Current.getUser());
 
-                Window window = new Window( getScene(), form, "Formulario De Pendência" );
+                openForm(a);
+            }
+        });
 
-                window.showAndWait();
+        editButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Agendamento a = list.getSelectionModel().getSelectedItem();
+
+                openForm(a);
             }
         } );
+
+        removeButton.setOnAction( new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+            }
+        });
     }
 
     private TextField dateField = new TextField();
     private ListView<Agendamento> list = new ListView<Agendamento>();
 
-    private Button newButton = new Button( "Novo" );
+    private HBox southBox = new HBox();
+
+    private Button newButton = new Button("Novo");
+    private Button editButton = new Button("Editar");
+    private Button removeButton = new Button("Remover");
 }

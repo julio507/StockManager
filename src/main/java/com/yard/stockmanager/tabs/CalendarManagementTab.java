@@ -2,7 +2,9 @@ package com.yard.stockmanager.tabs;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -10,6 +12,8 @@ import com.yard.stockmanager.panes.CalendarSidePane;
 import com.yard.stockmanager.parts.DayBlock;
 import com.yard.stockmanager.parts.DayBlock.DayWeek;
 import com.yard.stockmanager.parts.DayBlock.Month;
+import com.yard.stockmanager.persistence.dao.AgendamentoDAO;
+import com.yard.stockmanager.persistence.entity.Agendamento;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +24,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -28,6 +33,8 @@ public class CalendarManagementTab extends Tab {
     private LocalDate localDate = LocalDate.now();
 
     private List<Month> months = Arrays.asList(Month.values());
+
+    private AgendamentoDAO dao = new AgendamentoDAO(); 
 
     public CalendarManagementTab() {
         super("Calendario");
@@ -40,12 +47,21 @@ public class CalendarManagementTab extends Tab {
     private void refreshContent() {
         centerGrid.getChildren().clear();
 
+        Calendar calendar = Calendar.getInstance();
+
+        List<Agendamento> list = new ArrayList<>();
+
         for (int i = 1; i < localDate.lengthOfMonth() + 1; i++) {
             LocalDate date = localDate.withDayOfMonth(i);
 
             WeekFields week = WeekFields.of(Locale.getDefault());
 
             DayBlock block = new DayBlock(date);
+
+            if( dao.getForDate(date).size() > 0 )
+            {
+                block.setItalic( true );
+            }
 
             centerGrid.add(block, date.get(week.dayOfWeek()), date.get(week.weekOfWeekBasedYear()));
 
