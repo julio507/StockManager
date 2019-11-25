@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`produto` (
   `unidade_id` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `descricao` VARCHAR(45) NOT NULL,
-  `quantidade` VARCHAR(45) NOT NULL,
+  `quantidade` DOUBLE NOT NULL,
   `custounitario` DECIMAL(11,2) NOT NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
@@ -449,3 +449,27 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- triggers
+delimiter |
+create trigger tgr_delete_insercao before delete
+on insercao
+for each row
+begin
+	delete from estoque_has_produto where insercao_id = old.id;
+end; |
+
+create trigger tgr_delete_estoque_has_produtos before delete
+on estoque_has_produto
+for each row
+begin
+	update produto p set p.quantidade = p.quantidade - old.quantidade where p.id = old.produto_id;
+end; |
+
+create trigger tgr_insert_estoque_has_produtos after insert
+on estoque_has_produto
+for each row
+begin
+	update produto p set p.quantidade = p.quantidade + new.quantidade where p.id = new.produto_id;
+end; |
+
