@@ -1,7 +1,10 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.dao.CidadeDAO;
+import com.yard.stockmanager.persistence.dao.EnderecoDAO;
 import com.yard.stockmanager.persistence.dao.PeopleRegisterDAO;
+import com.yard.stockmanager.persistence.entity.Cidade;
 import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.entity.Pessoa;
 import com.yard.stockmanager.persistence.entity.Telefones;
@@ -40,9 +43,6 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
     public boolean validate() {
         String errors = "";
 
-        if (tfdCodigo.getText().isEmpty()) {
-            errors = errors + "Código";
-        }
 
         if (tfdDenominacaoSocial.getText().isEmpty()) {
             errors = errors + "Denominação Social";
@@ -73,25 +73,33 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
 
     @Override
     public void save() {
+        int idestoque;
+        int idcidade;
         Pessoa pes = new Pessoa();
         Endereco end = new Endereco();
+        Cidade cid = new Cidade();
+        CidadeDAO cidDao = new CidadeDAO();
+        EnderecoDAO endDao = new EnderecoDAO();
+        cid.setNome(tfdCidade.getText());
+        cid.setUf(tfdUf.getText());
+        cid.setAtivo(tfdAtivo.getText().charAt(0));
+        idcidade = cidDao.addCidId(cid);
+        end.setCidade(cidDao.getById(idcidade));
         end.setEndereco(tfdEndereco.getText());
         end.setRua(tfdRua.getText());
         end.setNumero(tfdNumero.getText());
         end.setCep(tfdCep.getText());
         end.setBairro(tfdBairro.getText());
         end.setAtivo(tfdAtivo1.getText().charAt(0));
-
-
-        pes.setEndereco(end);
-        pes.setDenominacaosocial(tfdId.getText());
+        idestoque = endDao.addEndId(end);
+        pes.setEndereco(EnderecoDAO.getById(idestoque));
+        pes.setDenominacaosocial(tfdDenominacaoSocial.getText());
         pes.setNome(tfdNome.getText());
         pes.setEmail(tfdEmail.getText());
         pes.setCnpj(tfdCnpj.getText());
         pes.setCpf(tfdCpf.getText());
         pes.setObservacoes(tfdObservacoes.getText());
         pes.setAtivo(tfdAtivo.getText().charAt(0));
-
 
         PeopleRegisterDAO pesDao = new PeopleRegisterDAO();
         pesDao.add(pes);
@@ -142,7 +150,6 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
         txtTitleEnd.setFont(Font.font("System", FontWeight.BOLD, 20));
 
         innerGrid.addRow(0, hbxTitlePess);
-        innerGrid.addRow(1,labCodigo, tfdCodigo);
         innerGrid.addRow(2,labDenominacaoSocial, tfdDenominacaoSocial);
         innerGrid.addRow(3,labNome, tfdNome);
         innerGrid.addRow(4,labTelefone, tfdTelefone);
@@ -152,13 +159,13 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
         innerGrid.addRow(8,labObservacoes, tfdObservacoes);
         innerGrid.addRow(9,labAtivo, tfdAtivo);
         innerGrid.addRow(11, hbxTitleEnd);
-        innerGrid.addRow(12,labId, tfdId);
         innerGrid.addRow(13,labCidade, tfdCidade);
-        innerGrid.addRow(14,labEndereco, tfdEndereco);
-        innerGrid.addRow(15,labRua, tfdRua);
-        innerGrid.addRow(16,labCEP, tfdCep);
-        innerGrid.addRow(17,labAtivo1, tfdAtivo1);
-        innerGrid.addRow(18, labBairro, tfdBairro);
+        innerGrid.addRow(14,labUf, tfdUf);
+        innerGrid.addRow(15,labEndereco, tfdEndereco);
+        innerGrid.addRow(16,labRua, tfdRua);
+        innerGrid.addRow(17,labCEP, tfdCep);
+        innerGrid.addRow(18,labAtivo1, tfdAtivo1);
+        innerGrid.addRow(19, labBairro, tfdBairro);
 
 
 
@@ -198,8 +205,8 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
     private HBox hbxTitleEnd = new HBox(txtTitleEnd);
 
 
-    private Label labId = new Label ("ID");
     private Label labCidade = new Label ("Cidade:");
+    private Label labUf = new Label ("UF:");
     private Label labEndereco = new Label ("Endereço:");
     private Label labRua = new Label ("Rua:");
     private Label labNumero = new Label ("Número:");
@@ -208,8 +215,8 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
     private Label labBairro = new Label ("Bairro:");
 
 
-    private TextField tfdId = new TextField();
     private TextField tfdCidade = new TextField();
+    private TextField tfdUf = new TextField();
     private TextField tfdEndereco = new TextField();
     private TextField tfdRua = new TextField();
     private TextField tfdNumero = new TextField();
@@ -219,7 +226,6 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
 
     private Text txtTitlePess = new Text("Dados da Pessoa");
     private HBox hbxTitlePess = new HBox(txtTitlePess);
-    private Label labCodigo = new Label("Código:");
     private Label labDenominacaoSocial = new Label("Denominação Social");
     private Label labNome = new Label("Nome:");
     private Label labTelefone = new Label("Telefone");
@@ -230,7 +236,6 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
     private Label labAtivo = new Label("Ativo:");
     private JComboBox<String> comboBox = new JComboBox<String>();
 
-    private TextField tfdCodigo = new TextField();
     private TextField tfdDenominacaoSocial = new TextField();
     private TextField tfdNome = new TextField();
     private TextField tfdTelefone = new TextField();

@@ -2,6 +2,10 @@ package com.yard.stockmanager.persistence.entity;
 // Generated 20/10/2019 19:04:16 by Hibernate Tools 4.3.1
 
 
+import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
+import com.yard.stockmanager.useful.Error;
+import org.hibernate.Session;
+
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -40,7 +44,7 @@ public class Endereco  implements java.io.Serializable {
     public Endereco() {
     }
 
-	
+
     public Endereco(int id, Cidade cidade, String endereco, String rua, String numero, String cep, char ativo) {
         this.id = id;
         this.cidade = cidade;

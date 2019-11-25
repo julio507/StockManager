@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yard.stockmanager.persistence.entity.Cidade;
+import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 
+import com.yard.stockmanager.useful.Error;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -36,5 +38,32 @@ public class CidadeDAO extends Dao<Cidade> {
         s.getTransaction().commit();
         s.close();
         return cidList;
+    }
+
+    public int addCidId (Cidade cid) {
+        int result = 0;
+
+        try {
+            Session s = HibernateUtil.getSessionFactory().openSession();
+            s.beginTransaction();
+            s.save(cid);
+            result = (Integer) s.createQuery("SELECT max(id) FROM Cidade").uniqueResult();
+            s.getTransaction().commit();
+            s.close();
+        } catch (Exception e) {
+            Error.exception(e);
+        }
+        return result;
+    }
+    public static Cidade getById(int id) {
+
+        Cidade c = new Cidade();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        c = (Cidade)s.createQuery("FROM Cidade WHERE id = '"+ id +"'").getSingleResult();
+        s.getTransaction().commit();
+        s.close();
+        return c;
+
     }
 }
