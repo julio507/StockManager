@@ -473,3 +473,10 @@ begin
 	update produto p set p.quantidade = p.quantidade + new.quantidade where p.id = new.produto_id;
 end; |
 
+create trigger tgr_update_estoque_has_produtos after update
+on estoque_has_produto
+for each row
+begin
+	update estoque_has_produto e set e.estoque_id = new.estoque_id where e.insercao_id = new.insercao_id;
+end; |
+
