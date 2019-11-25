@@ -82,6 +82,7 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
             p.setUnidade(unidadeCombo.getValue());
             p.setNome(prodField.getText());
             p.setDescricao(descricaoTar.getText());
+            p.setQuantidade(0);
             p.setCustounitario(BigDecimal.valueOf(Double.parseDouble(valorField.getText())));
             p.setAtivo('1');
 

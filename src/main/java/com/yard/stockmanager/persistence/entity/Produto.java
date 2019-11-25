@@ -31,7 +31,7 @@ public class Produto  implements java.io.Serializable {
      private Unidade unidade;
      private String nome;
      private String descricao;
-     private String quantidade;
+     private double quantidade;
      private BigDecimal custounitario;
      private char ativo;
      private Set<NfeHasProduto> nfeHasProdutos = new HashSet<NfeHasProduto>(0);
@@ -41,7 +41,7 @@ public class Produto  implements java.io.Serializable {
     }
 
 	
-    public Produto(int id, Categoria categoria, Departamento departamento, Marca marca, Unidade unidade, String nome, String descricao, String quantidade, BigDecimal custounitario, char ativo) {
+    public Produto(int id, Categoria categoria, Departamento departamento, Marca marca, Unidade unidade, String nome, String descricao, double quantidade, BigDecimal custounitario, char ativo) {
         this.id = id;
         this.categoria = categoria;
         this.departamento = departamento;
@@ -53,7 +53,7 @@ public class Produto  implements java.io.Serializable {
         this.custounitario = custounitario;
         this.ativo = ativo;
     }
-    public Produto(int id, Categoria categoria, Departamento departamento, Marca marca, Unidade unidade, String nome, String descricao, String quantidade, BigDecimal custounitario, char ativo, Set<NfeHasProduto> nfeHasProdutos, Set<EstoqueHasProduto> estoqueHasProdutos) {
+    public Produto(int id, Categoria categoria, Departamento departamento, Marca marca, Unidade unidade, String nome, String descricao, double quantidade, BigDecimal custounitario, char ativo, Set<NfeHasProduto> nfeHasProdutos, Set<EstoqueHasProduto> estoqueHasProdutos) {
        this.id = id;
        this.categoria = categoria;
        this.departamento = departamento;
@@ -142,11 +142,11 @@ public class Produto  implements java.io.Serializable {
 
     
     @Column(name="quantidade", nullable=false, length=45)
-    public String getQuantidade() {
+    public double getQuantidade() {
         return this.quantidade;
     }
     
-    public void setQuantidade(String quantidade) {
+    public void setQuantidade(double quantidade) {
         this.quantidade = quantidade;
     }
 
