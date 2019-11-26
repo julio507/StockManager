@@ -13,7 +13,7 @@ public class PeopleRegisterDAO
         List list = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        list = s.createQuery("select d.id, d.endereco, d.denominacaosocial, d.nome, d.email, d.cnpj, d.cpf, d.observacoes, d.ativo FROM Pessoa d").list();
+        list = s.createQuery("FROM Pessoa d").list();
         s.getTransaction().commit();
         s.close();
         return list;

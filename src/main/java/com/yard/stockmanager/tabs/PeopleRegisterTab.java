@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -182,6 +183,16 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
         TableColumn<Pessoa, String> cpf = new TableColumn<>("Cpf");
         TableColumn<Pessoa, String> observacoes = new TableColumn<>("Observações");
         TableColumn<Pessoa, Character> ativo = new TableColumn<>("Ativo");
+
+        id.setCellValueFactory(new PropertyValueFactory<Pessoa, Integer>("id"));
+        denominaçãoSocial.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("denominacaosocial"));
+        nome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
+        telefone.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("telefone"));
+        email.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("email"));
+        cnpj.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("cnpj"));
+        cpf.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("cpf"));
+        observacoes.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("observacoes"));
+        ativo.setCellValueFactory(new PropertyValueFactory<Pessoa, Character>("ativo"));
 
         tableView.getColumns().addAll(
                 id,
