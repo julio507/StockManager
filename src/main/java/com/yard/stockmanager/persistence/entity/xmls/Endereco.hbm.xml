@@ -11,9 +11,6 @@
         <many-to-one name="cidade" class="hibr.Cidade" fetch="select">
             <column name="cidade_id" not-null="true" />
         </many-to-one>
-        <property name="endereco" type="string">
-            <column name="endereco" length="150" not-null="true" />
-        </property>
         <property name="rua" type="string">
             <column name="rua" length="45" not-null="true" />
         </property>
