@@ -44,5 +44,17 @@
             </key>
             <one-to-many class="hibr.Agendamento" />
         </set>
+        <set name="permissoes" table="permissoes" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="funcionario_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Permissoes" />
+        </set>
+        <set name="log" table="log" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="funcionario_id" not-null="true" />
+            </key>
+            <one-to-many class="hibr.Log" />
+        </set>
     </class>
 </hibernate-mapping>
