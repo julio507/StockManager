@@ -30,6 +30,7 @@ public class Estoque  implements java.io.Serializable {
      private String telefone;
      private char ativo;
      private Set<EstoqueHasProduto> estoqueHasProdutos = new HashSet<EstoqueHasProduto>(0);
+     private Set<Sensor> sensor = new HashSet<Sensor>(0);
 
     public Estoque() {
     }
@@ -43,7 +44,7 @@ public class Estoque  implements java.io.Serializable {
         this.telefone = telefone;
         this.ativo = ativo;
     }
-    public Estoque(int id, Endereco endereco, String nome, String descricao, String telefone, char ativo, Set<EstoqueHasProduto> estoqueHasProdutos) {
+    public Estoque(int id, Endereco endereco, String nome, String descricao, String telefone, char ativo, Set<EstoqueHasProduto> estoqueHasProdutos, Set<Sensor> sensor) {
        this.id = id;
        this.endereco = endereco;
        this.nome = nome;
@@ -51,6 +52,7 @@ public class Estoque  implements java.io.Serializable {
        this.telefone = telefone;
        this.ativo = ativo;
        this.estoqueHasProdutos = estoqueHasProdutos;
+       this.sensor = sensor;
     }
    
      @Id 
@@ -122,6 +124,15 @@ public class Estoque  implements java.io.Serializable {
     
     public void setEstoqueHasProdutos(Set<EstoqueHasProduto> estoqueHasProdutos) {
         this.estoqueHasProdutos = estoqueHasProdutos;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="estoque")
+    public Set<Sensor> getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Set<Sensor> sensor) {
+        this.sensor = sensor;
     }
 
     @Override
