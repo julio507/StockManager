@@ -14,6 +14,9 @@
         <property name="data" type="timestamp">
             <column name="data" length="19" not-null="true" />
         </property>
+        <property name="nfe" type="binary">
+            <column name="nfe" not-null="false" />
+        </property>
         <property name="ativo" type="char">
             <column name="ativo" length="1" not-null="true" />
         </property>
