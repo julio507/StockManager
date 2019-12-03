@@ -11,6 +11,9 @@ import com.yard.stockmanager.useful.Error;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -19,10 +22,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
-import java.io.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.*;
 
 public class ItensStockTab extends ManagementTab<Object[]> {
@@ -51,6 +59,10 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     //Entidade para as janelas de seleção
     private Window window;
+
+    //variavel para arquivos
+    private File pdf = null;
+    private byte[] fileB64 = null;
 
     //controladores
     private boolean changed = false; //sinaliza modificação em novas inserções
@@ -117,9 +129,24 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         if (!changed) {
             resetScreen();
         } else {
-            char temp = ConfirmationDialog.confirm("Há modificações não salvas!", "Deseja salvar as modificações nesse registro?");
+            char temp = ' ';
+            temp = ConfirmationDialog.confirm("Há modificações não salvas!", "Deseja salvar as modificações nesse registro?");
             if (temp == 'y') {
-                resetScreen();
+                if (fileB64 == null) {
+                    Error.message("Não há nenhuma nota fiscal vinculada a esta inserção!\nPara salvar os registros e necessario a adição de uma nota fiscal. " +
+                            "Insira uma nota fiscal e tente novamente!");
+                } else {
+                    if (!isEdition) {
+                        Insercao insertTemp = InsercaoDAO.getById(lastInsertedID);
+                        insertTemp.setNfe(fileB64);
+                        new InsercaoDAO().update(insertTemp);
+                    } else {
+                        Insercao insertTemp = InsercaoDAO.getById(insertId);
+                        insertTemp.setNfe(fileB64);
+                        new InsercaoDAO().update(insertTemp);
+                    }
+                    resetScreen();
+                }
             } else if (temp == 'n') {
                 if (isEdition) {
                     estqDAO.rollback(insertId, estoqueId, tableTemp);
@@ -150,6 +177,11 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         tfdEnderecoEstq.setText(estoque.getEndereco().getRua());
         tfdRuaEstq.setText(estoque.getEndereco().getRua());
         tfdBairroEstq.setText(estoque.getEndereco().getBairro());
+
+        fileB64 = InsercaoDAO.getById(insertId).getNfe();
+        if (fileB64 != null) {
+            generatePdf(fileB64);
+        }
 
         //disabilita a tabela
         tableView.setDisable(true);
@@ -303,20 +335,26 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     //Trava a utilização dos botões da seção de produto
     public void lockPoduct() {
+        btnBuscarEstq.setDisable(false);
         btnBuscarProd.setDisable(true);
         tfdQtdInsert.setEditable(false);
         tfdValorInsert.setEditable(false);
         btnAdicionar.setDisable(true);
         btnCancelar.setDisable(true);
+        btnAdicionarNfe.setDisable(true);
+        btnVizualizarNfe.setDisable(true);
     }
 
     //destrava a utilização dos botões da seção de produto
     public void unlockPoduct() {
+        btnBuscarEstq.setDisable(true);
         btnBuscarProd.setDisable(false);
         tfdQtdInsert.setEditable(true);
         tfdValorInsert.setEditable(true);
         btnAdicionar.setDisable(false);
         btnCancelar.setDisable(false);
+        btnAdicionarNfe.setDisable(false);
+        btnVizualizarNfe.setDisable(false);
     }
 
     //metodo para ação do botão adicionar
@@ -597,22 +635,50 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         return r;
     }
 
-    private byte[] fileChooser(){
-        byte[] file = null;
+    private void fileChooser() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("C:\\Users\\1511 FOX"));
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("PDF", "*.pdf")
         );
-        File selectedFile = fileChooser.showOpenDialog(getTabPane().getScene().getWindow());
+        pdf = fileChooser.showOpenDialog(getTabPane().getScene().getWindow());
 
-        try {
-            file = Base64.getEncoder().encode(Files.readAllBytes(selectedFile.toPath()));
+        if (pdf != null) {
+            try {
+                fileB64 = Base64.getEncoder().encode(Files.readAllBytes(pdf.toPath()));
+            } catch (IOException e) {
+                Error.messageAndLog("Um erro ocorreu ao inserir o arquivo. Entre em contato com o suporte!");
+            }
+        }
+    }
+
+    private void viewFile() {
+        if (pdf != null) {
+            try {
+                Desktop.getDesktop().open(pdf);
+            } catch (IOException e) {
+                Error.messageAndLog("Não foi possivel vizualizar o arquivo. /nPara mais informações contate o suporte técnico");
+            }
+        } else {
+            char r = ConfirmationDialog.confirm("Não há arquivos para exibir!", "Deseja adicionar uma nota fiscal a esta inserção?");
+            if (r == 'y') {
+                fileChooser();
+            }
+        }
+    }
+
+    private void generatePdf(byte[] b64) {
+        try (FileOutputStream fos = new FileOutputStream("temp.pdf")) {
+            try {
+                fos.write(Base64.getDecoder().decode(b64));
+                pdf = new File("temp.pdf");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return file;
     }
 
 
@@ -642,6 +708,9 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         tfdUnidadeProd.setEditable(false);
         tfdValorProd.setEditable(false);
 
+        //componentes das infos fiscais
+        txtNfe.setFont(Font.font("System", FontWeight.BOLD, 20));
+
         //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
         //dados do estoque
         innerGrid.addRow(0, hbxTitleEstq);
@@ -659,15 +728,23 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         innerGrid.addRow(11, labCategoriaProd, tfdCategoriaProd);
         innerGrid.addRow(12, labUnidadeProd, tfdUnidadeProd);
         innerGrid.addRow(13, labValorProd, tfdValorProd);
-        //controles de inserção
 
+        //controles de inserção
         insertControlGrid.addRow(0, labQtdInsert, tfdQtdInsert);
         insertControlGrid.addRow(1, labValorInsert, tfdValorInsert);
-        insertControlGrid.addRow(2, btnAdicionar);
-        insertControlGrid.addRow(3, btnCancelar);
-        insertControlGrid.setPadding(new Insets(50, 0, 0, 0));
+        insertControlGrid.add(btnAdicionar, 1, 2, 1, 1);
+        insertControlGrid.add(btnCancelar, 1, 3, 1, 1);
+        insertControlGrid.setPadding(new Insets(20, 0, 0, 0));
 
         innerGrid.addRow(14, insertControlGrid);
+
+        //dados fiscais
+        nfeGrid.addRow(0, hbxNfe);
+        nfeGrid.addRow(1, btnAdicionarNfe);
+        nfeGrid.addRow(2, btnVizualizarNfe);
+        nfeGrid.setPadding(new Insets(50, 0, 0, 0));
+
+        innerGrid.addRow(15, nfeGrid);
 
         //Botões
         //busca de estoque
@@ -705,6 +782,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             }
         });
 
+
         btnAdicionar.setPrefSize(100, 10);
         //evento do botão Adicionar
         btnAdicionar.setOnAction(event -> {
@@ -716,6 +794,21 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         btnCancelar.setOnAction(event -> {
             cancelar();
         });
+
+        //botão adicionar nfe
+        btnAdicionarNfe.setPrefSize(100, 10);
+        //evento do botão Adicionar
+        btnAdicionarNfe.setOnAction(event -> {
+            fileChooser();
+        });
+
+        //botão visualizar nfe
+        btnVizualizarNfe.setPrefSize(100, 10);
+        //evento do botão vizualizar
+        btnVizualizarNfe.setOnAction(event -> {
+            viewFile();
+        });
+
 
         //tabela de inserções
         TableColumn<Object[], Integer> idIns = new TableColumn<>("N. Inserção");
@@ -811,6 +904,15 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     private Button btnAdicionar = new Button("Adicionar");
     private Button btnCancelar = new Button("Cancelar");
+
+    //componentes de adição de nfe
+    private Text txtNfe = new Text("Dados fiscal");
+    private HBox hbxNfe = new HBox(txtNfe);
+
+    private GridPane nfeGrid = new GridPane();
+
+    private Button btnAdicionarNfe = new Button("Adicionar");
+    private Button btnVizualizarNfe = new Button("Vizualizar");
 
     private Button btnBuscarEstq = new Button("Buscar");
     private Button btnBuscarProd = new Button("Buscar");
