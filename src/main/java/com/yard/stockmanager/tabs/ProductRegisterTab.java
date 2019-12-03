@@ -5,6 +5,7 @@ import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.parts.MaskTextField;
 import com.yard.stockmanager.persistence.dao.*;
 import com.yard.stockmanager.persistence.entity.*;
+import com.yard.stockmanager.useful.CurrencyField;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -12,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ProductRegisterTab extends ManagementTab<Produto> {
@@ -59,7 +61,7 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
         }
 
         if (idField.getText().equals("Novo")
-                && (valorField.getText().trim().isEmpty() || Double.parseDouble(valorField.getText()) < 0)) {
+                && (valorField.getAmount() <= 0)) {
             Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
             return false;
         } else if (!idField.getText().equals("Novo")
@@ -105,7 +107,7 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
             p.setUnidade(unidadeCombo.getValue());
             p.setNome(prodField.getText());
             p.setDescricao(descricaoTar.getText());
-            p.setCustounitario(BigDecimal.valueOf(Double.parseDouble(valorField.getText())));
+            p.setCustounitario(BigDecimal.valueOf(valorField.getAmount()));
 
 
             prDao.update(p);
@@ -225,8 +227,6 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.getColumns().addAll(id, marca, cat, dep, uni, prod, desc, qtd, valor, ativo);
 
-        //MaskField
-        valorField.setMask("N!.NN");
 
         innerGrid.addRow(0, idLabel, idField);
         innerGrid.addRow(1, marcaLabel, marcaCombo);
@@ -263,7 +263,7 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
     private TextField idField = new TextField("Novo");
     private TextField prodField = new TextField();
     private TextArea descricaoTar = new TextArea();
-    private MaskTextField valorField = new MaskTextField();
+    private CurrencyField valorField = new CurrencyField(new Locale("pt","BR"));
 
     private ProdutoDAO prDao = new ProdutoDAO();
 
