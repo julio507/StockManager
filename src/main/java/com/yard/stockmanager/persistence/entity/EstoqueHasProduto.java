@@ -48,7 +48,7 @@ public class EstoqueHasProduto  implements java.io.Serializable {
     
     @AttributeOverrides( {
         @AttributeOverride(name="insercaoId", column=@Column(name="insercao_id", nullable=false) ), 
-        @AttributeOverride(name="estoqueId", column=@Column(name="Estoque_id", nullable=false) ), 
+        @AttributeOverride(name="estoqueId", column=@Column(name="estoque_id", nullable=false) ),
         @AttributeOverride(name="produtoId", column=@Column(name="produto_id", nullable=false) ) } )
     public EstoqueHasProdutoId getId() {
         return this.id;
@@ -59,7 +59,7 @@ public class EstoqueHasProduto  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="Estoque_id", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="estoque_id", nullable=false, insertable=false, updatable=false)
     public Estoque getEstoque() {
         return this.estoque;
     }

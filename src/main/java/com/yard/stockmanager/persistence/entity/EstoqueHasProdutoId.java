@@ -37,7 +37,7 @@ public class EstoqueHasProdutoId  implements java.io.Serializable {
     }
 
 
-    @Column(name="Estoque_id", nullable=false)
+    @Column(name="estoque_id", nullable=false)
     public int getEstoqueId() {
         return this.estoqueId;
     }
