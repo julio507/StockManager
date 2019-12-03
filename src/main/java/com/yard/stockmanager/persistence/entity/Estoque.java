@@ -117,7 +117,7 @@ public class Estoque  implements java.io.Serializable {
         this.ativo = ativo;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="estoque")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="estoque")
     public Set<EstoqueHasProduto> getEstoqueHasProdutos() {
         return this.estoqueHasProdutos;
     }
@@ -126,7 +126,7 @@ public class Estoque  implements java.io.Serializable {
         this.estoqueHasProdutos = estoqueHasProdutos;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="estoque")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="estoque")
     public Set<Sensor> getSensor() {
         return sensor;
     }

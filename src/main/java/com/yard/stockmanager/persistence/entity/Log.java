@@ -3,6 +3,10 @@ package com.yard.stockmanager.persistence.entity;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name="log"
+        ,catalog="stockmanager"
+)
 public class Log {
 
     private int id;

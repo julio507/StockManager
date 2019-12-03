@@ -9,9 +9,9 @@
                 <column name="funcionario_id" />
             </key-property>
         </composite-id>
-        <many-to-one name="funcionario" class="hibr.Funcionario" update="false" insert="false" fetch="select">
-            <column name="funcionario_id" not-null="true" />
-        </many-to-one>
+<!--        <many-to-one name="funcionario" class="hibr.Funcionario" update="false" insert="false" fetch="select">-->
+<!--            <column name="funcionario_id" not-null="true" />-->
+<!--        </many-to-one>-->
         <property name="regra" type="string">
             <column name="regra" length="100" not-null="true" />
         </property>

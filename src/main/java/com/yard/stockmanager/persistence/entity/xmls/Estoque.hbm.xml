@@ -31,7 +31,7 @@
         </set>
         <set name="sensor" table="sensor" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="Estoque_id" not-null="true" />
+                <column name="estoque_id" not-null="true" />
             </key>
             <one-to-many class="hibr.Sensor" />
         </set>

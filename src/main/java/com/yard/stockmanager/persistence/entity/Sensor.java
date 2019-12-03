@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name="sensor"
+        ,catalog="stockmanager"
+)
 public class Sensor {
 
     private int id;
@@ -46,7 +50,7 @@ public class Sensor {
     }
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="estoque_id", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="estoque_id")
     public Estoque getEstoque() {
         return estoque;
     }

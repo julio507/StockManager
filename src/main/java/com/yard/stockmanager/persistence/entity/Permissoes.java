@@ -1,7 +1,10 @@
 package com.yard.stockmanager.persistence.entity;
 
 import javax.persistence.*;
-
+@Entity
+@Table(name="permissoes"
+        ,catalog="stockmanager"
+)
 public class Permissoes {
     private PermissoesId id;
     private Funcionario funcionario;
@@ -27,7 +30,7 @@ public class Permissoes {
     }
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="funcionario_id", nullable=false)
+    @JoinColumn(name="funcionario_id", nullable=false, insertable=false, updatable=false)
     public Funcionario getFuncionario() {
         return funcionario;
     }

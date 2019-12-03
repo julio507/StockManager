@@ -2,12 +2,17 @@ package com.yard.stockmanager.persistence.entity;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name="temperatura"
+        ,catalog="stockmanager"
+)
 public class Temperatura {
 
     private int id;
     private Sensor sensor;
     private String temperatura;
     private String humidade;
+
 
     public Temperatura() {
     }
