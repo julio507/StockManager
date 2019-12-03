@@ -32,7 +32,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `StockManager`.`endereco` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `cidade_id` INT NOT NULL,
-  `endereco` VARCHAR(150) NOT NULL,
   `rua` VARCHAR(45) NOT NULL,
   `numero` VARCHAR(5) NOT NULL,
   `bairro` VARCHAR(45) NULL,
@@ -287,6 +286,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `StockManager`.`agendamento` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `funcionario_id` INT NOT NULL,
+  `titulo` VARCHAR(200) NULL,
   `descricao` TEXT NULL,
   `data` DATETIME NOT NULL,
   `estado` CHAR(1) NOT NULL,
@@ -308,6 +308,7 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`insercao` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `funcionario_id` INT NOT NULL,
   `data` DATETIME NOT NULL,
+  `nfe` LONGBLOB NULL,
   `ativo` CHAR NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_insercao_funcionario1_idx` (`funcionario_id` ASC) VISIBLE,
@@ -324,17 +325,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `StockManager`.`estoque_has_produto` (
   `insercao_id` INT NOT NULL,
-  `Estoque_id` INT NOT NULL,
+  `estoque_id` INT NOT NULL,
   `produto_id` INT NOT NULL,
   `quantidade` DOUBLE NOT NULL,
   `valorunitario` DOUBLE NOT NULL,
   `ativo` CHAR NOT NULL,
-  PRIMARY KEY (`insercao_id`, `Estoque_id`, `produto_id`),
+  PRIMARY KEY (`insercao_id`, `estoque_id`, `produto_id`),
   INDEX `fk_Estoque_has_Produto_Produto1_idx` (`produto_id` ASC) VISIBLE,
-  INDEX `fk_Estoque_has_Produto_Estoque1_idx` (`Estoque_id` ASC) VISIBLE,
+  INDEX `fk_Estoque_has_Produto_Estoque1_idx` (`estoque_id` ASC) VISIBLE,
   INDEX `fk_estoque_has_produto_insercao1_idx` (`insercao_id` ASC) VISIBLE,
   CONSTRAINT `fk_Estoque_has_Produto_Estoque1`
-    FOREIGN KEY (`Estoque_id`)
+    FOREIGN KEY (`estoque_id`)
     REFERENCES `StockManager`.`estoque` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -446,6 +447,80 @@ CREATE TABLE IF NOT EXISTS `StockManager`.`pessoa_has_agendamento` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `StockManager`.`permissoes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `StockManager`.`permissoes` (
+  `funcionario_id` INT NOT NULL,
+  `regra` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`funcionario_id`),
+  CONSTRAINT `fk_acesso_funcionario1`
+    FOREIGN KEY (`funcionario_id`)
+    REFERENCES `StockManager`.`funcionario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `StockManager`.`sensor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `StockManager`.`sensor` (
+  `id` INT NOT NULL,
+  `estoque_id` INT NULL,
+  `nome` VARCHAR(200) NULL,
+  `mac` VARCHAR(20) NULL,
+  `ip` VARCHAR(20) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_sensor_estoque1_idx` (`estoque_id` ASC) VISIBLE,
+  CONSTRAINT `fk_sensor_estoque1`
+    FOREIGN KEY (`estoque_id`)
+    REFERENCES `StockManager`.`estoque` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `StockManager`.`temperatura`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `StockManager`.`temperatura` (
+  `id` INT NOT NULL,
+  `sensor_id` INT NOT NULL,
+  `temperatura` VARCHAR(45) NULL,
+  `humidade` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_temperatura_sensor1_idx` (`sensor_id` ASC) VISIBLE,
+  CONSTRAINT `fk_temperatura_sensor1`
+    FOREIGN KEY (`sensor_id`)
+    REFERENCES `StockManager`.`sensor` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `StockManager`.`log`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `StockManager`.`log` (
+  `id` INT NOT NULL,
+  `funcionario_id` INT NOT NULL,
+  `data` TIMESTAMP NULL,
+  `tipo` CHAR NULL,
+  `mensagem` TEXT NULL,
+  PRIMARY KEY (`id`, `funcionario_id`),
+  INDEX `fk_log_funcionario1_idx` (`funcionario_id` ASC) VISIBLE,
+  CONSTRAINT `fk_log_funcionario1`
+    FOREIGN KEY (`funcionario_id`)
+    REFERENCES `StockManager`.`funcionario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -471,12 +546,5 @@ on estoque_has_produto
 for each row
 begin
 	update produto p set p.quantidade = p.quantidade + new.quantidade where p.id = new.produto_id;
-end; |
-
-create trigger tgr_update_estoque_has_produtos after update
-on estoque_has_produto
-for each row
-begin
-	update estoque_has_produto e set e.estoque_id = new.estoque_id where e.insercao_id = new.insercao_id;
 end; |
 

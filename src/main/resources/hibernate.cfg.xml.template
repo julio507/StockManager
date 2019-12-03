@@ -41,18 +41,22 @@
         <mapping class="com.yard.stockmanager.persistence.entity.Estoque" />
         <mapping class="com.yard.stockmanager.persistence.entity.EstoqueHasProduto" />
         <mapping class="com.yard.stockmanager.persistence.entity.Funcionario" />
+        <mapping class="com.yard.stockmanager.persistence.entity.Insercao" />
+        <mapping class="com.yard.stockmanager.persistence.entity.Log" />
         <mapping class="com.yard.stockmanager.persistence.entity.Marca" />
         <mapping class="com.yard.stockmanager.persistence.entity.Nfe" />
         <mapping class="com.yard.stockmanager.persistence.entity.NfeHasProduto" />
+        <mapping class="com.yard.stockmanager.persistence.entity.Permissoes" />
         <mapping class="com.yard.stockmanager.persistence.entity.Pessoa" />
+        <mapping class="com.yard.stockmanager.persistence.entity.PessoaHasAgendamento" />
         <mapping class="com.yard.stockmanager.persistence.entity.PessoaHasTelefones" />
+        <mapping class="com.yard.stockmanager.persistence.entity.PessoaHasTipo" />
         <mapping class="com.yard.stockmanager.persistence.entity.Produto" />
+        <mapping class="com.yard.stockmanager.persistence.entity.Sensor" />
         <mapping class="com.yard.stockmanager.persistence.entity.Telefones" />
+        <mapping class="com.yard.stockmanager.persistence.entity.Temperatura" />
         <mapping class="com.yard.stockmanager.persistence.entity.Tipo" />
         <mapping class="com.yard.stockmanager.persistence.entity.Unidade" />
-        <mapping class="com.yard.stockmanager.persistence.entity.Insercao" />
-        <mapping class="com.yard.stockmanager.persistence.entity.PessoaHasAgendamento" />
-        <mapping class="com.yard.stockmanager.persistence.entity.PessoaHasTipo" />
 
     </session-factory>
 </hibernate-configuration>
