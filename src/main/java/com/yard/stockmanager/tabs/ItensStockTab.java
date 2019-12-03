@@ -610,6 +610,8 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         //limpa a tabela inferior
         tableViewBottom.getColumns().removeAll();
         tableViewBottom.getColumns().clear();
+
+        new File("nfe.pdf").delete();
         refresh();
     }
 
@@ -667,10 +669,10 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     }
 
     private void generatePdf(byte[] b64) {
-        try (FileOutputStream fos = new FileOutputStream("temp.pdf")) {
+        try (FileOutputStream fos = new FileOutputStream("nfe.pdf")) {
             try {
                 fos.write(Base64.getDecoder().decode(b64));
-                pdf = new File("temp.pdf");
+                pdf = new File("nfe.pdf");
             } catch (IOException e) {
                 e.printStackTrace();
             }
