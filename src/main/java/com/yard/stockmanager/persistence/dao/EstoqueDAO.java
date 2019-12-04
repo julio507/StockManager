@@ -25,13 +25,6 @@ public class EstoqueDAO
 
         for (Estoque e : list){
             e.getId();
-            en.setId(list.get(0).getEndereco().getId());
-            en.setBairro(list.get(0).getEndereco().getBairro());
-            en.setCep(list.get(0).getEndereco().getCep());
-            en.setComplementos(list.get(0).getEndereco().getComplementos());
-            en.setNumero(list.get(0).getEndereco().getNumero());
-            en.setAtivo(list.get(0).getEndereco().getAtivo());
-            e.setEndereco(en);
             e.getEndereco().toString();
         }
         s.getTransaction().commit();
