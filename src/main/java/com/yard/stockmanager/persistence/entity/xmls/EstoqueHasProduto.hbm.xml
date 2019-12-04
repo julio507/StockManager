@@ -9,14 +9,14 @@
                 <column name="insercao_id" />
             </key-property>
             <key-property name="estoqueId" type="int">
-                <column name="Estoque_id" />
+                <column name="estoque_id" />
             </key-property>
             <key-property name="produtoId" type="int">
                 <column name="produto_id" />
             </key-property>
         </composite-id>
         <many-to-one name="estoque" class="hibr.Estoque" update="false" insert="false" fetch="select">
-            <column name="Estoque_id" not-null="true" />
+            <column name="estoque_id" not-null="true" />
         </many-to-one>
         <many-to-one name="insercao" class="hibr.Insercao" update="false" insert="false" fetch="select">
             <column name="insercao_id" not-null="true" />

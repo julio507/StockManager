@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/10/2019 23:50:01 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibr.Temperatura" table="temperatura" catalog="stockmanager" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="sensor" class="hibr.Sensor" fetch="select">
+            <column name="sensor_id" not-null="false" />
+        </many-to-one>
+        <property name="temperatura" type="string">
+            <column name="temperatura" length="45" not-null="true" />
+        </property>
+        <property name="humidade" type="string">
+            <column name="humidade" length="45" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

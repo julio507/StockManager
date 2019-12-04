@@ -29,7 +29,6 @@ public class Endereco  implements java.io.Serializable {
 
      private int id;
      private Cidade cidade;
-     private String endereco;
      private String rua;
      private String numero;
      private String bairro;
@@ -45,19 +44,17 @@ public class Endereco  implements java.io.Serializable {
     }
 
 
-    public Endereco(int id, Cidade cidade, String endereco, String rua, String numero, String cep, char ativo) {
+    public Endereco(int id, Cidade cidade, String rua, String numero, String cep, char ativo) {
         this.id = id;
         this.cidade = cidade;
-        this.endereco = endereco;
         this.rua = rua;
         this.numero = numero;
         this.cep = cep;
         this.ativo = ativo;
     }
-    public Endereco(int id, Cidade cidade, String endereco, String rua, String numero, String bairro, String cep, String complementos, char ativo, Set<Pessoa> pessoas, Set<Estoque> estoques, Set<Nfe> nfesForEnderecodestId, Set<Nfe> nfesForEnderecoremId) {
+    public Endereco(int id, Cidade cidade, String rua, String numero, String bairro, String cep, String complementos, char ativo, Set<Pessoa> pessoas, Set<Estoque> estoques, Set<Nfe> nfesForEnderecodestId, Set<Nfe> nfesForEnderecoremId) {
        this.id = id;
        this.cidade = cidade;
-       this.endereco = endereco;
        this.rua = rua;
        this.numero = numero;
        this.bairro = bairro;
@@ -90,16 +87,6 @@ public class Endereco  implements java.io.Serializable {
     
     public void setCidade(Cidade cidade) {
         this.cidade = cidade;
-    }
-
-    
-    @Column(name="endereco", nullable=false, length=150)
-    public String getEndereco() {
-        return this.endereco;
-    }
-    
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
     }
 
     
@@ -200,7 +187,7 @@ public class Endereco  implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return rua +", "+ endereco +" - Nº "+ numero +", " + bairro +", "+ cidade;
+        return rua +" - Nº "+ numero +", " + bairro +", "+ cidade;
     }
 }
 

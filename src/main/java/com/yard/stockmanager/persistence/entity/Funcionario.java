@@ -36,6 +36,8 @@ public class Funcionario  implements java.io.Serializable {
      private char ativo;
      private Set<Insercao> insercaos = new HashSet<Insercao>(0);
      private Set<Agendamento> agendamentos = new HashSet<Agendamento>(0);
+    private Set<Permissoes> permissoes = new HashSet<Permissoes>(0);
+    private Set<Log> log = new HashSet<Log>(0);
 
     public Funcionario() {
     }
@@ -52,7 +54,7 @@ public class Funcionario  implements java.io.Serializable {
         this.senhaemail = senhaemail;
         this.ativo = ativo;
     }
-    public Funcionario(int id, Pessoa pessoa, String login, String senha, String funcao, char nivelacesso, String email, String senhaemail, char ativo, Set<Insercao> insercaos, Set<Agendamento> agendamentos) {
+    public Funcionario(int id, Pessoa pessoa, String login, String senha, String funcao, char nivelacesso, String email, String senhaemail, char ativo, Set<Insercao> insercaos, Set<Agendamento> agendamentos, Set<Permissoes> permissoes, Set<Log> log) {
        this.id = id;
        this.pessoa = pessoa;
        this.login = login;
@@ -64,6 +66,8 @@ public class Funcionario  implements java.io.Serializable {
        this.ativo = ativo;
        this.insercaos = insercaos;
        this.agendamentos = agendamentos;
+       this.permissoes = permissoes;
+       this.log = log;
     }
    
      @Id 
@@ -176,9 +180,23 @@ public class Funcionario  implements java.io.Serializable {
         this.agendamentos = agendamentos;
     }
 
+@OneToMany(fetch=FetchType.LAZY, mappedBy="funcionario")
+    public Set<Permissoes> getPermissoes() {
+        return this.permissoes;
+    }
 
+    public void setPermissoes(Set<Permissoes> permissoes) {
+        this.permissoes = permissoes;
+    }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="funcionario")
+    public Set<Log> getLog() {
+        return log;
+    }
 
+    public void setLog(Set<Log> log) {
+        this.log = log;
+    }
 }
 
 

@@ -121,19 +121,4 @@ public class EstoqueHasProdutoDAO extends Dao<EstoqueHasProduto> {
             Error.exception(e);
         }
     }
-
-    public static void updateStockOfInsert(int insert, int stockOld, int stockNew){
-        try {
-            Session s = HibernateUtil.getSessionFactory().openSession();
-            s.beginTransaction();
-            s.createQuery("update EstoqueHasProduto set estoque = "+ stockNew +" where " +
-                    "estoque = " + stockOld + " and "+
-                    "insercao = " + insert).executeUpdate();
-            s.getTransaction().commit();
-            s.close();
-        } catch (Exception e) {
-            Error.exception(e);
-        }
-    }
-
 }

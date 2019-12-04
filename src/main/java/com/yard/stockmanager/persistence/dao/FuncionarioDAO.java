@@ -60,7 +60,7 @@ public class FuncionarioDAO
         }
     }
 
-    public static Funcionario getBy(String id) {
+    public static Funcionario getById(int id) {
 
         Funcionario f = new Funcionario();
         Session s = HibernateUtil.getSessionFactory().openSession();

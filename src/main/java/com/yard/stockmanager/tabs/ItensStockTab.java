@@ -11,18 +11,27 @@ import com.yard.stockmanager.useful.Error;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.*;
 
 public class ItensStockTab extends ManagementTab<Object[]> {
 
@@ -31,9 +40,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     private int insertIdSelection = 0; //variavel de marcação do id do registro selecionado
     private int insertId; //variavel de marcação do id de insercao para um registro em edição. Usado para possivel retorno dos registros
     private int productId; //variavel de marcação do id do produto
-    private int bottomProductId; //variavel de marcação do id do produto
     private int estoqueId; //variavel de marcação do id do endereço para um registro em edição. Usado para possivel retorno dos registros
-    private int estoqueIdMod; //variavel para verificar mudança de estoque
     private List<Object[]> tableTemp; //tabela de backup do registro de produtos para um registro em edição
     private List<TableColumn<Object[], ?>> colsProd; //colunas da tabela inferior
     private List<TableColumn<Object[], ?>> colsInsercoes; //colunas da tabela superior
@@ -52,6 +59,10 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     //Entidade para as janelas de seleção
     private Window window;
+
+    //variavel para arquivos
+    private File pdf = null;
+    private byte[] fileB64 = null;
 
     //controladores
     private boolean changed = false; //sinaliza modificação em novas inserções
@@ -114,12 +125,28 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     @Override
     //metodo para salvamento de registros
     public void save() {
+
         if (!changed) {
             resetScreen();
         } else {
-            char temp = ConfirmationDialog.confirm("Há modificações não salvas!", "Deseja salvar as modificações nesse registro?");
+            char temp = ' ';
+            temp = ConfirmationDialog.confirm("Há modificações não salvas!", "Deseja salvar as modificações nesse registro?");
             if (temp == 'y') {
-                resetScreen();
+                if (fileB64 == null) {
+                    Error.message("Não há nenhuma nota fiscal vinculada a esta inserção!\nPara salvar os registros e necessario a adição de uma nota fiscal. " +
+                            "Insira uma nota fiscal e tente novamente!");
+                } else {
+                    if (!isEdition) {
+                        Insercao insertTemp = InsercaoDAO.getById(lastInsertedID);
+                        insertTemp.setNfe(fileB64);
+                        new InsercaoDAO().update(insertTemp);
+                    } else {
+                        Insercao insertTemp = InsercaoDAO.getById(insertId);
+                        insertTemp.setNfe(fileB64);
+                        new InsercaoDAO().update(insertTemp);
+                    }
+                    resetScreen();
+                }
             } else if (temp == 'n') {
                 if (isEdition) {
                     estqDAO.rollback(insertId, estoqueId, tableTemp);
@@ -147,9 +174,14 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
         tfdCodEstq.setText(estoque.getId() + "");
         tfdNomeEstq.setText(estoque.getNome());
-        tfdEnderecoEstq.setText(estoque.getEndereco().getEndereco());
+        tfdEnderecoEstq.setText(estoque.getEndereco().getRua());
         tfdRuaEstq.setText(estoque.getEndereco().getRua());
         tfdBairroEstq.setText(estoque.getEndereco().getBairro());
+
+        fileB64 = InsercaoDAO.getById(insertId).getNfe();
+        if (fileB64 != null) {
+            generatePdf(fileB64);
+        }
 
         //disabilita a tabela
         tableView.setDisable(true);
@@ -161,12 +193,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     @Override
     public void changeStatus() {
-        if(!isEdition) {
-            EstoqueHasProduto ep = estqDAO.getById(new EstoqueHasProdutoId(lastInsertedID, estoque.getId(), Integer.parseInt(bottomSelected[0].toString())));
-            ep.setAtivo('0');
-            estqDAO.update(ep);
-            changed = true;
-        }else{
+        if (isEdition) {
             EstoqueHasProduto ep = estqDAO.getById(new EstoqueHasProdutoId(insertId, estoque.getId(), Integer.parseInt(bottomSelected[0].toString())));
             ep.setAtivo('0');
             estqDAO.update(ep);
@@ -205,10 +232,9 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     public void setDadosEstoque() {
         if ((estoque = (Estoque) window.getSelected()) != null) {
 
-            estoqueIdMod = estoque.getId();
             tfdCodEstq.setText(estoque.getId() + "");
             tfdNomeEstq.setText(estoque.getNome());
-            tfdEnderecoEstq.setText(estoque.getEndereco().getEndereco());
+            tfdEnderecoEstq.setText(estoque.getEndereco().getRua());
             tfdRuaEstq.setText(estoque.getEndereco().getRua());
             tfdBairroEstq.setText(estoque.getEndereco().getBairro());
         }
@@ -265,7 +291,6 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     public void editBottomRegister() {
         btnBuscarProd.setDisable(true);
         isEditionBottom = true;
-        bottomProductId = produto.getId();
 
         tfdCodProd.setText(produto.getId() + "");
         tfdNomeProd.setText(produto.getNome());
@@ -288,12 +313,8 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         if (!isEdition) {
             EstoqueHasProduto ep = estqDAO.getById(new EstoqueHasProdutoId(lastInsertedID, estoque.getId(), Integer.parseInt(bottomSelected[0].toString())));
             if (r == 'y') {
-                if (!compareTables()) {
-                    estqDAO.delete(ep);
-                    changed = true;
-                } else {
-                    changeStatus();
-                }
+                estqDAO.delete(ep);
+                changed = true;
                 loadList(lastInsertedID);
             }
         } else {
@@ -314,24 +335,32 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     //Trava a utilização dos botões da seção de produto
     public void lockPoduct() {
+        btnBuscarEstq.setDisable(false);
         btnBuscarProd.setDisable(true);
         tfdQtdInsert.setEditable(false);
         tfdValorInsert.setEditable(false);
         btnAdicionar.setDisable(true);
+        btnCancelar.setDisable(true);
+        btnAdicionarNfe.setDisable(true);
+        btnVizualizarNfe.setDisable(true);
     }
 
     //destrava a utilização dos botões da seção de produto
     public void unlockPoduct() {
+        btnBuscarEstq.setDisable(true);
         btnBuscarProd.setDisable(false);
         tfdQtdInsert.setEditable(true);
         tfdValorInsert.setEditable(true);
         btnAdicionar.setDisable(false);
+        btnCancelar.setDisable(false);
+        btnAdicionarNfe.setDisable(false);
+        btnVizualizarNfe.setDisable(false);
     }
 
     //metodo para ação do botão adicionar
     public void adicionar() {
 
-        if(validateInsert()){
+        if (validateInsert()) {
             //criação do obj
             estqProd.setEstoque(EstoqueDAO.getById(estoque.getId()));
             estqProd.setProduto(ProdutoDAO.getById(produto.getId()));
@@ -339,19 +368,18 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             estqProd.setValorunitario(Double.parseDouble(tfdValorInsert.getText()));
             estqProd.setAtivo('1');
 
-            if(!isEdition){
-                if(!changed && !isEditionBottom){
+            if (!isEdition) {
+                if (!changed && !isEditionBottom) {
                     //disabilita a tabela
                     tableView.setDisable(true);
-                    //muda o estado o estado do registro paraalterado
+                    //muda o estado o estado do registro para alterado
                     changed = true;
                     //desabilita os campos superiores e habilita os inferiores
                     disableUpperButtons();
                     enableBottomButtons();
 
-                    //temporário
-                    func = funcDAO.getByLogin("root");
-                    System.out.println(Current.getUser());
+                    //busca o usuário atual
+                    func = funcDAO.getById(Current.getUser());
 
                     //dados da inserção
                     insert.setFuncionario(func);
@@ -365,34 +393,12 @@ public class ItensStockTab extends ManagementTab<Object[]> {
                     estqProd.setId(new EstoqueHasProdutoId(lastInsertedID, estoque.getId(), produto.getId()));
                     estqProd.setInsercao(InsercaoDAO.getById(lastInsertedID));
 
-                    //popular a tabela pala validação de itens inseridos
-                    loadList(lastInsertedID);
-
-                    if (!isProductIdOnTable(estqProd.getProduto().getId())) {
-                        estqDAO.add(estqProd);
-                        changed = true;
-                    } else {
-                        if (!isSameValue(estqProd.getProduto().getId(), Double.parseDouble(tfdValorInsert.getText()))) {
-                            char r = ConfirmationDialog.confirm("Há divergência de valores!",
-                                    "O mesmo produto já esta inserido com valor diferente.\n " +
-                                            "Deseja atualizar o valor do produto " + tfdNomeProd.getText() + " " +
-                                            "para R$ " + tfdValorInsert.getText() + "?");
-                            if (r == 'y') {
-                                estqProd.setQuantidade(estqProd.getQuantidade() + Double.parseDouble(tableViewBottom.getItems().get(getRegPosition(estqProd.getProduto().getId()))[4].toString()));
-                                estqProd.setValorunitario(Double.parseDouble(tfdValorInsert.getText()));
-                                estqDAO.update(estqProd);
-                                changed = true;
-                            }
-                        }else{
-                            estqProd.setQuantidade(estqProd.getQuantidade() + Double.parseDouble(tableViewBottom.getItems().get(getRegPosition(estqProd.getProduto().getId()))[4].toString()));
-                            estqDAO.update(estqProd);
-                            changed = true;
-                        }
-                    }
+                    estqDAO.add(estqProd);
                     limpaCamposProduto();
                     loadList(lastInsertedID);
                     refresh();
-                }else if (changed && !isEditionBottom){
+
+                } else if (changed && !isEditionBottom) {
                     estqProd.setId(new EstoqueHasProdutoId(lastInsertedID, estoque.getId(), produto.getId()));
                     estqProd.setInsercao(InsercaoDAO.getById(lastInsertedID));
 
@@ -414,7 +420,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
                                 estqDAO.update(estqProd);
                                 changed = true;
                             }
-                        }else{
+                        } else {
                             estqProd.setQuantidade(estqProd.getQuantidade() + Double.parseDouble(tableViewBottom.getItems().get(getRegPosition(estqProd.getProduto().getId()))[4].toString()));
                             estqDAO.update(estqProd);
                             changed = true;
@@ -423,45 +429,29 @@ public class ItensStockTab extends ManagementTab<Object[]> {
                     limpaCamposProduto();
                     loadList(lastInsertedID);
                     refresh();
-                }else{
+                } else {
                     estqProd.setId(new EstoqueHasProdutoId(lastInsertedID, estoque.getId(), produto.getId()));
                     estqProd.setInsercao(InsercaoDAO.getById(lastInsertedID));
 
-                    //popular a tabela pala validação de itens inseridos
-                    loadList(lastInsertedID);
+                    estqProd.setQuantidade(estqProd.getQuantidade());
+                    estqProd.setValorunitario(Double.parseDouble(tfdValorInsert.getText()));
+                    estqDAO.updateProdOfInsert(lastInsertedID, estoque.getId(), produto.getId(), estqProd);
+                    changed = true;
 
-                    if (!isProductIdOnTable(estqProd.getProduto().getId())) {
-                        estqDAO.update(estqProd);
-                        changed = true;
-                    } else {
-                        if (!isSameValue(estqProd.getProduto().getId(), Double.parseDouble(tfdValorInsert.getText()))) {
-                            char r = ConfirmationDialog.confirm("Há divergência de valores!",
-                                    "O mesmo produto já esta inserido com valor diferente.\n " +
-                                            "Deseja atualizar o valor do produto " + tfdNomeProd.getText() + " " +
-                                            "para R$ " + tfdValorInsert.getText() + "?");
-                            if (r == 'y') {
-                                estqProd.setQuantidade(estqProd.getQuantidade() + Double.parseDouble(tableViewBottom.getItems().get(getRegPosition(estqProd.getProduto().getId()))[4].toString()));
-                                estqProd.setValorunitario(Double.parseDouble(tfdValorInsert.getText()));
-                                estqDAO.update(estqProd);
-                                changed = true;
-                            }
-                        }else{
-                            estqProd.setQuantidade(estqProd.getQuantidade() + Double.parseDouble(tableViewBottom.getItems().get(getRegPosition(estqProd.getProduto().getId()))[4].toString()));
-                            estqDAO.update(estqProd);
-                            changed = true;
-                        }
-                    }
+                    btnBuscarProd.setDisable(false);
                     isEditionBottom = false;
                     limpaCamposProduto();
                     loadList(lastInsertedID);
                     refresh();
                 }
-            }else{
-                if(!isEditionBottom){
+                //Edicao da tabela superior
+            } else {
+                if (!isEditionBottom) {
 
-                    if(!changed){
+                    if (!changed) {
                         changed = true;
                     }
+
                     estqProd.setId(new EstoqueHasProdutoId(insertId, estoque.getId(), produto.getId()));
                     estqProd.setInsercao(InsercaoDAO.getById(insertId));
 
@@ -483,7 +473,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
                                 estqDAO.update(estqProd);
                                 changed = true;
                             }
-                        }else{
+                        } else {
                             estqProd.setQuantidade(estqProd.getQuantidade() + Double.parseDouble(tableViewBottom.getItems().get(getRegPosition(estqProd.getProduto().getId()))[4].toString()));
                             estqDAO.update(estqProd);
                             changed = true;
@@ -493,56 +483,29 @@ public class ItensStockTab extends ManagementTab<Object[]> {
                     limpaCamposProduto();
                     loadList(insertId);
                     refresh();
-                }else{
+                } else {
 
                     changed = true;
 
                     estqProd.setId(new EstoqueHasProdutoId(insertId, estoque.getId(), produto.getId()));
                     estqProd.setInsercao(InsercaoDAO.getById(insertId));
 
-                    //popular a tabela pala validação de itens inseridos
-                    loadList(insertId);
+                    estqProd.setQuantidade(estqProd.getQuantidade());
+                    estqProd.setValorunitario(Double.parseDouble(tfdValorInsert.getText()));
+                    estqDAO.updateProdOfInsert(insertId, estoque.getId(), produto.getId(), estqProd);
 
-                    if (!isProductIdOnTable(estqProd.getProduto().getId())) {
-                        estqDAO.updateProdOfInsert(estqProd.getId().getInsercaoId(), estqProd.getId().getEstoqueId(), bottomProductId, estqProd);
-                        changed = true;
-                    } else {
-                        if (!isSameValue(estqProd.getProduto().getId(), Double.parseDouble(tfdValorInsert.getText()))) {
-                            char r = ConfirmationDialog.confirm("Há divergência de valores!",
-                                    "O mesmo produto já esta inserido com valor diferente.\n " +
-                                            "Deseja atualizar o valor do produto " + tfdNomeProd.getText() + " " +
-                                            "para R$ " + tfdValorInsert.getText() + "?");
-                            if (r == 'y') {
-                                estqProd.setQuantidade(estqProd.getQuantidade());
-                                estqProd.setValorunitario(Double.parseDouble(tfdValorInsert.getText()));
-                                estqDAO.update(estqProd);
-                                changed = true;
-                            }
-                        }else{
-                            estqProd.setQuantidade(estqProd.getQuantidade() + Double.parseDouble(tableViewBottom.getItems().get(getRegPosition(estqProd.getProduto().getId()))[4].toString()));
-                            estqDAO.update(estqProd);
-                            changed = true;
-                        }
-                    }
-
+                    btnBuscarProd.setDisable(false);
                     isEditionBottom = false;
-                    bottomProductId = 0;
                     limpaCamposProduto();
                     loadList(insertId);
                     refresh();
                 }
             }
-
-            if (estoqueId != estoqueIdMod){
-                estqDAO.updateStockOfInsert(estqProd.getId().getInsercaoId(), estoqueId, estoqueIdMod);
-            }
-
         }
     }
 
-    public void cancelar(){
+    public void cancelar() {
         isEditionBottom = false;
-        bottomProductId = 0;
 
         limpaCamposProduto();
         btnBuscarProd.setDisable(false);
@@ -586,7 +549,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     private int getRegPosition(int idProduto) {
         int p = 0;
         for (int i = 0; i < tableViewBottom.getItems().size(); i++) {
-            if (tableViewBottom.getItems().get(i)[0].equals(idProduto + "")) {
+            if (tableViewBottom.getItems().get(i)[0].equals(idProduto)) {
                 p = i;
                 break;
             }
@@ -617,7 +580,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         tfdValorInsert.setText("");
     }
 
-    private void resetScreen(){
+    private void resetScreen() {
         //TextFields estoque
         limpaCamposEstoque();
 
@@ -632,7 +595,6 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
         //reinicia as variaveis locais
         productId = 0;
-        bottomProductId = 0;
         insertIdSelection = 0;
         insertId = 0;
         estoqueId = 0;
@@ -648,6 +610,8 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         //limpa a tabela inferior
         tableViewBottom.getColumns().removeAll();
         tableViewBottom.getColumns().clear();
+
+        new File("nfe.pdf").delete();
         refresh();
     }
 
@@ -671,6 +635,52 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             }
         }
         return r;
+    }
+
+    private void fileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PDF", "*.pdf")
+        );
+        pdf = fileChooser.showOpenDialog(getTabPane().getScene().getWindow());
+
+        if (pdf != null) {
+            try {
+                fileB64 = Base64.getEncoder().encode(Files.readAllBytes(pdf.toPath()));
+            } catch (IOException e) {
+                Error.messageAndLog("Um erro ocorreu ao inserir o arquivo. Entre em contato com o suporte!");
+            }
+        }
+    }
+
+    private void viewFile() {
+        if (pdf != null) {
+            try {
+                Desktop.getDesktop().open(pdf);
+            } catch (IOException e) {
+                Error.messageAndLog("Não foi possivel vizualizar o arquivo. /nPara mais informações contate o suporte técnico");
+            }
+        } else {
+            char r = ConfirmationDialog.confirm("Não há arquivos para exibir!", "Deseja adicionar uma nota fiscal a esta inserção?");
+            if (r == 'y') {
+                fileChooser();
+            }
+        }
+    }
+
+    private void generatePdf(byte[] b64) {
+        try (FileOutputStream fos = new FileOutputStream("nfe.pdf")) {
+            try {
+                fos.write(Base64.getDecoder().decode(b64));
+                pdf = new File("nfe.pdf");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -700,6 +710,9 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         tfdUnidadeProd.setEditable(false);
         tfdValorProd.setEditable(false);
 
+        //componentes das infos fiscais
+        txtNfe.setFont(Font.font("System", FontWeight.BOLD, 20));
+
         //Inclui as Labels e TextFields nas linhas e colunas no painel da esquerda
         //dados do estoque
         innerGrid.addRow(0, hbxTitleEstq);
@@ -717,15 +730,23 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         innerGrid.addRow(11, labCategoriaProd, tfdCategoriaProd);
         innerGrid.addRow(12, labUnidadeProd, tfdUnidadeProd);
         innerGrid.addRow(13, labValorProd, tfdValorProd);
-        //controles de inserção
 
+        //controles de inserção
         insertControlGrid.addRow(0, labQtdInsert, tfdQtdInsert);
         insertControlGrid.addRow(1, labValorInsert, tfdValorInsert);
-        insertControlGrid.addRow(2, btnAdicionar);
-        insertControlGrid.addRow(3, btnCancelar);
-        insertControlGrid.setPadding(new Insets(50, 0, 0, 0));
+        insertControlGrid.add(btnAdicionar, 1, 2, 1, 1);
+        insertControlGrid.add(btnCancelar, 1, 3, 1, 1);
+        insertControlGrid.setPadding(new Insets(20, 0, 0, 0));
 
         innerGrid.addRow(14, insertControlGrid);
+
+        //dados fiscais
+        nfeGrid.addRow(0, hbxNfe);
+        nfeGrid.addRow(1, btnAdicionarNfe);
+        nfeGrid.addRow(2, btnVizualizarNfe);
+        nfeGrid.setPadding(new Insets(50, 0, 0, 0));
+
+        innerGrid.addRow(15, nfeGrid);
 
         //Botões
         //busca de estoque
@@ -763,6 +784,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             }
         });
 
+
         btnAdicionar.setPrefSize(100, 10);
         //evento do botão Adicionar
         btnAdicionar.setOnAction(event -> {
@@ -774,6 +796,21 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         btnCancelar.setOnAction(event -> {
             cancelar();
         });
+
+        //botão adicionar nfe
+        btnAdicionarNfe.setPrefSize(100, 10);
+        //evento do botão Adicionar
+        btnAdicionarNfe.setOnAction(event -> {
+            fileChooser();
+        });
+
+        //botão visualizar nfe
+        btnVizualizarNfe.setPrefSize(100, 10);
+        //evento do botão vizualizar
+        btnVizualizarNfe.setOnAction(event -> {
+            viewFile();
+        });
+
 
         //tabela de inserções
         TableColumn<Object[], Integer> idIns = new TableColumn<>("N. Inserção");
@@ -869,6 +906,15 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     private Button btnAdicionar = new Button("Adicionar");
     private Button btnCancelar = new Button("Cancelar");
+
+    //componentes de adição de nfe
+    private Text txtNfe = new Text("Dados fiscal");
+    private HBox hbxNfe = new HBox(txtNfe);
+
+    private GridPane nfeGrid = new GridPane();
+
+    private Button btnAdicionarNfe = new Button("Adicionar");
+    private Button btnVizualizarNfe = new Button("Vizualizar");
 
     private Button btnBuscarEstq = new Button("Buscar");
     private Button btnBuscarProd = new Button("Buscar");
