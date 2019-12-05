@@ -1,6 +1,7 @@
 package com.yard.stockmanager.tabs;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +61,8 @@ public class CalendarManagementTab extends Tab {
 
         List<Agendamento> list = new ArrayList<>();
 
+        int lastRow = 0;
+
         for (int i = 1; i < localDate.lengthOfMonth() + 1; i++) {
             LocalDate date = localDate.withDayOfMonth(i);
 
@@ -72,7 +75,19 @@ public class CalendarManagementTab extends Tab {
                 block.setItalic( true );
             }
 
-            centerGrid.add(block, date.get(week.dayOfWeek()), date.get(week.weekOfWeekBasedYear()));
+            int row = date.get(week.weekOfWeekBasedYear() );
+
+            if( date.get( ChronoField.DAY_OF_MONTH ) > 7 && row == 1 )
+            {
+                row = lastRow + 1;
+            }
+
+            else
+            {
+                lastRow = row;
+            }
+
+            centerGrid.add(block, date.get(week.dayOfWeek()), row );
 
             block.setOnClick(new EventHandler<Event>() {
 
