@@ -86,7 +86,7 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
         cid.setAtivo(tfdAtivo.getText().charAt(0));
         idcidade = cidDao.addCidId(cid);
         end.setCidade(cidDao.getById(idcidade));
-        end.setEndereco(tfdEndereco.getText());
+        //end.setEndereco(tfdEndereco.getText());
         end.setRua(tfdRua.getText());
         end.setNumero(tfdNumero.getText());
         end.setCep(tfdCep.getText());

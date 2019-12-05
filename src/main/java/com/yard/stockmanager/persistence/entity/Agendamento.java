@@ -92,6 +92,15 @@ public class Agendamento  implements java.io.Serializable {
         this.descricao = descricao;
     }
 
+    @Column(name="titulo", nullable=false, length=200)
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="data", nullable=false, length=19)
     public Date getData() {
@@ -138,7 +147,7 @@ public class Agendamento  implements java.io.Serializable {
      */
     @Override
     public String toString() {
-        return descricao;
+        return titulo;
     }
 }
 

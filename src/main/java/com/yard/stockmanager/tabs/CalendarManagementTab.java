@@ -24,9 +24,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 public class CalendarManagementTab extends Tab {
 
@@ -35,6 +35,15 @@ public class CalendarManagementTab extends Tab {
     private List<Month> months = Arrays.asList(Month.values());
 
     private AgendamentoDAO dao = new AgendamentoDAO(); 
+
+    private Callback<Agendamento,Agendamento> task = new Callback<Agendamento,Agendamento>() {
+        @Override
+        public Agendamento call(Agendamento param) {
+            refreshContent();
+
+            return param;
+        }
+    };
 
     public CalendarManagementTab() {
         super("Calendario");
@@ -140,7 +149,7 @@ public class CalendarManagementTab extends Tab {
     private ComboBox<Month> monthCombo = new ComboBox<Month>();
     private ComboBox<Integer> yearCombo = new ComboBox<Integer>();
 
-    private CalendarSidePane sidePane = new CalendarSidePane();
+    private CalendarSidePane sidePane = new CalendarSidePane( task );
 
     private GridPane topGrid = new GridPane();
 
