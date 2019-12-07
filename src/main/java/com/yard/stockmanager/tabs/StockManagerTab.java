@@ -1,22 +1,28 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.dao.EnderecoDAO;
 import com.yard.stockmanager.persistence.dao.EstoqueDAO;
 import com.yard.stockmanager.persistence.entity.Endereco;
 import com.yard.stockmanager.persistence.entity.Estoque;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class StockManagerTab extends ManagementTab<Estoque>
 {
 
     private Estoque selected;
+    private List<Endereco> enderecos = EnderecoDAO.getOnllyAddres();
 
     public StockManagerTab()
     {
@@ -52,7 +58,7 @@ public class StockManagerTab extends ManagementTab<Estoque>
         {
             errors=errors+"Telefone";
         }
-        if(tfdEndereco.getText().isEmpty())
+        if(cbEndereco.getItems().toString().equals("Selecione um endereço"))
         {
             errors=errors+"Endereço";
         }
@@ -113,11 +119,11 @@ public class StockManagerTab extends ManagementTab<Estoque>
         if (selected != null)
         {
             tfdNome.setText(selected.getNome());
+            cbEndereco.setValue((selected.getEndereco()));
             tfdDescricao.setText(selected.getDescricao());
             tfdTelefone.setText(selected.getTelefone());
             id = selected.getId();
         }
-
         else
         {
             clear();
@@ -128,13 +134,13 @@ public class StockManagerTab extends ManagementTab<Estoque>
     public void clear() {
 
     }
-
-
+    
     private void initComponents()
     {
-
+        cbEndereco.getItems().addAll(enderecos);
+        cbEndereco.setPromptText("Selecione um endereço");
         innerGrid.addRow(0,labNome, tfdNome);
-        innerGrid.addRow(1,labEndeeco, tfdEndereco);
+        innerGrid.addRow(1,labEndeeco, cbEndereco);
         innerGrid.addRow(2,labDescricao, tfdDescricao);
         innerGrid.addRow(3,labTelefone, tfdTelefone);
 
@@ -166,12 +172,12 @@ public class StockManagerTab extends ManagementTab<Estoque>
     private int id;
 
     //Criação dos componentes da tela
-    private Label labEndeeco = new Label("Rua:");
+    private Label labEndeeco = new Label("Endereço:");
     private Label labNome = new Label("Nome:");
     private Label labDescricao = new Label("Descrição:");
     private Label labTelefone = new Label("Telefone:");
 
-    private TextField tfdEndereco = new TextField();
+    private ComboBox<Endereco> cbEndereco = new ComboBox();
     private TextField tfdNome = new TextField();
     private TextField tfdDescricao = new TextField();
     private TextField tfdTelefone = new TextField();

@@ -46,4 +46,14 @@ public class EnderecoDAO extends Dao<Endereco> {
         }
         return result;
     }
+
+    public static List<Endereco> getOnllyAddres (){
+        List addrList = new ArrayList();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        addrList = s.createQuery("SELECT e.id, e.rua, e.numero,e.cep, e.complementos, c.nome FROM Endereco e, Cidade c WHERE e.cidade.id = c.id").list();
+        s.getTransaction().commit();
+        s.close();
+        return addrList;
+    }
 }
