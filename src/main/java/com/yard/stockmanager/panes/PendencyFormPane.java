@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.yard.stockmanager.persistence.dao.AgendamentoDAO;
-import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
 import com.yard.stockmanager.persistence.entity.Agendamento;
 import com.yard.stockmanager.persistence.entity.PessoaHasAgendamento;
 import com.yard.stockmanager.useful.DateFormat;
@@ -21,23 +20,30 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class PendencyFormPane extends BorderPane {
 
     private AgendamentoDAO dao = new AgendamentoDAO();
-    private FuncionarioDAO fdao = new FuncionarioDAO();
     private Agendamento source = new Agendamento();
+
+    private Callback<Agendamento,Agendamento> task;
 
     /**
      * 
      */
-    public PendencyFormPane() {
+    public PendencyFormPane( Callback<Agendamento,Agendamento> task ) {
+        this.task = task;
+
         initComponents();
     }
 
     public void refreshContent()
     {
+        titleField.setText( source.getTitulo() );
         dateField.setText( DateFormat.getFormatedString( source.getData() ) );
+
+        descriptionField.setText( source.getDescricao() );
     }
 
     /**
@@ -67,6 +73,7 @@ public class PendencyFormPane extends BorderPane {
         if( result.getFuncionario() == null )
         {
             result.setDescricao(descriptionField.getText());
+            result.setTitulo( titleField.getText() );
             result.setPessoaHasAgendamentos( new HashSet<PessoaHasAgendamento>( new ArrayList<PessoaHasAgendamento>() ) );
             result.setAtivo('1');
         }
@@ -78,7 +85,11 @@ public class PendencyFormPane extends BorderPane {
     {
         if( validate() )
         {
-            dao.add( getInput() );
+            Agendamento a = getInput();
+
+            dao.add( a );
+
+            task.call( a );
         }
     }
 
@@ -116,7 +127,6 @@ public class PendencyFormPane extends BorderPane {
                     close();
                 }
             }
-            
         } );
 
         cancelButton.setOnAction( new EventHandler<ActionEvent>(){

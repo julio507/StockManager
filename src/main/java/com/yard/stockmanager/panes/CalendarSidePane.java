@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.util.Callback;
 
 public class CalendarSidePane extends BorderPane {
 
@@ -30,13 +31,19 @@ public class CalendarSidePane extends BorderPane {
 
     private AgendamentoDAO dao = new AgendamentoDAO();
 
+    private Callback<Agendamento, Agendamento> task;
+
     /**
      * 
      */
-    public CalendarSidePane() {
+    public CalendarSidePane( Callback<Agendamento, Agendamento> task ) {
+        this.task = task;
         initComponents();
     }
 
+    /**
+     * 
+     */
     public void refreshContent() {
         if (date != null) {
             dateField.setText(DateFormat.getFormatedString(date));
@@ -78,7 +85,15 @@ public class CalendarSidePane extends BorderPane {
     }
 
     private void openForm(Agendamento a) {
-        PendencyFormPane form = new PendencyFormPane();
+        PendencyFormPane form = new PendencyFormPane( new Callback<Agendamento,Agendamento>(){
+        
+            @Override
+            public Agendamento call(Agendamento param) {
+                task.call( param );
+
+                return param;
+            }
+        });
 
         form.setSource(a);
 
@@ -124,7 +139,9 @@ public class CalendarSidePane extends BorderPane {
         removeButton.setOnAction( new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                Agendamento a = list.getSelectionModel().getSelectedItem();
+
+                dao.delete( a );
             }
         });
     }

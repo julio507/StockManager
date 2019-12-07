@@ -1,10 +1,7 @@
 package com.yard.stockmanager.parts;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.yard.stockmanager.persistence.entity.Agendamento;
 import com.yard.stockmanager.useful.DateFormat;
 
 import javafx.event.Event;
@@ -13,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 public class DayBlock extends BorderPane {
@@ -72,8 +68,6 @@ public class DayBlock extends BorderPane {
     private LocalDate date;
     private Font font = Font.font( "Arial", 20);
     private Font fonti = Font.font( "Arial", FontWeight.BOLD, 20 );
-
-    private List<Agendamento> list = new ArrayList<Agendamento>();
 
     public DayBlock(LocalDate date) {
         this.date = date;
