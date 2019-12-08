@@ -5,6 +5,7 @@
  */
 package com.yard.stockmanager.parts;
 
+import com.yard.stockmanager.main.StockManager;
 import com.yard.stockmanager.persistence.dao.PermissoesDAO;
 import com.yard.stockmanager.persistence.entity.Permissoes;
 import com.yard.stockmanager.useful.Error;
@@ -179,7 +180,7 @@ public abstract class ManagementTab<T>
             }
         } else {
             PermissionXMLReader reader = new PermissionXMLReader(nivel, regra, tab);
-            reader.fazerParsing("C:\\Users\\1511 FOX\\Documents\\GitHub\\StockManager\\src\\main\\resources\\permissoes.xml");
+            reader.fazerParsing("C:\\Users\\Back Rei Delas\\Documents\\GitHub\\StockManager\\src\\main\\resources\\permissoes.xml");
             return reader.hasAccess();
         }
         return false;
