@@ -29,6 +29,7 @@ public class Endereco  implements java.io.Serializable {
 
      private int id;
      private Cidade cidade;
+    private String endereco;
      private String rua;
      private String numero;
      private String bairro;
@@ -99,7 +100,12 @@ public class Endereco  implements java.io.Serializable {
         this.rua = rua;
     }
 
-    
+    @Column(name="endereco", nullable = false, length=100)
+    public String getEndereco() { return this.endereco;}
+
+
+    public void setEndereco(String endereco) { this.endereco = endereco; }
+
     @Column(name="numero", nullable=false, length=5)
     public String getNumero() {
         return this.numero;

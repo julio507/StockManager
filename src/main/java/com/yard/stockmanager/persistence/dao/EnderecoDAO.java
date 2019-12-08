@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnderecoDAO extends Dao<Endereco> {
+    Endereco end = new Endereco();
     public static List<Endereco> getAll() {
         List depList = new ArrayList();
         Session s = HibernateUtil.getSessionFactory().openSession();
@@ -55,5 +56,9 @@ public class EnderecoDAO extends Dao<Endereco> {
         s.getTransaction().commit();
         s.close();
         return addrList;
+    }
+
+    public String endereco() {
+        return end.getRua() + " - ," + end.getBairro() + " - ," + end.getCidade();
     }
 }

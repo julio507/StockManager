@@ -6,26 +6,28 @@ import javax.persistence.*;
         ,catalog="stockmanager"
 )
 public class Permissoes {
-    private PermissoesId id;
+    private int id;
     private Funcionario funcionario;
     private String regra;
+    private char ativo;
 
     public Permissoes() {
     }
 
-    public Permissoes(Funcionario funcionario, String regra) {
+    public Permissoes( int id, Funcionario funcionario, String regra, char ativo) {
+        this.id = id;
         this.funcionario = funcionario;
         this.regra = regra;
+        this.ativo = ativo;
     }
 
-    @EmbeddedId
-    @AttributeOverrides( {
-            @AttributeOverride(name="funcionarioId", column=@Column(name="funcionario_id", nullable=false) ) } )
-    public PermissoesId getId() {
+    @Id
+    @Column(name="id", unique=true, nullable=false)
+    public int getId() {
         return id;
     }
 
-    public void setId(PermissoesId id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -48,5 +50,12 @@ public class Permissoes {
         this.regra = regra;
     }
 
+    @Column(name="ativo", nullable=false, length=1)
+    public char isAtivo() {
+        return ativo;
+    }
 
+    public void setAtivo(char ativo) {
+        this.ativo = ativo;
+    }
 }

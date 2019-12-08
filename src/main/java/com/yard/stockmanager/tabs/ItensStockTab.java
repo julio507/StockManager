@@ -4,9 +4,7 @@ import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.parts.Window;
 import com.yard.stockmanager.persistence.dao.*;
 import com.yard.stockmanager.persistence.entity.*;
-import com.yard.stockmanager.useful.CellFormat;
-import com.yard.stockmanager.useful.ConfirmationDialog;
-import com.yard.stockmanager.useful.Current;
+import com.yard.stockmanager.useful.*;
 import com.yard.stockmanager.useful.Error;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -21,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import org.bouncycastle.crypto.util.Pack;
 
 import java.awt.*;
 import java.io.File;
@@ -28,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.*;
@@ -72,7 +70,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
 
     public ItensStockTab() {
-        super("Cadastro de Itens por Estoque", true);
+        super("Cadastro de Itens por Estoque", true, Current.getUser(), FuncionarioDAO.getById(Current.getUser()).getNivelacesso(), "ItensStockTab");
         initComponents();
     }
 
@@ -103,7 +101,11 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     @Override
     //validação do salvamento final
     public boolean validate() {
-
+        if (fileB64 == null) {
+            Error.message("Não há nenhuma nota fiscal vinculada a esta inserção!\nPara salvar os registros e necessario a adição de uma nota fiscal. " +
+                    "Insira uma nota fiscal e tente novamente!");
+            return false;
+        }
         return true;
     }
 
@@ -132,10 +134,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             char temp = ' ';
             temp = ConfirmationDialog.confirm("Há modificações não salvas!", "Deseja salvar as modificações nesse registro?");
             if (temp == 'y') {
-                if (fileB64 == null) {
-                    Error.message("Não há nenhuma nota fiscal vinculada a esta inserção!\nPara salvar os registros e necessario a adição de uma nota fiscal. " +
-                            "Insira uma nota fiscal e tente novamente!");
-                } else {
+                if (fileB64 != null) {
                     if (!isEdition) {
                         Insercao insertTemp = InsercaoDAO.getById(lastInsertedID);
                         insertTemp.setNfe(fileB64);
@@ -647,6 +646,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
         if (pdf != null) {
             try {
                 fileB64 = Base64.getEncoder().encode(Files.readAllBytes(pdf.toPath()));
+                changed = true;
             } catch (IOException e) {
                 Error.messageAndLog("Um erro ocorreu ao inserir o arquivo. Entre em contato com o suporte!");
             }
@@ -811,6 +811,10 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             viewFile();
         });
 
+        this.setOnCloseRequest(event -> {
+            save();
+        });
+
 
         //tabela de inserções
         TableColumn<Object[], Integer> idIns = new TableColumn<>("N. Inserção");
@@ -855,6 +859,30 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
         enableUpperButtons();
         disableBottomButtons();
+
+        //test
+//        Funcionario f = FuncionarioDAO.getById(Current.getUser());
+//        String nivel;
+//        if(f.getNivelacesso() == '1'){
+//            nivel = "administrador";
+//        }else if (f.getNivelacesso() == '2'){
+//            nivel = "operador";
+//        }else{
+//            nivel = "observador";
+//        }
+//        String[] tabName = this.getClass().getName().split("\\.");
+//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "visualizar").isAtivo());
+//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "inserir").isAtivo());
+//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "modificar").isAtivo());
+//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "remover").isAtivo());
+//
+//        System.out.println(f.getNivelacesso());
+//        System.out.println(nivel);
+//        System.out.println(tabName[tabName.length - 1]);
+//
+//        PermissionXMLReader reader = new PermissionXMLReader(nivel, "visualizar", tabName[tabName.length - 1]);
+//        reader.fazerParsing("C:\\Users\\1511 FOX\\Documents\\GitHub\\StockManager\\src\\main\\resources\\permissoes.xml");
+//        System.out.println(reader.hasAccess());
     }
 
 

@@ -1,6 +1,10 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.dao.NfeDAO;
+import com.yard.stockmanager.persistence.dao.NfeHasProdutoDAO;
+import com.yard.stockmanager.persistence.entity.Nfe;
+import com.yard.stockmanager.persistence.entity.NfeHasProduto;
 import com.yard.stockmanager.persistence.entity.Produto;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -31,6 +35,16 @@ public class ItensManagerTab extends ManagementTab<Produto>
 
         @Override
         public void save() {
+            int idnfe;
+            int idprod;
+            Produto prod = new Produto();
+            NfeHasProduto nfehas = new NfeHasProduto();
+            NfeHasProdutoDAO nfehasdao = new NfeHasProdutoDAO();
+
+
+
+
+
 
         }
 

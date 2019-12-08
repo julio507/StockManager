@@ -125,6 +125,7 @@ public class StockManagerTab extends ManagementTab<Estoque>
             id = selected.getId();
         }
         else
+
         {
             clear();
         }
