@@ -41,4 +41,5 @@ public class EstoqueDAO
         s.close();
         return e;
     }
+
 }

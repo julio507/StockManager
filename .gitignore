@@ -196,3 +196,5 @@ nbdist/
 *.log
 *.ick
 logs.log.lck
+.idea/codeStyles/Project.xml
+StockManager.iml

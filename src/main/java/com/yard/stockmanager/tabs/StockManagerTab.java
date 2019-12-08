@@ -134,7 +134,7 @@ public class StockManagerTab extends ManagementTab<Estoque>
     public void clear() {
 
     }
-    
+
     private void initComponents()
     {
         cbEndereco.getItems().addAll(enderecos);

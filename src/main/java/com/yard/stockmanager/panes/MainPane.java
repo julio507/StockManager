@@ -50,6 +50,10 @@ public class MainPane
             calendarTab
         );
 
+        queryMenu.getItems().addAll(
+            stockReporter
+        );
+
         menu.getMenus().addAll(
                 managementMenu,
                 operationsMenu,
@@ -133,6 +137,11 @@ public class MainPane
         public Tab getTab() {
             return new ItensManagerTab();
         }
+    };
+
+    private TabMenuItem stockReporter = new TabMenuItem("Relatório de Estoques", tabPane) {
+        @Override
+        public Tab getTab(){return new StockReport();}
     };
 
 
