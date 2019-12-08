@@ -74,7 +74,7 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
 
     @Override
     public void save() {
-        int idestoque;
+        int idendereco;
         int idcidade;
         Pessoa pes = new Pessoa();
         Endereco end = new Endereco();
@@ -92,8 +92,9 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
         end.setCep(tfdCep.getText());
         end.setBairro(tfdBairro.getText());
         end.setAtivo(tfdAtivo1.getText().charAt(0));
-        idestoque = endDao.addEndId(end);
-        pes.setEndereco(EnderecoDAO.getById(idestoque));
+        end.setEndereco(endDao.endereco());
+        idendereco = endDao.addEndId(end);
+        pes.setEndereco(EnderecoDAO.getById(idendereco));
         pes.setDenominacaosocial(tfdDenominacaoSocial.getText());
         pes.setNome(tfdNome.getText());
         pes.setEmail(tfdEmail.getText());
@@ -245,7 +246,6 @@ public class PeopleRegisterTab extends ManagementTab<Pessoa> {
     private Label labCpf = new Label("CPF:");
     private Label labObservacoes = new Label("Observações:");
     private Label labAtivo = new Label("Ativo:");
-    private JComboBox<String> comboBox = new JComboBox<String>();
 
     private TextField tfdDenominacaoSocial = new TextField();
     private TextField tfdNome = new TextField();
