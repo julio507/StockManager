@@ -1,6 +1,7 @@
 package com.yard.stockmanager.tabs;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,9 +25,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 public class CalendarManagementTab extends Tab {
 
@@ -35,6 +36,15 @@ public class CalendarManagementTab extends Tab {
     private List<Month> months = Arrays.asList(Month.values());
 
     private AgendamentoDAO dao = new AgendamentoDAO(); 
+
+    private Callback<Agendamento,Agendamento> task = new Callback<Agendamento,Agendamento>() {
+        @Override
+        public Agendamento call(Agendamento param) {
+            refreshContent();
+
+            return param;
+        }
+    };
 
     public CalendarManagementTab() {
         super("Calendario");
@@ -51,6 +61,8 @@ public class CalendarManagementTab extends Tab {
 
         List<Agendamento> list = new ArrayList<>();
 
+        int lastRow = 0;
+
         for (int i = 1; i < localDate.lengthOfMonth() + 1; i++) {
             LocalDate date = localDate.withDayOfMonth(i);
 
@@ -63,7 +75,19 @@ public class CalendarManagementTab extends Tab {
                 block.setItalic( true );
             }
 
-            centerGrid.add(block, date.get(week.dayOfWeek()), date.get(week.weekOfWeekBasedYear()));
+            int row = date.get(week.weekOfWeekBasedYear() );
+
+            if( date.get( ChronoField.DAY_OF_MONTH ) > 7 && row == 1 )
+            {
+                row = lastRow + 1;
+            }
+
+            else
+            {
+                lastRow = row;
+            }
+
+            centerGrid.add(block, date.get(week.dayOfWeek()), row );
 
             block.setOnClick(new EventHandler<Event>() {
 
@@ -140,7 +164,7 @@ public class CalendarManagementTab extends Tab {
     private ComboBox<Month> monthCombo = new ComboBox<Month>();
     private ComboBox<Integer> yearCombo = new ComboBox<Integer>();
 
-    private CalendarSidePane sidePane = new CalendarSidePane();
+    private CalendarSidePane sidePane = new CalendarSidePane( task );
 
     private GridPane topGrid = new GridPane();
 
