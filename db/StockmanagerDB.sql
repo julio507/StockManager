@@ -451,9 +451,11 @@ ENGINE = InnoDB;
 -- Table `StockManager`.`permissoes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `StockManager`.`permissoes` (
+  `id` INT NOT NULL,
   `funcionario_id` INT NOT NULL,
   `regra` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`funcionario_id`),
+  `ativo` CHAR NOT NULL,
+  PRIMARY KEY (`id`, `funcionario_id`),
   CONSTRAINT `fk_acesso_funcionario1`
     FOREIGN KEY (`funcionario_id`)
     REFERENCES `StockManager`.`funcionario` (`id`)
