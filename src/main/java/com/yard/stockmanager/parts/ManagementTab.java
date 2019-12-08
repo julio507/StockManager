@@ -5,18 +5,17 @@
  */
 package com.yard.stockmanager.parts;
 
+import com.yard.stockmanager.persistence.dao.PermissoesDAO;
+import com.yard.stockmanager.persistence.entity.Permissoes;
+import com.yard.stockmanager.useful.Error;
+import com.yard.stockmanager.useful.PermissionXMLReader;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -26,13 +25,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
- *
  * @author julio
  */
 public abstract class ManagementTab<T>
         extends
-        Tab
-{
+        Tab {
 
     private Object selected;
     private Object bottomSelected;
@@ -42,16 +39,36 @@ public abstract class ManagementTab<T>
     private Font font = new Font(20);
     protected int lastPage = 25;
 
-    public ManagementTab(String label)
-    {
+    //variaveis de permissionamento
+    private Permissoes permissoes;
+    private int userId;
+    private String nivel;
+    private String tab;
+
+
+    public ManagementTab(String label) {
         super(label);
         initComponents();
     }
 
-    public ManagementTab(String label, Boolean doubleAction)
-    {
+    public ManagementTab(String label, Boolean doubleAction) {
         super(label);
         this.doubleAction = doubleAction;
+        initComponents();
+    }
+
+    public ManagementTab(String label, Boolean doubleAction, int userId, char nivel, String tab) {
+        super(label);
+        this.doubleAction = doubleAction;
+        this.userId = userId;
+        if (nivel == '1') {
+            this.nivel = "administrador";
+        } else if (nivel == '2') {
+            this.nivel = "operador";
+        } else {
+            this.nivel = "observador";
+        }
+        this.tab = tab;
         initComponents();
     }
 
@@ -69,88 +86,106 @@ public abstract class ManagementTab<T>
 
     public abstract void clear();
 
-    public void details(){};
-
-    public void print(){};
-    
-    public void doPagination()
-    {
-        
+    public void details() {
     }
 
-    public Object getSelected()
-    {
+    ;
+
+    public void print() {
+    }
+
+    ;
+
+    public void doPagination() {
+
+    }
+
+    public Object getSelected() {
         return selected;
     }
 
-    public void setSelected(Object selected)
-    {
+    public void setSelected(Object selected) {
         this.selected = selected;
     }
 
     //seleçoes da tabela inferior
-    public Object getBottomSelected()
-    {
+    public Object getBottomSelected() {
         return bottomSelected;
     }
 
-    public void setBottomSelected(Object bottomSelected)
-    {
+    public void setBottomSelected(Object bottomSelected) {
         this.bottomSelected = bottomSelected;
     }
 
-    public String getFilter()
-    {
+    public String getFilter() {
         return searchField.getText();
     }
 
-    public boolean isPrintable()
-    {
+    public boolean isPrintable() {
         return printable;
     }
 
-    public void setPrintable(boolean printable)
-    {
+    public void setPrintable(boolean printable) {
         this.printable = printable;
-        
+
         printButton.setDisable(!printable);
     }
 
     //metodos de edição das tabelas
-    public void selectBottom(){}//seleção dos registros da tabela inferior
+    public void selectBottom() {
+    }//seleção dos registros da tabela inferior
 
-    public void editUpperRegister(){}
+    public void editUpperRegister() {
+    }
 
-    public void removeUpperRegister(){}
+    public void removeUpperRegister() {
+    }
 
-    public void editBottomRegister(){}
+    public void editBottomRegister() {
+    }
 
-    public void removeBottomRegister(){}
+    public void removeBottomRegister() {
+    }
 
     //metodos para desabilitar os controles de edição das tabelas
-    public void disableUpperButtons(){
+    public void disableUpperButtons() {
         editButton.setDisable(true);
         removeButton.setDisable(true);
     }
 
-    public void disableBottomButtons(){
+    public void disableBottomButtons() {
         editBottomButton.setDisable(true);
         removeBottomButton.setDisable(true);
     }
 
     //metodos para habilitar os controles de edição das tabelas
-    public void enableUpperButtons(){
+    public void enableUpperButtons() {
         editButton.setDisable(false);
         removeButton.setDisable(false);
     }
 
-    public void enableBottomButtons(){
+    public void enableBottomButtons() {
         editBottomButton.setDisable(false);
         removeBottomButton.setDisable(false);
     }
 
-    private void initComponents()
-    {
+    //verifica permissoes
+    private boolean hasPermission(String regra) {
+        if ((permissoes = PermissoesDAO.hasPermission(userId, tab, regra)) != null) {
+            if (permissoes.isAtivo() == '1') {
+                return true;
+            } else if (permissoes.isAtivo() == '0') {
+                return false;
+            }
+        } else {
+            PermissionXMLReader reader = new PermissionXMLReader(nivel, regra, tab);
+            reader.fazerParsing("C:\\Users\\1511 FOX\\Documents\\GitHub\\StockManager\\src\\main\\resources\\permissoes.xml");
+            return reader.hasAccess();
+        }
+        return false;
+    }
+
+    private void initComponents() {
 
         mark.setTextFill(new Color(1, 0, 0, 0));
 
@@ -182,15 +217,15 @@ public abstract class ManagementTab<T>
         tablePane.setTop(searchGrid);
 
         //duas tabelas
-        if(!doubleAction) {
+        if (!doubleAction) {
             tablePane.setCenter(tableView);
-        }else{
+        } else {
             upperTableButtonsGrid.addRow(0, editButton, removeButton);
             bottomTableButtonsGrid.addRow(0, editBottomButton, removeBottomButton);
 
             tableViewBottom.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             tableViewBottom.setEditable(false);
-            tablesGrid.addColumn(0, tableView,upperTableButtonsGrid, tableViewBottom, bottomTableButtonsGrid);
+            tablesGrid.addColumn(0, tableView, upperTableButtonsGrid, tableViewBottom, bottomTableButtonsGrid);
             tablePane.setCenter(tablesGrid);
         }
 
@@ -213,76 +248,67 @@ public abstract class ManagementTab<T>
         setContent(borderPane);
 
         printButton.setDisable(!printable);
-        
-        tableView.setOnScroll( new EventHandler<ScrollEvent>() {
+
+        tableView.setOnScroll(new EventHandler<ScrollEvent>() {
 
             @Override
             public void handle(ScrollEvent event) {
-                if( event.getDeltaY() < 0.0 )
-                {
+                if (event.getDeltaY() < 0.0) {
                     doPagination();
                 }
             }
-        } );
+        });
 
-        saveButton.setOnAction(new EventHandler<ActionEvent>()
-        {
+        saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                if (validate())
-                {
-                    if (getSelected() == null)
-                    {
-                        save();
-                        clear();
-                    }
-                    else
-                    {
-                        edit();
-                    }
+            public void handle(ActionEvent event) {
+                if (hasPermission("inserir") || userId == 0) {
+                    if (validate()) {
+                        if (getSelected() == null) {
+                            save();
+                            clear();
+                        } else {
+                            edit();
+                        }
 
-                    refresh();
+                        refresh();
+                    }
+                } else {
+                    Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
                 }
             }
         });
 
-        disableButton.setOnAction(new EventHandler<ActionEvent>()
-        {
+        disableButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                if (selected != null)
-                {
-                    changeStatus();
-                }
+            public void handle(ActionEvent event) {
+                if (hasPermission("modificar") || userId == 0) {
+                    if (selected != null) {
+                        changeStatus();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Erro ao trocar o status");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Nenhum item selecionado");
 
-                else
-                {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Erro ao trocar o status");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Nenhum item selecionado");
-
-                    alert.showAndWait();
+                        alert.showAndWait();
+                    }
+                } else {
+                    Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
                 }
             }
         });
 
-        newButton.setOnAction(new EventHandler<ActionEvent>()
-        {
+        newButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 clear();
             }
         });
 
-        tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>()
-        {
+        tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
             @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue)
-            {
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 setSelected(newValue);
 
                 select();
@@ -290,68 +316,70 @@ public abstract class ManagementTab<T>
         });
 
         //selecão da tabela inferior
-        tableViewBottom.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>()
-        {
+        tableViewBottom.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
             @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue)
-            {
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 setBottomSelected(newValue);
 
                 selectBottom();
             }
         });
 
-        searchButton.setOnAction(new EventHandler<ActionEvent>()
-        {
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 refresh();
             }
         });
-        
-        printButton.setOnAction( new EventHandler<ActionEvent>()
-        {
+
+        printButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 print();
             }
         });
 
-        editButton.setOnAction( new EventHandler<ActionEvent>()
-        {
+        editButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                editUpperRegister();
+            public void handle(ActionEvent event) {
+                if (hasPermission("modificar") || userId == 0) {
+                    editUpperRegister();
+                } else {
+                    Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
+                }
             }
         });
 
-        removeButton.setOnAction( new EventHandler<ActionEvent>()
-        {
+        removeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                removeUpperRegister();
+            public void handle(ActionEvent event) {
+                if(hasPermission("remover") || userId == 0) {
+                    removeUpperRegister();
+                } else {
+                    Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
+                }
             }
         });
 
-        editBottomButton.setOnAction( new EventHandler<ActionEvent>()
-        {
+        editBottomButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                editBottomRegister();
+            public void handle(ActionEvent event) {
+                if(hasPermission("modificar") || userId == 0) {
+                    editBottomRegister();
+                } else {
+                    Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
+                }
             }
         });
 
-        removeBottomButton.setOnAction( new EventHandler<ActionEvent>()
-        {
+        removeBottomButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                removeBottomRegister();
+            public void handle(ActionEvent event) {
+                if(hasPermission("remover") || userId == 0) {
+                    removeBottomRegister();
+                } else {
+                    Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
+                }
             }
         });
     }
@@ -366,7 +394,7 @@ public abstract class ManagementTab<T>
     private Button saveButton = new Button("Salvar");
     private Button newButton = new Button("Limpar/Novo");
     private Button disableButton = new Button("Desabilitar/Habilitar");
-    private Button printButton = new Button( "Imprimir" );
+    private Button printButton = new Button("Imprimir");
 
     private Button editButton = new Button("Editar");
     private Button removeButton = new Button("Remover");
