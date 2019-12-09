@@ -38,7 +38,7 @@ public abstract class ManagementTab<T>
     private boolean printable = false;
     private boolean doubleAction = false;
     private Font font = new Font(20);
-    protected int lastPage = 25;
+    protected int lastPage = 50;
 
     //variaveis de permissionamento
     private Permissoes permissoes;
