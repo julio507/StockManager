@@ -8,11 +8,14 @@ import com.yard.stockmanager.useful.*;
 import com.yard.stockmanager.useful.Error;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -191,7 +194,14 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     @Override
     public void changeStatus() {
-
+//
+//        Address users[] = new Address[0];
+//        try {
+//            users = InternetAddress.parse("helimarbaggattini15@gmail.com");
+//        } catch (AddressException e) {
+//            e.printStackTrace();
+//        }
+//        Mail.sendMessage(FuncionarioDAO.getById(Current.getUser()), users, "teste", "Esta mensagem é um teste.", "C:\\Users\\1511 FOX\\Documents\\GitHub\\StockManager\\src\\main\\resources\\img\\icon.png");
     }
     public void disable() {
         if (isEdition) {
@@ -256,6 +266,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             tfdValorProd.setText(produto.getCustounitario() + "");
 
             tfdValorInsert.setText(produto.getCustounitario() + "");
+            tfdQtdInsert.requestFocus();
         }
 
     }
@@ -788,11 +799,39 @@ public class ItensStockTab extends ManagementTab<Object[]> {
             }
         });
 
+        tfdQtdInsert.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    tfdValorInsert.requestFocus();
+                }
+            }
+        });
+
+        tfdValorInsert.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    btnAdicionar.requestFocus();
+                }
+            }
+        });
+
 
         btnAdicionar.setPrefSize(100, 10);
+
         //evento do botão Adicionar
         btnAdicionar.setOnAction(event -> {
             adicionar();
+        });
+
+        btnAdicionar.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    btnAdicionar.fire();
+                }
+            }
         });
 
         btnCancelar.setPrefSize(100, 10);
@@ -863,30 +902,6 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
         enableUpperButtons();
         disableBottomButtons();
-
-        //test
-//        Funcionario f = FuncionarioDAO.getById(Current.getUser());
-//        String nivel;
-//        if(f.getNivelacesso() == '1'){
-//            nivel = "administrador";
-//        }else if (f.getNivelacesso() == '2'){
-//            nivel = "operador";
-//        }else{
-//            nivel = "observador";
-//        }
-//        String[] tabName = this.getClass().getName().split("\\.");
-//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "visualizar").isAtivo());
-//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "inserir").isAtivo());
-//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "modificar").isAtivo());
-//        System.out.println(PermissoesDAO.hasPermission(f.getId(), tabName[tabName.length - 1], "remover").isAtivo());
-//
-//        System.out.println(f.getNivelacesso());
-//        System.out.println(nivel);
-//        System.out.println(tabName[tabName.length - 1]);
-//
-//        PermissionXMLReader reader = new PermissionXMLReader(nivel, "visualizar", tabName[tabName.length - 1]);
-//        reader.fazerParsing("C:\\Users\\1511 FOX\\Documents\\GitHub\\StockManager\\src\\main\\resources\\permissoes.xml");
-//        System.out.println(reader.hasAccess());
     }
 
 
@@ -895,11 +910,11 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     private Text txtTitleEstq = new Text("Dados do Estoque");
     private HBox hbxTitleEstq = new HBox(txtTitleEstq);
 
-    private Label labCodEstq = new Label("Código:");
-    private Label labNomeEstq = new Label("Nome:");
-    private Label labEnderecoEstq = new Label("Endereço:");
-    private Label labRuaEstq = new Label("Rua:");
-    private Label labBairroEstq = new Label("Bairro:");
+    private Label labCodEstq = new Label("Código*:");
+    private Label labNomeEstq = new Label("Nome*:");
+    private Label labEnderecoEstq = new Label("Endereço*:");
+    private Label labRuaEstq = new Label("Rua*:");
+    private Label labBairroEstq = new Label("Bairro*:");
 
     private TextField tfdCodEstq = new TextField();
     private TextField tfdNomeEstq = new TextField();
@@ -911,13 +926,13 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     private Text txtTitleProd = new Text("Dados do Produto");
     private HBox hbxTitleProd = new HBox(txtTitleProd);
 
-    private Label labCodProd = new Label("Código:");
-    private Label labNomeProd = new Label("Produto:");
-    private Label labMarcaProd = new Label("Marca:");
-    private Label labDepartamentoProd = new Label("Departamento:");
-    private Label labCategoriaProd = new Label("Categoria:");
-    private Label labUnidadeProd = new Label("Unidade:");
-    private Label labValorProd = new Label("Valor:");
+    private Label labCodProd = new Label("Código*:");
+    private Label labNomeProd = new Label("Produto*:");
+    private Label labMarcaProd = new Label("Marca*:");
+    private Label labDepartamentoProd = new Label("Departamento*:");
+    private Label labCategoriaProd = new Label("Categoria*:");
+    private Label labUnidadeProd = new Label("Unidade*:");
+    private Label labValorProd = new Label("Valor*:");
 
     private TextField tfdCodProd = new TextField();
     private TextField tfdNomeProd = new TextField();
@@ -940,7 +955,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     private Button btnCancelar = new Button("Cancelar");
 
     //componentes de adição de nfe
-    private Text txtNfe = new Text("Dados fiscal");
+    private Text txtNfe = new Text("Dados fiscal*");
     private HBox hbxNfe = new HBox(txtNfe);
 
     private GridPane nfeGrid = new GridPane();
