@@ -176,8 +176,8 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
 
     // Criação dos componentes da tela
     private Label labid = new Label("ID:");
-    private Label labCidade = new Label("Cidade:");
-    private Label labUF = new Label("UF:");
+    private Label labCidade = new Label("Cidade*:");
+    private Label labUF = new Label("UF*:");
 
     private TextField idField = new TextField("Novo");
     private TextField tfdCidade = new TextField();
