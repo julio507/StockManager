@@ -26,6 +26,10 @@ public class ItensManagerTab extends ManagementTab<Produto> {
     private Pessoa rem = new Pessoa();
     private Pessoa dest = new Pessoa();
 
+    //variaveis de controle
+    private int lastInsertedNfe;
+    private boolean changed = false;
+
     public ItensManagerTab() {
 
         super("Saída de Produtos");
@@ -45,21 +49,27 @@ public class ItensManagerTab extends ManagementTab<Produto> {
 
     @Override
     public void save() {
-        Nfe nfe = new Nfe();
-        NfeDAO nfedao = new NfeDAO();
-        Pessoa pes = new Pessoa();
-        Endereco end = new Endereco();
-        nfe.setId(1);
-        nfe.setPessoaByPessoaremId(pes);
-        nfe.setPessoaByPessoadestId(pes);
-        nfe.setEnderecoByEnderecoremId(end);
-        nfe.setEnderecoByEnderecodestId(end);
-        nfe.setNumnf(454654);
-        nfe.setTipo('1');
-        nfe.setObservacoes("sdfsdf");
-        nfe.setAtivo('1');
+        if(!changed) {
+            Nfe nfe = new Nfe();
+            NfeDAO nfedao = new NfeDAO();
 
+            Pessoa pesRem = rem;
+            Pessoa pesDest = dest;
+            Endereco endRem = EnderecoDAO.getById(rem.getEndereco().getId());
+            Endereco endDest = EnderecoDAO.getById(dest.getEndereco().getId());
+            nfe.setPessoaByPessoaremId(pesRem);
+            nfe.setPessoaByPessoadestId(pesDest);
+            nfe.setEnderecoByEnderecoremId(endRem);
+            nfe.setEnderecoByEnderecodestId(endDest);
+            nfe.setNumnf(454654);
+            nfe.setTipo('1');
+            nfe.setObservacoes("sdfsdf");
+            nfe.setAtivo('1');
 
+            nfedao.add(nfe);
+        }else{
+
+        }
     }
 
     @Override
@@ -168,7 +178,6 @@ public class ItensManagerTab extends ManagementTab<Produto> {
         innerGrid.addRow(16, labValorItem, tfdValorItem);
         innerGrid.addRow(17, labUnidade, tfdUnidade);
         innerGrid.addRow(18, labValorTotal, tfdValorTotal);
-
 
         TableColumn<Produto, Integer> numeronf = new TableColumn<>("Número NF");
         TableColumn<Produto, Date> data = new TableColumn<>("Data");
