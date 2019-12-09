@@ -2,12 +2,22 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <MySQL_Connection.h>
+#include <MySQL_Cursor.h>
+#include <WiFiClient.h>
 
 #define DHTPIN 4      //Data Pin
 #define DHTTYPE DHT11 //Sensor Type
 
 #define STASSID ""   //SSID
 #define STAPSK "" //Password
+
+IPAddress server_addr(192,168,0,101);
+char user[] = "root";              // MySQL user login username
+char password[] = "bruchjulio";        // MySQL user login password
+
+WiFiClient client;
+MySQL_Connection conn((Client *)&client);
 
 DHT dht(DHTPIN, DHTTYPE); //DHT Definition
 
@@ -22,13 +32,13 @@ float hif = 0; //Heat index Fahrenheit
 
 void handle()
 {
-  String data = "'h':'" + String(h) + "'," +
-                "'t':'" + String(t) + "'," +
-                "'f':'" + String(f) + "'," +
-                "'hic':'" + String(hic) + "'," +
-                "'hif':'" + String(hif) + "'";
+  String data = "h:" + String(h) + "," +
+                "t:" + String(t) + "," +
+                "f:" + String(f) + "," +
+                "hic:" + String(hic) + "," +
+                "hif:" + String(hif) + "";
 
-  server.send(200, "text/plain", "{" + data + "}");
+  server.send(200, "text/plain", data );
 }
 
 void handleNotFound()
@@ -91,6 +101,19 @@ void wifiSetup()
 
   server.begin();
   Serial.println("HTTP server started");
+
+}
+
+void databaseSetup()
+{
+  Serial.println("Connecting to MySQL");
+
+  if (conn.connect(server_addr, 3306, user, password)) {
+      Serial.println( "Connected to Database" );
+  }
+  else
+    Serial.println("Connection failed.");
+  conn.close();
 }
 
 void dhtSetup()
@@ -104,6 +127,8 @@ void setup()
   Serial.begin(9600);
 
   wifiSetup();
+
+  //databaseSetup();
 
   dhtSetup();
 }

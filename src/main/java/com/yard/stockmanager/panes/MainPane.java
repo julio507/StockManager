@@ -51,7 +51,8 @@ public class MainPane
         );
 
         queryMenu.getItems().addAll(
-            stockReporter
+            stockReporter,
+            temperatureTab
         );
 
         menu.getMenus().addAll(
@@ -179,6 +180,10 @@ public class MainPane
         public Tab getTab() { return new ProductRegisterTab(); }
     };
 
+    private TabMenuItem temperatureTab = new TabMenuItem( "Temperatura", tabPane ){
+        @Override
+        public Tab getTab() { return new TemperatureManagementTab(); }
+    };
 
     private MenuBar menu = new MenuBar();
 
