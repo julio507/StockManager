@@ -101,7 +101,7 @@ public class UserRegisterTab extends ManagementTab<Funcionario> {
         end.setCep(tfdCep.getText());
         end.setBairro(tfdBairro.getText());
         end.setAtivo(tfdAtivo1.getText().charAt(0));
-        end.setEndereco(endDao.endereco());
+        //end.setEndereco(endDao.endereco());
         idendereco = endDao.addEndId(end);
         pes.setEndereco(EnderecoDAO.getById(idendereco));
         pes.setDenominacaosocial(tfdDenominacaoSocial.getText());
