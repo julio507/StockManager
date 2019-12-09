@@ -1,7 +1,6 @@
 package com.yard.stockmanager.persistence.dao;
 
 import com.yard.stockmanager.persistence.entity.Endereco;
-import com.yard.stockmanager.persistence.entity.Estoque;
 import com.yard.stockmanager.persistence.hibernate.HibernateUtil;
 import com.yard.stockmanager.useful.Error;
 import org.hibernate.Session;
@@ -26,7 +25,10 @@ public class EnderecoDAO extends Dao<Endereco> {
         Endereco e = new Endereco();
         Session s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
-        e = (Endereco)s.createQuery("FROM Endereco WHERE id = '"+ id +"'").getSingleResult();
+        e = (Endereco) s.createQuery("FROM Endereco WHERE id = '" + id + "'").getSingleResult();
+
+        e.setCidade(CidadeDAO.getById(e.getCidade().getId()));
+
         s.getTransaction().commit();
         s.close();
         return e;
