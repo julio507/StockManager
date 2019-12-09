@@ -46,18 +46,59 @@ public abstract class ManagementTab<T>
     private String nivel;
     private String tab;
 
-
+    /**
+     * Construtor padrão de tela sem permissionamento e com tabela simples.
+     *
+     * @param label Nome da tela
+     */
     public ManagementTab(String label) {
         super(label);
         initComponents();
     }
 
+    /**
+     * Construtor de tela simples com permissionamento.
+     *
+     * @param label  Nome da tela
+     * @param userId Id do Usuário da sessão atual
+     * @param nivel  Nivel de acesso do usuário (de acordo com o banco)
+     * @param tab    Nome da classe da tela
+     */
+    public ManagementTab(String label, int userId, char nivel, String tab) {
+        super(label);
+        this.userId = userId;
+        if (nivel == '1') {
+            this.nivel = "administrador";
+        } else if (nivel == '2') {
+            this.nivel = "operador";
+        } else {
+            this.nivel = "observador";
+        }
+        this.tab = tab;
+        initComponents();
+    }
+
+    /**
+     * Construtor para tela com tabela dupla e sem permissionamento.
+     *
+     * @param label        Nome da tela
+     * @param doubleAction Controle de tabela dupla
+     */
     public ManagementTab(String label, Boolean doubleAction) {
         super(label);
         this.doubleAction = doubleAction;
         initComponents();
     }
 
+    /**
+     * Construtor para tela com tela dupla e permissionamento por nivel.
+     *
+     * @param label        Nome da tela
+     * @param doubleAction Controle de tabela dupla
+     * @param userId       Id do Usuário da sessão atual
+     * @param nivel        Nivel de acesso do usuário (de acordo com o banco)
+     * @param tab          Nome da classe da tela
+     */
     public ManagementTab(String label, Boolean doubleAction, int userId, char nivel, String tab) {
         super(label);
         this.doubleAction = doubleAction;
@@ -180,7 +221,7 @@ public abstract class ManagementTab<T>
             }
         } else {
             PermissionXMLReader reader = new PermissionXMLReader(nivel, regra, tab);
-            reader.fazerParsing("C:\\Users\\Back Rei Delas\\Documents\\GitHub\\StockManager\\src\\main\\resources\\permissoes.xml");
+            reader.fazerParsing("permissoes.xml");
             return reader.hasAccess();
         }
         return false;
@@ -354,7 +395,7 @@ public abstract class ManagementTab<T>
         removeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(hasPermission("remover") || userId == 0) {
+                if (hasPermission("remover") || userId == 0) {
                     removeUpperRegister();
                 } else {
                     Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
@@ -365,7 +406,7 @@ public abstract class ManagementTab<T>
         editBottomButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(hasPermission("modificar") || userId == 0) {
+                if (hasPermission("modificar") || userId == 0) {
                     editBottomRegister();
                 } else {
                     Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
@@ -376,7 +417,7 @@ public abstract class ManagementTab<T>
         removeBottomButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(hasPermission("remover") || userId == 0) {
+                if (hasPermission("remover") || userId == 0) {
                     removeBottomRegister();
                 } else {
                     Error.message("Voce não tem permissão para realizar esta ação.\nPara solicitar acesso entre em contato com o suporte");
