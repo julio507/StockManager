@@ -73,26 +73,23 @@ public class PendencyFormPane extends BorderPane {
     {
         Agendamento result = source;
 
-        if( result.getFuncionario() == null )
-        {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime( result.getData() );
+        Calendar cal = Calendar.getInstance();
+        cal.setTime( result.getData() );
 
-            String time = timeField.getText();
+        String time = timeField.getText();
 
-            int hour = Integer.parseInt( time.split( ":" )[0] );
-            int minute = Integer.parseInt( time.split( ":" )[1] );
+        int hour = Integer.parseInt( time.split( ":" )[0] );
+        int minute = Integer.parseInt( time.split( ":" )[1] );
 
-            cal.set(Calendar.HOUR_OF_DAY, hour );
-            cal.set(Calendar.MINUTE, minute );
+        cal.set(Calendar.HOUR_OF_DAY, hour );
+        cal.set(Calendar.MINUTE, minute );
 
-            result.setData( cal.getTime() );
-            result.setDescricao(descriptionField.getText());
-            result.setTitulo( titleField.getText() );
-            result.setPessoaHasAgendamentos( new HashSet<PessoaHasAgendamento>( new ArrayList<PessoaHasAgendamento>() ) );
-            result.setAtivo('1');
-        }
-
+        result.setData( cal.getTime() );
+        result.setDescricao(descriptionField.getText());
+        result.setTitulo( titleField.getText() );
+        result.setPessoaHasAgendamentos( new HashSet<PessoaHasAgendamento>( new ArrayList<PessoaHasAgendamento>() ) );
+        result.setAtivo('1');
+    
         return result;
     }
 
@@ -102,8 +99,15 @@ public class PendencyFormPane extends BorderPane {
         {
             Agendamento a = getInput();
 
-            dao.add( a );
+            if( a.getId().getId() == 0 )
+            {
+                dao.add( a );
+            }
 
+            else
+            {
+                dao.update( a );
+            }
             task.call( a );
         }
     }
@@ -127,7 +131,7 @@ public class PendencyFormPane extends BorderPane {
         
         grid.addRow(0, titleLabel, titleField);
         grid.addRow(1, dateLabel, dateField);
-        grid.addRow(2, timeLabel, timeField);
+        //grid.addRow(2, timeLabel, timeField);
         grid.addRow(3, descriptionLabel, descriptionField);
         
         setCenter(grid);

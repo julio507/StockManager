@@ -149,7 +149,7 @@ public class Agendamento  implements java.io.Serializable {
      */
     @Override
     public String toString() {
-        return DateFormat.getFormatedTime( this.data ) + "-" + titulo;
+        return titulo;
     }
 }
 
