@@ -3,6 +3,7 @@ package com.yard.stockmanager.useful;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateFormat
@@ -28,6 +29,17 @@ public class DateFormat
     public static String getFormatedString( Date date )
     {
         return getFormatedString( toLocalDate( date ) );
+    }
+
+    public static String getFormatedTime( Date date )
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        int h = c.get( Calendar.HOUR_OF_DAY );
+        int m = c.get( Calendar.MINUTE );
+
+        return h + ":" + m;
     }
 
     public static LocalDate toLocalDate(Date dateToConvert) {

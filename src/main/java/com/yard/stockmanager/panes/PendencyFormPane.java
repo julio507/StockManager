@@ -1,8 +1,10 @@
 package com.yard.stockmanager.panes;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 
+import com.yard.stockmanager.parts.MaskTextField;
 import com.yard.stockmanager.persistence.dao.AgendamentoDAO;
 import com.yard.stockmanager.persistence.entity.Agendamento;
 import com.yard.stockmanager.persistence.entity.PessoaHasAgendamento;
@@ -42,6 +44,7 @@ public class PendencyFormPane extends BorderPane {
     {
         titleField.setText( source.getTitulo() );
         dateField.setText( DateFormat.getFormatedString( source.getData() ) );
+        timeField.setText( DateFormat.getFormatedTime( source.getData() ) );
 
         descriptionField.setText( source.getDescricao() );
     }
@@ -72,6 +75,18 @@ public class PendencyFormPane extends BorderPane {
 
         if( result.getFuncionario() == null )
         {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime( result.getData() );
+
+            String time = timeField.getText();
+
+            int hour = Integer.parseInt( time.split( ":" )[0] );
+            int minute = Integer.parseInt( time.split( ":" )[1] );
+
+            cal.set(Calendar.HOUR_OF_DAY, hour );
+            cal.set(Calendar.MINUTE, minute );
+
+            result.setData( cal.getTime() );
             result.setDescricao(descriptionField.getText());
             result.setTitulo( titleField.getText() );
             result.setPessoaHasAgendamentos( new HashSet<PessoaHasAgendamento>( new ArrayList<PessoaHasAgendamento>() ) );
@@ -100,6 +115,7 @@ public class PendencyFormPane extends BorderPane {
     }
 
     private void initComponents() {
+
         dateField.setEditable( false );
 
         okButton.setAlignment(Pos.CENTER);
@@ -148,7 +164,7 @@ public class PendencyFormPane extends BorderPane {
     private Label descriptionLabel = new Label( "Descrição :" );
 
     private TextField dateField = new TextField();
-    private TextField timeField = new TextField();
+    private TextField timeField = new TextField( "00:00" );
     private TextField titleField = new TextField();
     private TextArea descriptionField = new TextArea();
 
