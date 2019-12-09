@@ -1,8 +1,10 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
 import com.yard.stockmanager.persistence.dao.MarcaDAO;
 import com.yard.stockmanager.persistence.entity.Marca;
+import com.yard.stockmanager.useful.Current;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -14,7 +16,7 @@ public class BrandRegisterTab extends ManagementTab<Marca> {
     private Marca selected;
 
     public BrandRegisterTab() {
-        super("Cadastro de Marcas");
+        super("Cadastro de Marcas", Current.getUser(), FuncionarioDAO.getById(Current.getUser()).getNivelacesso(), "BrandRegisterTab");
         initComponents();
     }
 

@@ -5,6 +5,11 @@
         <permissao acesso='false'>AddressManagerTab.inserir</permissao>
         <permissao acesso='false'>AddressManagerTab.modificar</permissao>
         <permissao acesso='false'>AddressManagerTab.remover</permissao>
+        <!--permissoes BrandRegisterTab-->
+        <permissao acesso='true'>BrandRegisterTab.visualizar</permissao>
+        <permissao acesso='false'>BrandRegisterTab.inserir</permissao>
+        <permissao acesso='false'>BrandRegisterTab.modificar</permissao>
+        <permissao acesso='false'>BrandRegisterTab.remover</permissao>
         <!--permissoes CadeldarManagementTab-->
         <permissao acesso='true'>CadeldarManagementTab.visualizar</permissao>
         <permissao acesso='false'>CadeldarManagementTab.inserir</permissao>
@@ -40,11 +45,21 @@
         <permissao acesso='false'>PeopleRegisterTab.inserir</permissao>
         <permissao acesso='false'>PeopleRegisterTab.modificar</permissao>
         <permissao acesso='false'>PeopleRegisterTab.remover</permissao>
+        <!--permissoes ProductRegisterTab-->
+        <permissao acesso='true'>ProductRegisterTab.visualizar</permissao>
+        <permissao acesso='false'>ProductRegisterTab.inserir</permissao>
+        <permissao acesso='false'>ProductRegisterTab.modificar</permissao>
+        <permissao acesso='false'>ProductRegisterTab.remover</permissao>
         <!--permissoes StockManagerTab-->
         <permissao acesso='true'>StockManagerTab.visualizar</permissao>
         <permissao acesso='false'>StockManagerTab.inserir</permissao>
         <permissao acesso='false'>StockManagerTab.modificar</permissao>
         <permissao acesso='false'>StockManagerTab.remover</permissao>
+        <!--permissoes UnityRegisterTab-->
+        <permissao acesso='true'>UnityRegisterTab.visualizar</permissao>
+        <permissao acesso='false'>UnityRegisterTab.inserir</permissao>
+        <permissao acesso='false'>UnityRegisterTab.modificar</permissao>
+        <permissao acesso='false'>UnityRegisterTab.remover</permissao>
         <!--permissoes UserRegisterTab-->
         <permissao acesso='false'>UserRegisterTab.visualizar</permissao>
         <permissao acesso='false'>UserRegisterTab.inserir</permissao>
@@ -57,6 +72,11 @@
         <permissao acesso='true'>AddressManagerTab.inserir</permissao>
         <permissao acesso='true'>AddressManagerTab.modificar</permissao>
         <permissao acesso='true'>AddressManagerTab.remover</permissao>
+        <!--permissoes BrandRegisterTab-->
+        <permissao acesso='true'>BrandRegisterTab.visualizar</permissao>
+        <permissao acesso='true'>BrandRegisterTab.inserir</permissao>
+        <permissao acesso='true'>BrandRegisterTab.modificar</permissao>
+        <permissao acesso='false'>BrandRegisterTab.remover</permissao>
         <!--permissoes CadeldarManagementTab-->
         <permissao acesso='true'>CadeldarManagementTab.visualizar</permissao>
         <permissao acesso='true'>CadeldarManagementTab.inserir</permissao>
@@ -92,11 +112,21 @@
         <permissao acesso='true'>PeopleRegisterTab.inserir</permissao>
         <permissao acesso='true'>PeopleRegisterTab.modificar</permissao>
         <permissao acesso='false'>PeopleRegisterTab.remover</permissao>
+        <!--permissoes ProductRegisterTab-->
+        <permissao acesso='true'>ProductRegisterTab.visualizar</permissao>
+        <permissao acesso='true'>ProductRegisterTab.inserir</permissao>
+        <permissao acesso='true'>ProductRegisterTab.modificar</permissao>
+        <permissao acesso='false'>ProductRegisterTab.remover</permissao>
         <!--permissoes StockManagerTab-->
         <permissao acesso='true'>StockManagerTab.visualizar</permissao>
         <permissao acesso='true'>StockManagerTab.inserir</permissao>
         <permissao acesso='true'>StockManagerTab.modificar</permissao>
         <permissao acesso='false'>StockManagerTab.remover</permissao>
+        <!--permissoes UnityRegisterTab-->
+        <permissao acesso='true'>UnityRegisterTab.visualizar</permissao>
+        <permissao acesso='true'>UnityRegisterTab.inserir</permissao>
+        <permissao acesso='true'>UnityRegisterTab.modificar</permissao>
+        <permissao acesso='false'>UnityRegisterTab.remover</permissao>
         <!--permissoes UserRegisterTab-->
         <permissao acesso='true'>UserRegisterTab.visualizar</permissao>
         <permissao acesso='false'>UserRegisterTab.inserir</permissao>
@@ -109,6 +139,11 @@
         <permissao acesso='true'>AddressManagerTab.inserir</permissao>
         <permissao acesso='true'>AddressManagerTab.modificar</permissao>
         <permissao acesso='true'>AddressManagerTab.remover</permissao>
+        <!--permissoes BrandRegisterTab-->
+        <permissao acesso='true'>BrandRegisterTab.visualizar</permissao>
+        <permissao acesso='true'>BrandRegisterTab.inserir</permissao>
+        <permissao acesso='true'>BrandRegisterTab.modificar</permissao>
+        <permissao acesso='true'>BrandRegisterTab.remover</permissao>
         <!--permissoes CadeldarManagementTab-->
         <permissao acesso='true'>CadeldarManagementTab.visualizar</permissao>
         <permissao acesso='true'>CadeldarManagementTab.inserir</permissao>
@@ -135,7 +170,7 @@
         <permissao acesso='true'>ItensManagerTab.modificar</permissao>
         <permissao acesso='true'>ItensManagerTab.remover</permissao>
         <!--permissoes ItensStockTab-->
-<!--        <permissao acesso='true'>ItensStockTab.visualizar</permissao>-->
+        <permissao acesso='true'>ItensStockTab.visualizar</permissao>
         <permissao acesso='true'>ItensStockTab.inserir</permissao>
         <permissao acesso='true'>ItensStockTab.modificar</permissao>
         <permissao acesso='true'>ItensStockTab.remover</permissao>
@@ -144,11 +179,21 @@
         <permissao acesso='true'>PeopleRegisterTab.inserir</permissao>
         <permissao acesso='true'>PeopleRegisterTab.modificar</permissao>
         <permissao acesso='true'>PeopleRegisterTab.remover</permissao>
+        <!--permissoes ProductRegisterTab-->
+        <permissao acesso='true'>ProductRegisterTab.visualizar</permissao>
+        <permissao acesso='true'>ProductRegisterTab.inserir</permissao>
+        <permissao acesso='true'>ProductRegisterTab.modificar</permissao>
+        <permissao acesso='true'>ProductRegisterTab.remover</permissao>
         <!--permissoes StockManagerTab-->
         <permissao acesso='true'>StockManagerTab.visualizar</permissao>
         <permissao acesso='true'>StockManagerTab.inserir</permissao>
         <permissao acesso='true'>StockManagerTab.modificar</permissao>
         <permissao acesso='true'>StockManagerTab.remover</permissao>
+        <!--permissoes UnityRegisterTab-->
+        <permissao acesso='true'>UnityRegisterTab.visualizar</permissao>
+        <permissao acesso='true'>UnityRegisterTab.inserir</permissao>
+        <permissao acesso='true'>UnityRegisterTab.modificar</permissao>
+        <permissao acesso='true'>UnityRegisterTab.remover</permissao>
         <!--permissoes UserRegisterTab-->
         <permissao acesso='true'>UserRegisterTab.visualizar</permissao>
         <permissao acesso='true'>UserRegisterTab.inserir</permissao>

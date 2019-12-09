@@ -1,8 +1,10 @@
 package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
+import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
 import com.yard.stockmanager.persistence.dao.UnidadeDAO;
 import com.yard.stockmanager.persistence.entity.Unidade;
+import com.yard.stockmanager.useful.Current;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -21,7 +23,7 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
      * Construtor padrãa da classe
      */
     public UnityRegisterTab() {
-        super("Cadastro de Unidades");
+        super("Cadastro de Unidades", Current.getUser(), FuncionarioDAO.getById(Current.getUser()).getNivelacesso(), "UnityRegisterTab");
         initComponents();
     }
 

@@ -2,7 +2,9 @@ package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.CidadeDAO;
+import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
 import com.yard.stockmanager.persistence.entity.Cidade;
+import com.yard.stockmanager.useful.Current;
 import com.yard.stockmanager.useful.Error;
 
 import javafx.collections.FXCollections;
@@ -19,7 +21,7 @@ public class CityRegisterTab extends ManagementTab<Cidade> {
     private Cidade selected;
 
     public CityRegisterTab() {
-        super("Cadastro de Cidades");
+        super("Cadastro de Cidades", Current.getUser(), FuncionarioDAO.getById(Current.getUser()).getNivelacesso(), "CityRegisterTab");
         initComponents();
     }
 

@@ -2,7 +2,9 @@ package com.yard.stockmanager.tabs;
 
 import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.persistence.dao.DepartmentDAO;
+import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
 import com.yard.stockmanager.persistence.entity.Departamento;
+import com.yard.stockmanager.useful.Current;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -16,7 +18,7 @@ public class DepartmentRegisterTab extends ManagementTab<Departamento> {
 
     public DepartmentRegisterTab()
     {
-        super("Cadastro de Departamentos");
+        super("Cadastro de Departamentos", Current.getUser(), FuncionarioDAO.getById(Current.getUser()).getNivelacesso(), "DepartmentRegisterTab");
         initComponents();
     }
 
