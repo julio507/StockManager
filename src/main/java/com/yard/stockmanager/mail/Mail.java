@@ -1,15 +1,22 @@
 package com.yard.stockmanager.mail;
 
 import com.sun.mail.util.MailSSLSocketFactory;
+import com.yard.stockmanager.persistence.entity.Funcionario;
+import com.yard.stockmanager.useful.Error;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.security.GeneralSecurityException;
+import java.util.Date;
 import java.util.Properties;
 
 public class Mail {
-    public static void sendMessage(String fromUser, String password, Address[] toUsers, String subject, String text)
+    public static void sendMessage(Funcionario func, Address[] toUsers, String subject, String text, String annexPath)
     {
         Properties props = new Properties();
         /** Parâmetros de conexão com servidor Gmail */
@@ -32,27 +39,50 @@ public class Mail {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(fromUser, password);//("seuEmail@gmail.com","senha");
+                        return new PasswordAuthentication(func.getEmail(), func.getSenhaemail());//("seuEmail@gmail.com","senha");
                     }
                 });
 
         /** Ativa Debug para sessão */
-        session.setDebug(true);
+        session.setDebug(false);
 
         try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("seuEmail@gmail.com"));//Remetente
-
+            // cria a mensagem
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(func.getEmail()));//Remetente
             Address[] toUser = toUsers;//InternetAddress.parse("emailDestino@gmail.com");//Destinatário(s)
-
             message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject(subject);//("Enviando email com JavaMail");//Assunto
-            message.setText(text);//("Enviei este email utilizando JavaMail com minha conta GMail !");
+            message.setSubject(subject);
+
+            // cria a primeira parte da mensagem
+            MimeBodyPart mbp1 = new MimeBodyPart();
+            mbp1.setText(text);
+
+            // cria a segunda parte da mensage
+            MimeBodyPart mbp2 = new MimeBodyPart();
+
+            if (annexPath != "") {
+                // anexa o arquivo na mensagem
+                FileDataSource fds = new FileDataSource(annexPath);
+                mbp2.setDataHandler(new DataHandler(fds));
+                mbp2.setFileName(fds.getName());
+            }
+
+            // cria a Multipart
+            Multipart mp = new MimeMultipart();
+            mp.addBodyPart(mbp1);
+            mp.addBodyPart(mbp2);
+
+            // adiciona a Multipart na mensagem
+            message.setContent(mp);
+
+            // configura a data: cabecalho
+            message.setSentDate(new Date());
+
             /**Método para enviar a mensagem criada*/
             Transport.send(message);
 
-            System.out.println("Mensagem Enviada!!!");
+            Error.message("Mensagem enviada com Sucesso!");
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
