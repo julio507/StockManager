@@ -40,6 +40,16 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
             return false;
         }
 
+        if (idField.getText().equals("Novo")
+                && (tfdSigla.getText().trim().isEmpty() || tfdSigla.getText().trim().length() > 2)) {
+            Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
+            return false;
+        } else if (!idField.getText().equals("Novo")
+                && (tfdSigla.getText().trim().isEmpty() || tfdSigla.getText().length() > 2)) {
+            Error.message("Erro ao Editar. Verifique os dados Inseridos!");
+            return false;
+        }
+
         return true;
     }
 
@@ -51,6 +61,8 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
             u.setNome(tfdUnidade.getText());
 
             u.setDescricao(tarDescricao.getText());
+
+            u.setSigla(tfdSigla.getText());
 
             u.setAtivo('1');
 
@@ -69,6 +81,7 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
             Unidade u = (Unidade) getSelected();
 
             u.setNome(tfdUnidade.getText());
+            u.setSigla(tfdSigla.getText());
             u.setDescricao(tarDescricao.getText());
 
             unidadeDAO.update(u);
@@ -107,6 +120,7 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
         if (selected != null) {
             idField.setText(selected.getId() + "");
             tfdUnidade.setText(selected.getNome());
+            tfdSigla.setText(selected.getSigla());
             tarDescricao.setText(selected.getDescricao());
         }
 
@@ -121,6 +135,7 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
 
         idField.setText("Novo");
         tfdUnidade.setText("");
+        tfdSigla.setText("");
         tarDescricao.setText("");
     }
 
@@ -134,28 +149,32 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
         // TextFields
         idField.setDisable(true);
         tfdUnidade.setEditable(true);
+        tfdSigla.setEditable(true);
         tarDescricao.setEditable(true);
         tarDescricao.setPrefSize(200,100);
 
         // Colunas da tabela
         TableColumn<Unidade, Integer> id = new TableColumn<>("ID");
         TableColumn<Unidade, String> unidade = new TableColumn<>("Unidade");
+        TableColumn<Unidade, String> sigla = new TableColumn<>("Sigla");
         TableColumn<Unidade, String> descricao = new TableColumn<>("Descrição");
         TableColumn<Unidade, Character> atv = new TableColumn<>("Ativo");
 
         id.setCellValueFactory(new PropertyValueFactory<Unidade, Integer>("id"));
         unidade.setCellValueFactory(new PropertyValueFactory<Unidade, String>("Nome"));
+        sigla.setCellValueFactory(new PropertyValueFactory<Unidade, String>("Sigla"));
         descricao.setCellValueFactory(new PropertyValueFactory<Unidade, String>("descricao"));
         atv.setCellValueFactory(new PropertyValueFactory<Unidade, Character>("Ativo"));
 
         // Tabela
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setPrefSize(1000, 1000);
-        tableView.getColumns().addAll(id, unidade, descricao, atv);
+        tableView.getColumns().addAll(id, unidade, sigla, descricao, atv);
 
         innerGrid.addRow(0, labid, idField);
-        innerGrid.addRow(1, labMarca, tfdUnidade);
-        innerGrid.addRow(2, labDescricao, tarDescricao);
+        innerGrid.addRow(1, labUnidade, tfdUnidade);
+        innerGrid.addRow(2, labSigla, tfdSigla);
+        innerGrid.addRow(3, labDescricao, tarDescricao);
 
         refresh();
 
@@ -163,11 +182,13 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
 
     // Criação dos componentes da tela
     private Label labid = new Label("ID:");
-    private Label labMarca = new Label("Unidade*:");
+    private Label labUnidade = new Label("Unidade*:");
+    private Label labSigla = new Label("Sigla*:");
     private Label labDescricao = new Label("Descrição:");
 
     private TextField idField = new TextField("Novo");
     private TextField tfdUnidade = new TextField();
+    private TextField tfdSigla = new TextField();
     private TextArea tarDescricao = new TextArea();
 
     // dao
