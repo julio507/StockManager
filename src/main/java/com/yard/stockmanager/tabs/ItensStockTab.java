@@ -19,7 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import org.bouncycastle.crypto.util.Pack;
 
 import java.awt.*;
 import java.io.File;
@@ -192,6 +191,9 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     @Override
     public void changeStatus() {
+
+    }
+    public void disable() {
         if (isEdition) {
             EstoqueHasProduto ep = estqDAO.getById(new EstoqueHasProdutoId(insertId, estoque.getId(), Integer.parseInt(bottomSelected[0].toString())));
             ep.setAtivo('0');
@@ -271,7 +273,9 @@ public class ItensStockTab extends ManagementTab<Object[]> {
     //Edição dos registros da tabela superior
     public void editUpperRegister() {
         //metodo de edição
-        edit();
+        if(tableView.getSelectionModel().getSelectedItem() != null){
+            edit();
+        }
     }
 
     @Override
@@ -323,7 +327,7 @@ public class ItensStockTab extends ManagementTab<Object[]> {
                     estqDAO.delete(ep);
                     changed = true;
                 } else {
-                    changeStatus();
+                    disable();
                     estqDAO.update(ep);
                     changed = true;
                 }
