@@ -31,6 +31,11 @@ public class DateFormat
         return getFormatedString( toLocalDate( date ) );
     }
 
+    public static String getFormatedTime( LocalDate date )
+    {
+        return getFormatedTime( toDate(date) );
+    }
+
     public static String getFormatedTime( Date date )
     {
         Calendar c = Calendar.getInstance();

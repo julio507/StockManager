@@ -1,8 +1,8 @@
 
 package com.yard.stockmanager.tabs;
 
-import com.yard.stockmanager.persistence.entity.Estoque;
-import com.yard.stockmanager.persistence.entity.Sensor;
+import java.time.LocalTime;
+
 import com.yard.stockmanager.useful.Error;
 
 import org.apache.http.HttpEntity;
@@ -15,7 +15,8 @@ import org.apache.http.util.EntityUtils;
 import javafx.application.Platform;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.control.ComboBox;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
@@ -64,7 +65,13 @@ public class TemperatureManagementTab extends Tab{
 									
 									@Override
 									public void run() {
-									    temp.setText( s[1].split(":")[1] + "ºC" );
+
+                                        LocalTime d = LocalTime.now();
+
+                                        seriest.getData().add(new XYChart.Data( d.toString(), Double.parseDouble( s[1].split(":")[1] )));
+                                        seriesh.getData().add(new XYChart.Data( d.toString(), Double.parseDouble( s[0].split(":")[1] )));
+                                        
+                                        temp.setText( s[1].split(":")[1] + "ºC" );
                                         hum.setText( s[0].split(":")[1] + "%" );
                                     }
 								});
@@ -94,6 +101,14 @@ public class TemperatureManagementTab extends Tab{
 
     private void initComponent()
     {
+        xAxis.setLabel( "Tempo" );
+
+        seriest.setName( "Temperatura" );
+        seriesh.setName( "Humidade" );
+
+
+        chart.getData().addAll(seriest, seriesh);
+        
         humLabel.setFont( font );
         tempLabel.setFont( font );
         hum.setFont( font );
@@ -108,10 +123,13 @@ public class TemperatureManagementTab extends Tab{
         setContent( border );
     }
 
-    CategoryAxis xAxis = new CategoryAxis();
-    CategoryAxis yAxis = new CategoryAxis();
+    private XYChart.Series seriest = new XYChart.Series();
+    private XYChart.Series seriesh = new XYChart.Series();
+
+    private CategoryAxis xAxis = new CategoryAxis();
+    private NumberAxis yAxis = new NumberAxis();
     
-    private LineChart chart = new LineChart( xAxis, yAxis );
+    private LineChart<String,Number> chart = new LineChart<String,Number>(xAxis, yAxis);
 
     private BorderPane border = new BorderPane();
     private GridPane grid = new GridPane();
