@@ -10,15 +10,24 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 
+/**
+ * Cria um tab com uma tela para cadastro de tipos de unidades para produtos
+ */
 public class UnityRegisterTab extends ManagementTab<Unidade> {
 
     private Unidade selected;
 
+    /**
+     * Construtor padrãa da classe
+     */
     public UnityRegisterTab() {
         super("Cadastro de Unidades");
         initComponents();
     }
 
+    /**
+     * Metodo que atualiza a tabela trazendo do banco os novo registros salvos (caso haja)
+     */
     @Override
     public void refresh() {
         List<Unidade> list = unidadeDAO.getPagination( getFilter(), 0, lastPage );
@@ -28,6 +37,10 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
 
     }
 
+    /**
+     * Metodo utilizado para validação dos campos da tela
+     * @return - true(valores validos); false(valores invalidos)
+     */
     @Override
     public boolean validate() {
         if (idField.getText().equals("Novo")
@@ -53,6 +66,9 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
         return true;
     }
 
+    /**
+     * Metodo utilziado para salvar os registros.
+     */
     @Override
     public void save() {
         try {
@@ -75,6 +91,9 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
 
     }
 
+    /**
+     * Metodo utilziado para Editar os registros.
+     */
     @Override
     public void edit() {
         try {
@@ -93,6 +112,9 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
 
     }
 
+    /**
+     * Metodo utilziado para alterar o estado de um registro. Muda o estado para ativo('1') ou desativado('0')
+     */
     @Override
     public void changeStatus() {
         try {
@@ -113,6 +135,9 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
 
     }
 
+    /**
+     * Cria um Objeto com as propriedades do objeto selecionado na tabela
+     */
     @Override
     public void select() {
         selected = (Unidade) getSelected();
@@ -129,6 +154,9 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
         }
     }
 
+    /**
+     * Metodo utilizado para limpar os campos da tela
+     */
     @Override
     public void clear() {
         setSelected(null);
@@ -139,6 +167,9 @@ public class UnityRegisterTab extends ManagementTab<Unidade> {
         tarDescricao.setText("");
     }
 
+    /**
+     * Metodo utilizado para controle da paginação do scroll da tabela
+     */
     @Override
     public void doPagination() {
         lastPage++;

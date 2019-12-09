@@ -19,7 +19,11 @@ public class Window extends Stage {
     private Object selected;
 
     /**
-     * 
+     * Cria uma tela modal que exibe qualquer pane que seja passado como parâmetro
+     *
+     * @param owner - Tela onde a janela será chamada
+     * @param pane - pane a ser exibido
+     * @param title - Titulo que sera exibido na Janela
      */
     public Window(Scene owner, Parent pane, String title ) {
         Scene scene = new Scene(pane, 600, 400);
@@ -31,6 +35,13 @@ public class Window extends Stage {
         setScene(scene);
     }
 
+    /**
+     * Cria uma tela de seleção que traz itens de outras telas de cadastro que extendem a classe ManagementTab()
+     *
+     * @param owner - Tela onde a janela de seleção será chamada
+     * @param tab - Tela que possui os itens a serem selecioandos
+     * @param title - Titulo que sera exibido na Janela de seleção
+     */
     public Window(Scene owner, ManagementTab<?> tab, String title) {
         GridPane controlGrid = new GridPane();//grid de controles
         BorderPane basePane = new BorderPane();//fundo
@@ -82,6 +93,11 @@ public class Window extends Stage {
         setScene(scene);
     }
 
+    /**
+     * Método que retorna o item selecionado na janela de seleção(Funciona somente com telas que implementem a Classe ManagementTab())
+     *
+     * @return - Objeto selecionado na janela de seleção
+     */
     public Object getSelected() {
         return selected;
     }
