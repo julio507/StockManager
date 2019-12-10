@@ -326,7 +326,7 @@ public class UserRegisterTab extends ManagementTab<Funcionario> {
         this.hbxTitlePess = hbxTitlePess;
     }
 
-    private Button btnBuscarPes = new Button();
+    private Button btnBuscarPes = new Button("Buscar");
 
     //Entidade para as janelas de seleção
     private Window window;

@@ -50,7 +50,7 @@ public class TemperatureManagementTab extends Tab{
                 {
                     while( true )
                     {
-                        HttpGet get = new HttpGet( "http://temperature.local" );
+                        HttpGet get = new HttpGet( "http://192.168.137.211/" );
                         
                         try (CloseableHttpResponse response = client.execute(get)) {
 

@@ -1,5 +1,6 @@
 package com.yard.stockmanager.tabs;
 
+import com.yard.stockmanager.mail.Mail;
 import com.yard.stockmanager.parts.ManagementTab;
 import com.yard.stockmanager.parts.Window;
 import com.yard.stockmanager.persistence.dao.*;
@@ -23,6 +24,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
+import javax.mail.Address;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -194,14 +198,15 @@ public class ItensStockTab extends ManagementTab<Object[]> {
 
     @Override
     public void changeStatus() {
-//
+//        teste de envio de email
 //        Address users[] = new Address[0];
 //        try {
 //            users = InternetAddress.parse("helimarbaggattini15@gmail.com");
 //        } catch (AddressException e) {
 //            e.printStackTrace();
 //        }
-//        Mail.sendMessage(FuncionarioDAO.getById(Current.getUser()), users, "teste", "Esta mensagem é um teste.", "C:\\Users\\1511 FOX\\Documents\\GitHub\\StockManager\\src\\main\\resources\\img\\icon.png");
+//        Mail.sendMessage(FuncionarioDAO.getById(Current.getUser()), users, "Email enviado pela Aplicação StockManager",
+//                "Esta Email foi enviado pela Aplicação StockManager utilizando a API JavaMail", "C:\\Users\\1511 FOX\\Documents\\GitHub\\StockManager\\src\\main\\resources\\img\\icon.png");
     }
     public void disable() {
         if (isEdition) {

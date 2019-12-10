@@ -1,11 +1,10 @@
 package com.yard.stockmanager.tabs;
 
-import com.yard.stockmanager.useful.CellFormat;
 import com.yard.stockmanager.parts.ManagementTab;
-import com.yard.stockmanager.parts.MaskTextField;
 import com.yard.stockmanager.persistence.dao.*;
 import com.yard.stockmanager.persistence.entity.*;
-import com.yard.stockmanager.useful.CurrencyField;
+import com.yard.stockmanager.useful.CellFormat;
+import com.yard.stockmanager.useful.Current;
 import com.yard.stockmanager.useful.Error;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -13,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale;
 
 
 public class ProductRegisterTab extends ManagementTab<Produto> {
@@ -26,7 +24,7 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
     private Produto selected;
 
     public ProductRegisterTab() {
-        super("Cadastro de Produtos");
+        super("Cadastro de Produtos", Current.getUser(), FuncionarioDAO.getById(Current.getUser()).getNivelacesso(), "ProductRegisterTab");
         initComponents();
     }
 
@@ -61,7 +59,7 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
         }
 
         if (idField.getText().equals("Novo")
-                && (valorField.getAmount() <= 0)) {
+                && (valorField.getText().trim().isEmpty() || Double.parseDouble(valorField.getText()) < 0)) {
             Error.message("Erro ao Cadastrar. Verifique os dados Inseridos!");
             return false;
         } else if (!idField.getText().equals("Novo")
@@ -107,8 +105,7 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
             p.setUnidade(unidadeCombo.getValue());
             p.setNome(prodField.getText());
             p.setDescricao(descricaoTar.getText());
-            p.setCustounitario(BigDecimal.valueOf(valorField.getAmount()));
-
+            p.setCustounitario(BigDecimal.valueOf(Double.parseDouble(valorField.getText())));
 
             prDao.update(p);
         } catch (Exception e) {
@@ -185,16 +182,19 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
 
         marcaCombo.getItems().addAll(marca);
         marcaCombo.setPromptText("Selecione a Marca");
-        marcaCombo.setPrefWidth(comboSize);
+        marcaCombo.setPrefWidth(size);
         categoriaCombo.getItems().addAll(categoria);
         categoriaCombo.setPromptText("Selecione a Categoria");
-        categoriaCombo.setPrefWidth(comboSize);
+        categoriaCombo.setPrefWidth(size);
         departamentoCombo.getItems().addAll(departamento);
         departamentoCombo.setPromptText("Selecione o Departameno");
-        departamentoCombo.setPrefWidth(comboSize);
+        departamentoCombo.setPrefWidth(size);
         unidadeCombo.getItems().addAll(unidade);
         unidadeCombo.setPromptText("Selecione a Unidade");
-        unidadeCombo.setPrefWidth(comboSize);
+        unidadeCombo.setPrefWidth(size);
+
+        //tamanho dos campos
+        descricaoTar.setPrefSize(size, 100);
 
 
         // Colunas da tabela
@@ -243,13 +243,13 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
 
     //labels
     private Label idLabel = new Label("ID:");
-    private Label marcaLabel = new Label("Marca:");
-    private Label catLabel = new Label("Categoria:");
-    private Label depLabel = new Label("Departamento:");
-    private Label uniLabel = new Label("Unidade:");
-    private Label prodLabel = new Label("Produto:");
+    private Label marcaLabel = new Label("Marca*:");
+    private Label catLabel = new Label("Categoria*:");
+    private Label depLabel = new Label("Departamento*:");
+    private Label uniLabel = new Label("Unidade*:");
+    private Label prodLabel = new Label("Produto*:");
     private Label descLabel = new Label("Descrição:");
-    private Label valorLable = new Label("Custo:");
+    private Label valorLable = new Label("Custo*:");
 
 
     //combos
@@ -257,13 +257,13 @@ public class ProductRegisterTab extends ManagementTab<Produto> {
     private ComboBox<Categoria> categoriaCombo = new ComboBox<Categoria>();
     private ComboBox<Departamento> departamentoCombo = new ComboBox<Departamento>();
     private ComboBox<Unidade> unidadeCombo = new ComboBox<Unidade>();
-    private int comboSize = 470;
+    private int size = 200;
 
     //fields
     private TextField idField = new TextField("Novo");
     private TextField prodField = new TextField();
     private TextArea descricaoTar = new TextArea();
-    private CurrencyField valorField = new CurrencyField(new Locale("pt","BR"));
+    private TextField valorField = new TextField();
 
     private ProdutoDAO prDao = new ProdutoDAO();
 

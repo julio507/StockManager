@@ -6,7 +6,13 @@
 package com.yard.stockmanager.panes;
 
 import com.yard.stockmanager.parts.TabMenuItem;
+import com.yard.stockmanager.persistence.dao.FuncionarioDAO;
+import com.yard.stockmanager.persistence.dao.PermissoesDAO;
+import com.yard.stockmanager.persistence.entity.Funcionario;
+import com.yard.stockmanager.persistence.entity.Permissoes;
 import com.yard.stockmanager.tabs.*;
+import com.yard.stockmanager.useful.Current;
+import com.yard.stockmanager.useful.PermissionXMLReader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -28,26 +34,30 @@ import javafx.scene.text.Text;
  */
 public class MainPane
         extends
-        BorderPane
-{
+        BorderPane {
 
-    public MainPane()
-    {
+    private Funcionario funcionario;
+    private Permissoes permissoes;
+    private String nivel;
+
+    public MainPane() {
         managementMenu.getItems().addAll(
                 stockManagerTab,
-                userRegisterTab,
-                categoryManagerTab,
                 peopleRegisterTab,
-                departmentRegisterTab,
-                itensStockTab,
-                addressManagerTab,
-                cityRegistreTab,
+                userRegisterTab,
                 productRegisterTab,
-                ItensManagerTab
+                categoryManagerTab,
+                departmentRegisterTab,
+                brandRegisterTab,
+                unityRegisterTab,
+                itensStockTab,
+                ItensManagerTab,
+                addressManagerTab,
+                cityRegistreTab
         );
-        
+
         operationsMenu.getItems().addAll(
-            calendarTab
+                calendarTab
         );
 
         queryMenu.getItems().addAll(
@@ -90,50 +100,81 @@ public class MainPane
     private Menu operationsMenu = new Menu("Operações");
     private Menu queryMenu = new Menu("Consultas");
 
-    private TabMenuItem stockManagerTab = new TabMenuItem("Gerenciamento Estoque", tabPane)
-    {
+    private boolean hasPermission(String regra, String tab){
+        funcionario = FuncionarioDAO.getById(Current.getUser());
+
+        if (funcionario.getNivelacesso() == '1') {
+            this.nivel = "administrador";
+        } else if (funcionario.getNivelacesso() == '2') {
+            this.nivel = "operador";
+        } else {
+            this.nivel = "observador";
+        }
+
+        if ((permissoes = PermissoesDAO.hasPermission(funcionario.getId(), tab, regra)) != null) {
+            if (permissoes.isAtivo() == '1') {
+                return true;
+            } else if (permissoes.isAtivo() == '0') {
+                return false;
+            }
+        } else {
+            PermissionXMLReader reader = new PermissionXMLReader(nivel, regra, tab);
+            reader.fazerParsing("permissoes.xml");
+            return reader.hasAccess();
+        }
+        return false;
+    }
+
+    private TabMenuItem stockManagerTab = new TabMenuItem("Gerenciamento Estoque", tabPane) {
         @Override
-        public Tab getTab()
-        {
+        public Tab getTab() {
             return new StockManagerTab();
         }
     };
 
-    private TabMenuItem userRegisterTab = new TabMenuItem ("Cadastro Usuário", tabPane)
-    {
+    private TabMenuItem userRegisterTab = new TabMenuItem("Cadastro Usuário", tabPane) {
         @Override
-        public Tab getTab()
-        {
+        public Tab getTab() {
             return new UserRegisterTab();
         }
     };
 
-    private TabMenuItem categoryManagerTab = new TabMenuItem("Cadastro de Categoria", tabPane )
-    {
-       @Override
-       public Tab getTab() {
-        return new CategorManagerTab();
-        } 
+    private TabMenuItem categoryManagerTab = new TabMenuItem("Cadastro de Categoria", tabPane) {
+        @Override
+        public Tab getTab() {
+            return new CategorManagerTab();
+        }
     };
-    
-    private TabMenuItem peopleRegisterTab = new TabMenuItem("Cadastro de Pessoa",tabPane)
-    {
+
+    private TabMenuItem peopleRegisterTab = new TabMenuItem("Cadastro de Pessoa", tabPane) {
         @Override
         public Tab getTab() {
             return new PeopleRegisterTab();
         }
-    }; 
+    };
 
-    private TabMenuItem departmentRegisterTab = new TabMenuItem("Cadastro de Departamentos",tabPane)
-    {
+    private TabMenuItem departmentRegisterTab = new TabMenuItem("Cadastro de Departamentos", tabPane) {
         @Override
         public Tab getTab() {
             return new DepartmentRegisterTab();
         }
     };
 
-    private TabMenuItem ItensManagerTab = new TabMenuItem("Saída de Produtos",tabPane)
-    {
+    private TabMenuItem brandRegisterTab = new TabMenuItem("Cadastro de Marcas", tabPane) {
+        @Override
+        public Tab getTab() {
+            return new BrandRegisterTab();
+        }
+    };
+
+    private TabMenuItem unityRegisterTab = new TabMenuItem("Cadastro de Unidades", tabPane) {
+        @Override
+        public Tab getTab() {
+            return new UnityRegisterTab();
+        }
+    };
+
+    private TabMenuItem ItensManagerTab = new TabMenuItem("Saída de Produtos", tabPane) {
         @Override
         public Tab getTab() {
             return new ItensManagerTab();
@@ -147,7 +188,7 @@ public class MainPane
 
 
 
-    
+
     private TabMenuItem itensStockTab = new TabMenuItem("Cadastrar Itens em Estoque",tabPane)
     {
         @Override
@@ -156,28 +197,32 @@ public class MainPane
         }
     };
 
-    private TabMenuItem calendarTab = new TabMenuItem( "Calendario", tabPane )
-    {
+    private TabMenuItem calendarTab = new TabMenuItem("Calendario", tabPane) {
         @Override
         public Tab getTab() {
             return new CalendarManagementTab();
         }
     };
 
-    private TabMenuItem addressManagerTab = new TabMenuItem("Gerenciamento de Endereços", tabPane )
-    {
+    private TabMenuItem addressManagerTab = new TabMenuItem("Gerenciamento de Endereços", tabPane) {
         @Override
-        public Tab getTab() { return new AddressManagerTab(); }
+        public Tab getTab() {
+            return new AddressManagerTab();
+        }
     };
 
-    private TabMenuItem cityRegistreTab = new TabMenuItem("Cadastro de Cidades", tabPane ){
+    private TabMenuItem cityRegistreTab = new TabMenuItem("Cadastro de Cidades", tabPane) {
         @Override
-        public Tab getTab() { return new CityRegisterTab(); }
+        public Tab getTab() {
+            return new CityRegisterTab();
+        }
     };
 
-    private TabMenuItem productRegisterTab = new TabMenuItem("Cadastro de Produtos", tabPane ){
+    private TabMenuItem productRegisterTab = new TabMenuItem("Cadastro de Produtos", tabPane) {
         @Override
-        public Tab getTab() { return new ProductRegisterTab(); }
+        public Tab getTab() {
+            return new ProductRegisterTab();
+        }
     };
 
     private TabMenuItem temperatureTab = new TabMenuItem( "Temperatura", tabPane ){
