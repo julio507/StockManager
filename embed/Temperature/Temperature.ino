@@ -12,9 +12,9 @@
 #define STASSID ""   //SSID
 #define STAPSK "" //Password
 
-IPAddress server_addr(192,168,0,101);
-char user[] = "root";              // MySQL user login username
-char password[] = "bruchjulio";        // MySQL user login password
+IPAddress server_addr(0,0,0,0);
+char user[] = "";              // MySQL user login username
+char password[] = "";        // MySQL user login password
 
 WiFiClient client;
 MySQL_Connection conn((Client *)&client);
